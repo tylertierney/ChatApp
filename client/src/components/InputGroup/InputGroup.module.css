@@ -2,7 +2,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 60px;
-  border: none;
-  border-radius: 0;
 }

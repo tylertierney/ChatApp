@@ -1,16 +1,20 @@
 .window {
-  min-width: 0;
-  width: 0;
   box-shadow: 0px 0px 20px 1px rgb(0, 0, 0, 0.6);
   transition: 0.3s ease-in-out;
-  position: relative;
+
   z-index: 1;
+  height: 100%;
+  width: 220px;
+  min-width: 220px;
+  position: relative;
+
+  margin-left: -220px;
+  /* left: -220px; */
 }
 
 .convosContainer {
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
 }
 
 .viewBtn {
@@ -38,7 +42,8 @@
 
 @media only screen and (min-width: 440px) {
   .window {
-    min-width: 220px;
+    margin-left: 0;
+    /* left: 0; */
   }
 
   .viewBtn {

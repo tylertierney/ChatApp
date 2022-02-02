@@ -13,7 +13,6 @@ const App = () => {
 
   useEffect((): any => {
     setSocket(socketIOClient(ENDPOINT));
-    // const socket = socketIOClient(ENDPOINT);
     if (socket == null) return null;
     socket.on("message", (data: any) => {
       setResponse(data);
@@ -24,7 +23,7 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <Flex flexGrow={1}>
+      <Flex flexGrow={1} height="93%" position="relative">
         <Home response={response} socket={socket} />
       </Flex>
     </>
