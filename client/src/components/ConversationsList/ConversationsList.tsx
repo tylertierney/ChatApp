@@ -1,4 +1,4 @@
-import { Flex, Icon } from "@chakra-ui/react";
+import { Flex, Icon, useColorModeValue } from "@chakra-ui/react";
 import styles from "./ConversationsList.module.css";
 import { MdPlayArrow } from "react-icons/md";
 
@@ -42,7 +42,11 @@ const ConversationsList: React.FC<ConvoListProps> = ({
           }
         />
       </Flex>
-      <Flex className={styles.convosContainer} bgColor="brand.gray" zIndex={1}>
+      <Flex
+        className={styles.convosContainer}
+        bgColor={useColorModeValue("brand.softwhite", "#3b3a3d")}
+        zIndex={1}
+      >
         hi
       </Flex>
     </Flex>

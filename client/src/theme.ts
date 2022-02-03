@@ -23,8 +23,11 @@ const themeObj = {
         600: "#7CFFD3",
         500: "#89FFD8",
       },
-      white: "#F5F5F5",
+      softwhite: "#ececec",
+      white: "#f8f8f8",
       gray: "#49494e",
+      hovergraylight: "#e7e7e7",
+      hovergraydark: "#59595d",
       darkgray: "#232329",
       text: {
         dark: "#696969",

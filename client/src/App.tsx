@@ -13,9 +13,8 @@ const App = () => {
 
   useEffect((): any => {
     socket.on("message", (msg: message) => {
-      setNewMessages([...newMessages, msg]);
+      setNewMessages((newMessages) => [...newMessages, msg]);
     });
-    console.log(newMessages);
   }, [newMessages.length]);
 
   return (

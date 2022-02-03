@@ -1,5 +1,11 @@
 import { message } from "../../models/message";
-import { Flex, Divider, Text, Avatar } from "@chakra-ui/react";
+import {
+  Flex,
+  Divider,
+  Text,
+  Avatar,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 interface MessageProps {
   message: message;
@@ -14,7 +20,18 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   });
 
   return (
-    <Flex height="40px" w="100%" mb="1.5rem" align="center">
+    <Flex
+      height="40px"
+      w="100%"
+      align="center"
+      _hover={{
+        backgroundColor: useColorModeValue(
+          "brand.hovergraylight",
+          "brand.hovergraydark"
+        ),
+      }}
+      p="2rem 20px"
+    >
       <Avatar
         size="sm"
         mr="1.2rem"
@@ -31,7 +48,6 @@ const Message: React.FC<MessageProps> = ({ message }) => {
           </Text>
         </Text>
         <Text>{text}</Text>
-        <Divider />
       </Flex>
     </Flex>
   );

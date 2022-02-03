@@ -23,7 +23,6 @@ const Home: React.FC<HomeProps> = ({ newMessages, socket }) => {
       <Flex
         className={styles.conversationWindow}
         direction="column"
-        bgColor="brand.gray"
         filter={panelShowing === "default" ? "none" : "brightness(50%)"}
       >
         <CurrentConversation newMessages={newMessages} />

@@ -21,11 +21,10 @@ const io = socketIo(server, {
 let interval;
 
 io.on("connection", (socket) => {
-  console.log("New client connected");
+  console.log("New client connected, socket ID: " + socket.id);
 
   socket.on("message", (msg) => {
     const obj = { sender: "Bob", date: new Date(), text: msg };
-    console.log(obj);
     io.emit("message", { sender: "Bob", date: new Date(), text: msg });
   });
   socket.on("disconnect", () => {
