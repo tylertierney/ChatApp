@@ -5,6 +5,9 @@ const themeObj = {
   config: {
     initialColorMode: "dark",
   },
+  shadows: {
+    outline: "none",
+  },
   colors: {
     brand: {
       primary: {

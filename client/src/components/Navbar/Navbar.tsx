@@ -32,6 +32,7 @@ const Navbar: React.FC = () => {
         <UserMenu />
       ) : (
         <Button
+          ml="10px"
           variant="unstyled"
           height="100%"
           bgColor="brand.primary.1000"
