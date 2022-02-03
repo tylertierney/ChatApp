@@ -21,8 +21,10 @@ const ConversationsList: React.FC<ConvoListProps> = ({
 
   return (
     <Flex
-      // minW={panelShowing === "conversations_list" ? "90%" : "default"}
       className={styles.window}
+      transform={
+        panelShowing === "conversations_list" ? "translate(220px, 0)" : "none"
+      }
     >
       <Flex
         className={styles.viewBtn}

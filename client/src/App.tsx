@@ -2,29 +2,27 @@ import "./App.css";
 
 import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
-import socketIOClient from "socket.io-client";
+
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
-const ENDPOINT = "http://localhost:4001";
+import socket from "./socket";
+import { message } from "./models/message";
 
 const App = () => {
-  const [response, setResponse] = useState("");
-  const [socket, setSocket]: any = useState(null);
+  const [newMessages, setNewMessages] = useState<message[] | []>([]);
 
   useEffect((): any => {
-    setSocket(socketIOClient(ENDPOINT));
-    if (socket == null) return null;
-    socket.on("message", (data: any) => {
-      setResponse(data);
+    socket.on("message", (msg: message) => {
+      setNewMessages([...newMessages, msg]);
     });
-    return () => socket.disconnect();
-  }, []);
+    console.log(newMessages);
+  }, [newMessages.length]);
 
   return (
     <>
       <Navbar />
       <Flex flexGrow={1} height="93%" position="relative">
-        <Home response={response} socket={socket} />
+        <Home newMessages={newMessages} socket={socket} />
       </Flex>
     </>
   );

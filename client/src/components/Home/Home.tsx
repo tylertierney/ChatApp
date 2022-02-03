@@ -4,13 +4,14 @@ import InputGroup from "../InputGroup/InputGroup";
 import { Flex } from "@chakra-ui/react";
 import styles from "./Home.module.css";
 import { useState } from "react";
+import { message } from "../../models/message";
 
 interface HomeProps {
-  response: string;
+  newMessages: message[];
   socket: any;
 }
 
-const Home: React.FC<HomeProps> = ({ response, socket }) => {
+const Home: React.FC<HomeProps> = ({ newMessages, socket }) => {
   const [panelShowing, setPanelShowing] = useState("default");
 
   return (
@@ -25,8 +26,8 @@ const Home: React.FC<HomeProps> = ({ response, socket }) => {
         bgColor="brand.gray"
         filter={panelShowing === "default" ? "none" : "brightness(50%)"}
       >
-        <CurrentConversation response={response} />
-        <InputGroup socket={socket} />
+        <CurrentConversation newMessages={newMessages} />
+        <InputGroup />
         <Flex
           display={panelShowing === "default" ? "none" : "initial"}
           className={styles.overlay}

@@ -7,9 +7,9 @@ const port = process.env.PORT || 4001;
 const index = require("./routes/index");
 
 const app = express();
-app.use(index);
+// app.use(index);
 
-const server = http.createServer(app);
+const server = http.createServer();
 
 const io = socketIo(server, {
   cors: {
@@ -22,22 +22,18 @@ let interval;
 
 io.on("connection", (socket) => {
   console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  // interval = setInterval(() => getApiAndEmit(socket), 1000);
+
   socket.on("message", (msg) => {
-    console.log(msg);
-    socket.emit("message", `message is: ${msg}`);
+    const obj = { sender: "Bob", date: new Date(), text: msg };
+    console.log(obj);
+    io.emit("message", { sender: "Bob", date: new Date(), text: msg });
   });
   socket.on("disconnect", () => {
     console.log("Client disconnected");
-    clearInterval(interval);
   });
 });
 
 const getApiAndEmit = (socket) => {
-  // Emitting a new message. Will be consumed by the client
   socket.emit("FromAPI", new Date());
 };
 

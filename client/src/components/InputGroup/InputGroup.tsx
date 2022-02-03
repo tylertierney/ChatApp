@@ -1,14 +1,14 @@
-import { Flex, Input, Button, Icon, InputRightElement } from "@chakra-ui/react";
-import { FiSend } from "react-icons/fi";
+import { Flex, Input, Button, Icon } from "@chakra-ui/react";
 import { useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import styles from "./InputGroup.module.css";
+import socket from "../../socket";
 
 interface InputGroupProps {
-  socket: any;
+  socket?: any;
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({ socket }) => {
+const InputGroup: React.FC<InputGroupProps> = () => {
   const [messageText, setMessageText] = useState("");
 
   const handleSubmit = () => {
