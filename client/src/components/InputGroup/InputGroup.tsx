@@ -2,20 +2,18 @@ import { Flex, Input, Button, Icon, useColorModeValue } from "@chakra-ui/react";
 import { useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import styles from "./InputGroup.module.css";
-import socket from "../../socket";
+// import socket from "../../socket";
 
-interface InputGroupProps {
-  socket?: any;
-}
+interface InputGroupProps {}
 
 const InputGroup: React.FC<InputGroupProps> = () => {
   const [messageText, setMessageText] = useState("");
 
   const handleSubmit = () => {
-    if (messageText) {
-      socket.emit("message", messageText);
-      setMessageText("");
-    }
+    // if (messageText) {
+    //   socket.emit("message", messageText);
+    //   setMessageText("");
+    // }
   };
 
   return (

@@ -1,15 +1,14 @@
-import { useColorModeValue, useColorMode, Button } from "@chakra-ui/react";
+import { useColorModeValue, Button, Icon, Flex } from "@chakra-ui/react";
 import theme from "../../theme";
 import { useAuth } from "../../context/authContext";
 import UserMenu from "../UserMenu/UserMenu";
 import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
+import { IoIosArrowForward } from "react-icons/io";
 
 const Navbar: React.FC = () => {
-  const { toggleColorMode } = useColorMode();
-
-  const brandPrimaryDarker = "#ed257b";
   const darkgray = theme.colors.brand.darkgray;
-  const bgColor = useColorModeValue(brandPrimaryDarker, darkgray);
+  const primaryColorDarker = theme.colors.brand.primary.darker;
+  const bgColor = useColorModeValue(primaryColorDarker, darkgray);
 
   const { currentUser, login } = useAuth();
 
@@ -26,21 +25,24 @@ const Navbar: React.FC = () => {
         color: "white",
       }}
     >
-      {/* <Button onClick={() => toggleColorMode()}>toggle dark</Button> */}
       <ThemeSwitch />
       {currentUser ? (
         <UserMenu />
       ) : (
         <Button
-          ml="10px"
+          marginX="10px"
           variant="unstyled"
-          height="100%"
-          bgColor="brand.primary.1000"
-          borderRadius={0}
-          p="0 1rem"
-          onClick={() => login}
+          height="70%"
+          bgColor={primaryColorDarker}
+          p="0 0.5rem"
+          onClick={() => login()}
+          boxShadow="1px 1px 5px 1px rgb(0, 0, 0, 0.1)"
+          borderRadius="10px"
         >
-          Log In
+          <Flex align="center" justify="space-between">
+            Log In
+            <Icon as={IoIosArrowForward} />
+          </Flex>
         </Button>
       )}
     </nav>

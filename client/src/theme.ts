@@ -17,6 +17,7 @@ const themeObj = {
         700: "#FF9999",
         600: "#FFADAD",
         500: "#FFC2C2",
+        darker: "#ed257b",
       },
       secondary: {
         1000: "#47FFC2",
@@ -30,7 +31,7 @@ const themeObj = {
       white: "#f8f8f8",
       gray: "#49494e",
       hovergraylight: "#e7e7e7",
-      hovergraydark: "#59595d",
+      hovergraydark: "#35353b",
       darkgray: "#232329",
       text: {
         dark: "#696969",

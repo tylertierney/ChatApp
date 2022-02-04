@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="gradient-1-0" gradientUnits="userSpaceOnUse" x1="251.882" y1="78.426" x2="251.882" y2="421.573" gradientTransform="matrix(1.277385, 0, 0, 1.277385, -71.749348, -69.346251)" xlink:href="#gradient-1"/>
+    <linearGradient id="gradient-1" bx:pinned="true">
+      <stop offset="0" style="stop-color: rgb(237, 99, 209);"/>
+      <stop offset="1" style="stop-color: rgb(237, 37, 123);"/>
+    </linearGradient>
+  </defs>
+  <path d="M 247.596 30.835 C 374.804 30.835 478.297 123.978 478.297 238.465 C 478.297 278.492 465.629 317.259 441.629 350.771 C 446.176 401.04 458.355 438.359 476.042 456.038 C 478.381 458.376 478.964 461.952 477.488 464.906 C 476.172 467.543 473.49 469.166 470.604 469.166 C 470.253 469.166 469.89 469.143 469.529 469.088 C 466.414 468.651 394.066 458.231 341.744 428.042 C 312.023 440.029 280.37 446.095 247.596 446.095 C 171.774 446.095 104.378 413.005 62.301 362.029 C 101.125 390.253 155.629 407.809 215.986 407.809 C 333.869 407.809 429.432 340.836 429.432 258.221 C 429.432 175.606 333.869 108.633 215.986 108.633 C 129.679 108.633 55.337 144.532 21.702 196.186 C 43.46 101.902 136.48 30.835 247.596 30.835 Z" style="stroke-width: 0px; fill: url(#gradient-1-0);"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <g transform="matrix(1, 0, 0, 1, 203.078186, 178.332031)"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 0px; fill: rgb(237, 99, 209);" cx="71.268" cy="173.504" rx="12.078" ry="12.078"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 0px; fill: rgb(237, 99, 209);" cx="104.833" cy="157.594" rx="16.838" ry="16.838"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 0px; fill: rgb(237, 99, 209);" cx="149.517" cy="144.217" rx="20.645" ry="20.645"/>
+  <ellipse style="stroke: rgb(0, 0, 0); stroke-width: 0px; fill: rgb(237, 99, 209);" cx="46.882" cy="189.923" rx="9.058" ry="9.058"/>
+</svg>

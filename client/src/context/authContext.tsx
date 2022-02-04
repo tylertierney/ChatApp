@@ -3,7 +3,20 @@ import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-const initial = { currentUser: null, login: null, logout: null };
+const login = async () => {
+  console.log("login activated in authcontext");
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    "tytierney@yahoo.com",
+    "asdf123"
+  );
+};
+
+const logout = async () => {
+  await signOut(auth);
+};
+
+const initial = { currentUser: null, login, logout, pending: true };
 
 export const AuthContext = createContext(initial);
 
@@ -14,30 +27,19 @@ const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("user has changed: " + JSON.stringify(user));
+        console.log("user has changed: " + user);
         setCurrentUser(user);
         setPending(false);
       } else {
+        setCurrentUser(null);
         setPending(false);
       }
     });
   }, []);
 
-  const login = async () => {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      "tytierney@yahoo.com",
-      "asdf123"
-    );
-    console.log(userCredential.user);
-  };
-
-  const logout = async () => {
-    await signOut(auth);
-  };
-
   const ctx: any = {
     currentUser,
+    pending,
     login,
     logout,
   };

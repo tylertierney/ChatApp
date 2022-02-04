@@ -8,10 +8,9 @@ import { message } from "../../models/message";
 
 interface HomeProps {
   newMessages: message[];
-  socket: any;
 }
 
-const Home: React.FC<HomeProps> = ({ newMessages, socket }) => {
+const Home: React.FC<HomeProps> = ({ newMessages }) => {
   const [panelShowing, setPanelShowing] = useState("default");
 
   return (

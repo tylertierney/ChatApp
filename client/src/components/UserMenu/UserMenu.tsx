@@ -12,7 +12,7 @@ import {
   AvatarBadge,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FiLogOut } from "react-icons/fi";
+import { BiLogOut } from "react-icons/bi";
 import { useAuth } from "../../context/authContext";
 
 interface UserMenuProps {}
@@ -24,13 +24,13 @@ const UserMenu: React.FC<UserMenuProps> = () => {
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
   const hoverColor = useColorModeValue(
     "brand.hovergraylight",
-    "brand.hovergray.dark"
+    "brand.hovergraydark"
   );
 
   const menuItems = [
     {
       text: "Sign Out",
-      icon: FiLogOut,
+      icon: BiLogOut,
       action: () => logout,
     },
   ];
@@ -39,17 +39,20 @@ const UserMenu: React.FC<UserMenuProps> = () => {
     return (
       <MenuItem
         key={idx}
-        onClick={item.action}
+        onClick={() => logout()}
         color={textColor}
         _hover={{ backgroundColor: hoverColor }}
+        _focus={{ backgroundColor: hoverColor }}
       >
         <Flex align="center">
-          <Text mr="10px">{item.text}</Text>
-          <Icon fontSize="1.2rem" as={item.icon} />
+          <Icon mr="10px" fontSize="1.2rem" as={item.icon} />
+          <Text>{item.text}</Text>
         </Flex>
       </MenuItem>
     );
   });
+
+  if (currentUser == null) return null;
 
   return (
     <Menu gutter={0}>
@@ -68,7 +71,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
       <MenuList bgColor={bgColor}>
         <Flex direction="column" align="center">
           <Avatar size="md" />
-          <Text>Tyler Tierney</Text>
+          <Text mb="6px">{currentUser["displayName"]}</Text>
           <Button
             bgColor={btnColor}
             height="1.2rem"
@@ -90,12 +93,6 @@ const UserMenu: React.FC<UserMenuProps> = () => {
           </Button>
         </Flex>
         <MenuDivider />
-        {/* <MenuItem color={textColor} _hover={{ backgroundColor: hoverColor }}>
-          <Flex align="center">
-            <Text mr="10px">Logout</Text>
-            <Icon fontSize="1.2rem" as={FiLogOut} />
-          </Flex>
-        </MenuItem> */}
         {menuItemsArr}
       </MenuList>
     </Menu>
