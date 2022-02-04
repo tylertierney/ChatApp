@@ -1,11 +1,5 @@
 import { useAuth } from "../../context/authContext";
-import {
-  Flex,
-  Text,
-  Image,
-  FormControl,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { Flex, Text, Image, Button } from "@chakra-ui/react";
 import styles from "./Login.module.css";
 import { HiOutlineAtSymbol } from "react-icons/hi";
 import { AiOutlineLock } from "react-icons/ai";
@@ -14,15 +8,9 @@ import { useState } from "react";
 import smallLogo from "../../svg/test2.svg";
 import { Link } from "react-router-dom";
 
-const Login: React.FC = () => {
-  const { login } = useAuth();
-
+const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
 
   return (
     <Flex className={styles.window}>
@@ -65,25 +53,23 @@ const Login: React.FC = () => {
         </Flex>
       </Flex>
       <Flex className={styles.formWindow}>
-        <form className={styles.formHTML} onSubmit={(e) => handleSubmit(e)}>
+        <form className={styles.formHTML}>
           <Flex className={styles.logoContainer}>
             <Image src={smallLogo} alt="Chatmosphere logo" />
           </Flex>
           <Text fontWeight="semibold" fontSize="1.6rem">
-            Welcome back!
+            Welcome to Chatmosphere!
           </Text>
           <Text fontWeight="light" mb="1.8rem" textAlign="center">
-            Login using your email/password or choose a provider.
+            Create an account with your email/password or choose a provider.
           </Text>
-          <FormControl>
-            <StyledInput
-              name="email"
-              icon={HiOutlineAtSymbol}
-              placeholder="Email"
-              inputValue={email}
-              setInputValue={setEmail}
-            />
-          </FormControl>
+          <StyledInput
+            name="email"
+            icon={HiOutlineAtSymbol}
+            placeholder="Email"
+            inputValue={email}
+            setInputValue={setEmail}
+          />
           <StyledInput
             name="password"
             icon={AiOutlineLock}
@@ -91,19 +77,20 @@ const Login: React.FC = () => {
             inputValue={password}
             setInputValue={setPassword}
           />
+
           <button type="submit" className={styles.submitBtn}>
-            Login
+            Create Account
           </button>
         </form>
         <Text mt="9rem">
-          Don&apos;t have an account yet?&nbsp;
-          <Link to="/register">
+          Already have an account?&nbsp;
+          <Link to="/login">
             <Text
               decoration="underline"
               as="span"
               color="var(--inputLightblue)"
             >
-              Sign up!
+              Log in
             </Text>
           </Link>
         </Text>
@@ -112,4 +99,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

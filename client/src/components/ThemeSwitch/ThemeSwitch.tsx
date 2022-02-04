@@ -8,6 +8,7 @@ const ThemeSwitch: React.FC = () => {
       onChange={toggleColorMode}
       boxShadow="none"
       _focus={{ boxShadow: "0", outline: "none" }}
+      size="sm"
     />
   );
 };

@@ -8,6 +8,7 @@ import { message } from "./models/message";
 import { useAuth } from "./context/authContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
+import Register from "./components/Login/Register";
 
 const App = () => {
   const [newMessages, setNewMessages] = useState<message[] | []>([]);
@@ -38,11 +39,12 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home newMessages={newMessages} />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
           </Flex>
         </BrowserRouter>
       </Flex>
-      {pending && <LoadingScreen />}
+      {/* {pending && <LoadingScreen />} */}
     </>
   );
 };

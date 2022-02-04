@@ -3,7 +3,7 @@ import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-const login = async () => {
+const login = async (email: string, password: string) => {
   console.log("login activated in authcontext");
   const userCredential = await signInWithEmailAndPassword(
     auth,

@@ -1,4 +1,20 @@
+.window {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 .graphicWindow {
+  background: linear-gradient(
+    315deg,
+    rgba(120, 120, 255, 1) 0%,
+    rgba(163, 163, 255, 1) 50%,
+    rgba(203, 163, 255, 1) 100%
+  );
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 0;
   height: 100%;
   transition: 0.3s ease-in-out;
@@ -10,6 +26,10 @@
   height: 100%;
   transition: 0.3s ease-in-out;
   padding: 0 1rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-left: 5px solid var(--primaryPink);
 }
 
 .formHTML {
@@ -18,6 +38,58 @@
   justify-content: center;
   align-items: center;
   min-width: 240px;
+  max-width: 380px;
+}
+
+.logoContainer {
+  background-color: rgb(255, 255, 255, 1);
+  border-radius: 50%;
+  margin-top: 2rem;
+  height: 60px;
+  width: 60px;
+  border: 1px solid rgb(0, 0, 0, 0.1);
+  padding: 10px;
+  box-shadow: 0px 0px 10px 1px rgb(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+
+.submitBtn {
+  background: linear-gradient(
+    315deg,
+    var(--primaryPink) 0%,
+    var(--primaryPurple) 100%
+  );
+  color: white;
+  width: 100%;
+}
+
+.submitBtn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  height: 2.4rem;
+  font-weight: 500;
+  user-select: none;
+}
+
+.submitBtn:active {
+  transform: translate(0px, 2px);
+}
+
+.submitBtn::after {
+  content: "";
+  transform: rotate(45deg) translate(0, -50%);
+  width: 50%;
+  height: 46px;
+  background-color: rgb(255, 255, 255, 0.3);
+  position: absolute;
+  top: 50%;
+  left: -40%;
+  transition: 0.27s ease-in-out;
+}
+
+.submitBtn:hover::after {
+  left: 100%;
 }
 
 @media only screen and (min-width: 765px) {
