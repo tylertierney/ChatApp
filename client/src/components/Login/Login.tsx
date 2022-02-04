@@ -8,13 +8,19 @@ import {
   InputRightAddon,
   InputRightElement,
   Icon,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import horizontalLogo from "../../svg/chatapp_logo_horizontal.svg";
 import styles from "./Login.module.css";
 import { HiOutlineAtSymbol } from "react-icons/hi";
 import { AiOutlineLock } from "react-icons/ai";
+import StyledInput from "../StyledInput/StyledInput";
+import { useState } from "react";
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <Flex align="center" justify="center" h="100%" w="100%">
       <Flex
@@ -69,7 +75,7 @@ const Login: React.FC = () => {
       >
         <form className={styles.formHTML}>
           <Flex
-            bgColor="rgb(0, 0, 0, 0.02)"
+            bgColor="rgb(255, 255, 255, 1)"
             borderRadius="full"
             mt="2rem"
             width="60px"
@@ -77,40 +83,30 @@ const Login: React.FC = () => {
             border="1px solid rgb(0, 0, 0, 0.1)"
             padding="10px"
             boxShadow="0px 0px 10px 1px rgb(0, 0, 0, 0.2)"
+            mb="1rem"
           >
-            <Image
-              src="../../svg/chatapp_logo.svg"
-              alt="Chatmosphere logo"
-              maxW="200px"
-            />
+            <Image src="../../svg/chatapp_logo.svg" alt="Chatmosphere logo" />
           </Flex>
-          <Text fontWeight="semibold" fontSize="1.8rem">
+          <Text fontWeight="semibold" fontSize="1.6rem">
             Welcome back!
           </Text>
-          <Text fontWeight="thin" mb="1.8rem" textAlign="center">
+          <Text fontWeight="light" mb="1.8rem" textAlign="center">
             Login using your email/password or choose a provider.
           </Text>
-          <InputGroup className={styles.inputGroup}>
-            <Input
-              type="email"
-              autoComplete="email"
-              name="email"
-              id="email"
-              aria-label="email"
-              className={styles.inputHTML}
-              _focus={{
-                backgroundColor: "rgb(0, 0, 0, 0.06)",
-              }}
-            />
-            <InputRightElement
-              children={
-                <Icon as={HiOutlineAtSymbol} opacity="0.5" fontSize="1.4rem" />
-              }
-            />
-          </InputGroup>
-          {/* <Flex className={styles.inputGroup}>
-            <input className={styles.inputHTML} />
-          </Flex> */}
+          <StyledInput
+            name="email"
+            icon={HiOutlineAtSymbol}
+            placeholder="Email"
+            inputValue={email}
+            setInputValue={setEmail}
+          />
+          <StyledInput
+            name="password"
+            icon={AiOutlineLock}
+            placeholder="Password"
+            inputValue={password}
+            setInputValue={setPassword}
+          />
         </form>
       </Flex>
     </Flex>

@@ -5,6 +5,15 @@ const themeObj = {
   config: {
     initialColorMode: "dark",
   },
+  components: {
+    Input: {
+      variants: {
+        outline: {
+          _hover: { borderColor: "3ccbfb" },
+        },
+      },
+    },
+  },
   shadows: {
     outline: "none",
   },

@@ -1,0 +1,66 @@
+.inputGroup {
+  margin-bottom: 1.8rem;
+  background-color: rgba(0, 0, 0, 0.026);
+  border-radius: 6px;
+}
+
+.inputGroup::after {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translate(0, -50%);
+  transition: 0.3s ease-in-out;
+  border-radius: 3px;
+  font-size: 1rem;
+  padding: 0 0.3rem;
+  background-color: transparent;
+}
+
+.inputGroup:focus-within::after {
+  top: 0%;
+  transform: translate(0, -50%);
+  background-color: inherit;
+  font-size: 0.9rem;
+  color: var(--inputLightblue);
+}
+
+.inputGroup:focus-within {
+  border-color: var(--inputLightblue);
+}
+
+.inputIcon {
+  opacity: 0.4;
+}
+
+.inputGroup:focus-within .inputIcon {
+  color: var(--inputLightblue);
+  opacity: 1;
+}
+
+.something.inputGroup::after {
+  top: 0%;
+  transform: translate(0, -50%);
+  background-color: inherit;
+  font-size: 0.9rem;
+  color: var(--inputLightblue);
+}
+
+.something.inputGroup {
+  border-color: var(--inputLightblue);
+}
+
+.something .inputIcon {
+  color: var(--inputLightblue);
+  opacity: 0.9;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  /* -webkit-box-shadow: 0 0 0 30px var(--backgroundWhite) inset !important;
+  box-shadow: 0 0 0 30px var(--backgroundWhite) inset !important; */
+  /* color: inherit !important; */
+  /* -webkit-text-fill-color: rgba(0, 0, 0, 0.5) !important; */
+  -webkit-text-fill-color: var(--inputLightblue) !important;
+}

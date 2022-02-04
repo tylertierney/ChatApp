@@ -32,15 +32,15 @@ const App = () => {
         width="100%"
         filter={pending ? "blur(2px)" : "none"}
       >
-        <Navbar />
-        <Flex flexGrow={1} height="93%" position="relative">
-          <BrowserRouter>
+        <BrowserRouter>
+          <Navbar />
+          <Flex flexGrow={1} height="93%" position="relative">
             <Routes>
               <Route path="/" element={<Home newMessages={newMessages} />} />
               <Route path="/login" element={<Login />} />
             </Routes>
-          </BrowserRouter>
-        </Flex>
+          </Flex>
+        </BrowserRouter>
       </Flex>
       {pending && <LoadingScreen />}
     </>
