@@ -3,6 +3,8 @@
   flex-direction: column;
   box-sizing: border-box;
   position: relative;
+  --backgroundWhite: #f8f8f8;
+  --backgroundGray: #49494e;
 }
 
 body {
