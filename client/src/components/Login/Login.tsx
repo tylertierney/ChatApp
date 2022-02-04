@@ -75,7 +75,7 @@ const Login: React.FC = () => {
           <Text fontWeight="light" mb="1.8rem" textAlign="center">
             Login using your email/password or choose a provider.
           </Text>
-          <FormControl>
+          <FormControl isRequired>
             <StyledInput
               name="email"
               icon={HiOutlineAtSymbol}
@@ -83,6 +83,7 @@ const Login: React.FC = () => {
               inputValue={email}
               setInputValue={setEmail}
             />
+            <FormErrorMessage></FormErrorMessage>
           </FormControl>
           <StyledInput
             name="password"
