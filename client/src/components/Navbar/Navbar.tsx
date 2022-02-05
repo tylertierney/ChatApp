@@ -1,11 +1,11 @@
-import { useColorModeValue, Button, Icon, Flex, Image } from "@chakra-ui/react";
+import { useColorModeValue, Button, Icon, Flex } from "@chakra-ui/react";
 import theme from "../../theme";
 import { useAuth } from "../../context/authContext";
 import UserMenu from "../UserMenu/UserMenu";
 import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
-import logo from "../../svg/test.svg";
+import { Link, useLocation } from "react-router-dom";
+import Logo from "../Logo/Logo";
 
 const Navbar: React.FC = () => {
   const darkgray = theme.colors.brand.darkgray;
@@ -13,6 +13,16 @@ const Navbar: React.FC = () => {
   const bgColor = useColorModeValue(theme.colors.brand.white, darkgray);
 
   const { currentUser } = useAuth();
+
+  const location = useLocation();
+
+  const getBtnProps = (pathname: string) => {
+    if (pathname === "/login") {
+      return { link: "/register", text: "Sign Up" };
+    } else {
+      return { link: "/login", text: "Log In" };
+    }
+  };
 
   return (
     <nav
@@ -45,23 +55,18 @@ const Navbar: React.FC = () => {
             left: "0",
           }}
         >
-          <Image
-            position="absolute"
-            top="50%"
-            transform="translate(0, -50%)"
-            src={logo}
-            htmlHeight="100%"
-            htmlWidth="100%"
-          />
+          <Logo />
         </Link>
       </Flex>
-
       <Flex align="center">
         <ThemeSwitch />
         {currentUser ? (
           <UserMenu />
         ) : (
-          <Link to="/login" style={{ height: "inherit" }}>
+          <Link
+            to={getBtnProps(location.pathname).link}
+            style={{ height: "inherit" }}
+          >
             <Button
               ml="10px"
               variant="unstyled"
@@ -71,10 +76,12 @@ const Navbar: React.FC = () => {
               boxShadow="1px 1px 5px 1px rgb(0, 0, 0, 0.1)"
               borderRadius="6px"
               color="white"
+              width="90px"
+              background="var(--pinkGradient)"
             >
-              <Flex align="center" justify="space-between">
-                Log In
-                <Icon as={IoIosArrowForward} />
+              <Flex align="center" justify="center">
+                {getBtnProps(location.pathname).text}
+                <Icon as={IoIosArrowForward} ml="2px" />
               </Flex>
             </Button>
           </Link>

@@ -1,38 +1,56 @@
 import { useContext, createContext, useEffect, useState } from "react";
-import { auth } from "../firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth, provider } from "../firebaseConfig";
+import { onAuthStateChanged, User } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  signInWithRedirect,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const login = async (email: string, password: string) => {
-  console.log("login activated in authcontext");
   const userCredential = await signInWithEmailAndPassword(
     auth,
-    "tytierney@yahoo.com",
-    "asdf123"
+    email,
+    password
   );
+  return userCredential;
+};
+
+const signInViaGithub = () => {
+  signInWithRedirect(auth, provider);
 };
 
 const logout = async () => {
   await signOut(auth);
 };
 
-const initial = { currentUser: null, login, logout, pending: true };
+const initial = {
+  currentUser: null,
+  login,
+  signInViaGithub,
+  logout,
+  pending: true,
+};
 
 export const AuthContext = createContext(initial);
 
 const AuthProvider = ({ children }: any) => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [pending, setPending] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("user has changed: " + user);
         setCurrentUser(user);
         setPending(false);
+        navigate(`/${user.uid}`);
       } else {
         setCurrentUser(null);
         setPending(false);
+        navigate("/login");
       }
     });
   }, []);
@@ -41,6 +59,7 @@ const AuthProvider = ({ children }: any) => {
     currentUser,
     pending,
     login,
+    signInViaGithub,
     logout,
   };
 

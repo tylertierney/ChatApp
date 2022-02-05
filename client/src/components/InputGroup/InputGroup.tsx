@@ -37,6 +37,7 @@ const InputGroup: React.FC<InputGroupProps> = () => {
           height="50px"
           maxH="50px"
           overflow="hidden"
+          background="transparent"
         />
 
         <Button

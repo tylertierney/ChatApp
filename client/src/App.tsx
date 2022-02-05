@@ -13,6 +13,7 @@ import Register from "./components/Login/Register";
 const App = () => {
   const [newMessages, setNewMessages] = useState<message[] | []>([]);
   const { pending } = useAuth();
+  const { currentUser } = useAuth();
 
   // useEffect((): any => {
   //   socket.on("message", (msg: message) => {
@@ -33,16 +34,22 @@ const App = () => {
         width="100%"
         filter={pending ? "blur(2px)" : "none"}
       >
-        <BrowserRouter>
-          <Navbar />
-          <Flex flexGrow={1} height="93%" position="relative">
-            <Routes>
-              <Route path="/" element={<Home newMessages={newMessages} />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </Flex>
-        </BrowserRouter>
+        {/* <BrowserRouter> */}
+        <Navbar />
+        <Flex flexGrow={1} height="93%" position="relative">
+          <Routes>
+            {/* <Route path="/" element={<Home newMessages={newMessages} />} /> */}
+            {currentUser && (
+              <Route
+                path={`/${currentUser["uid"]}`}
+                element={<Home newMessages={newMessages} />}
+              />
+            )}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Flex>
+        {/* </BrowserRouter> */}
       </Flex>
       {/* {pending && <LoadingScreen />} */}
     </>

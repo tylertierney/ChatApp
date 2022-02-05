@@ -1,3 +1,10 @@
+import { HiOutlineAtSymbol } from "react-icons/hi";
+import {
+  AiOutlineLock,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+} from "react-icons/ai";
+
 import {
   InputGroup,
   Input,
@@ -6,19 +13,22 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import styles from "./StyledInput.module.css";
+import { useState } from "react";
 
 interface InputProps {
   name: string;
-  icon: any;
   placeholder: string;
+  autofillType: string;
+  error: boolean;
   inputValue: string;
   setInputValue: Function;
 }
 
 const StyledInput: React.FC<InputProps> = ({
   name,
-  icon,
   placeholder,
+  autofillType,
+  error,
   inputValue,
   setInputValue,
 }) => {
@@ -32,6 +42,37 @@ const StyledInput: React.FC<InputProps> = ({
   );
 
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
+
+  const [showPw, setShowPw] = useState(false);
+
+  let minLength = 1;
+
+  if (name === "password") {
+    minLength = 7;
+  }
+
+  const getInputRightElemChildren = (name: string) => {
+    if (name === "email") {
+      return (
+        <>
+          <Icon as={HiOutlineAtSymbol} fontSize="1.4rem" />
+        </>
+      );
+    }
+    return (
+      <>
+        <Icon
+          as={showPw ? AiOutlineEyeInvisible : AiOutlineEye}
+          fontSize="1.4rem"
+          onClick={() => setShowPw(!showPw)}
+          cursor="pointer"
+          visibility={inputValue === "" ? "hidden" : "visible"}
+        />
+
+        <Icon as={AiOutlineLock} fontSize="1.4rem" />
+      </>
+    );
+  };
 
   return (
     <InputGroup
@@ -47,8 +88,8 @@ const StyledInput: React.FC<InputProps> = ({
       color={textColor}
     >
       <Input
-        type={name}
-        autoComplete={name}
+        type={showPw ? "text" : name}
+        autoComplete={autofillType}
         name={name}
         id={name}
         aria-label={name}
@@ -59,15 +100,16 @@ const StyledInput: React.FC<InputProps> = ({
         _hover={{
           borderColor: "var(--inputLightblue)",
         }}
-        placeholder=" "
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         boxShadow={`0 0 0 30px ${inputBgColor} inset`}
         color={textColor}
+        minLength={minLength}
       />
       <InputRightElement
+        right={name === "email" ? "0px" : "10px"}
         className={styles.inputIcon}
-        children={<Icon as={icon} fontSize="1.4rem" />}
+        children={getInputRightElemChildren(name)}
       />
     </InputGroup>
   );

@@ -5,109 +5,115 @@ import {
   Image,
   FormControl,
   FormErrorMessage,
+  useColorModeValue,
+  Icon,
 } from "@chakra-ui/react";
 import styles from "./Login.module.css";
-import { HiOutlineAtSymbol } from "react-icons/hi";
-import { AiOutlineLock } from "react-icons/ai";
+
 import StyledInput from "../StyledInput/StyledInput";
 import { useState } from "react";
-import smallLogo from "../../svg/test2.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { BsGithub } from "react-icons/bs";
+import GraphicWindow from "./GraphicWindow";
+import WelcomeMessage from "./WelcomeMessage";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 const Login: React.FC = () => {
-  const { login } = useAuth();
+  const { login, signInViaGithub } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const trimmedEmail = email.trim();
+    const trimmedPw = password.trim();
+    // const response = login(trimmedEmail, trimmedPw);
+    signInWithEmailAndPassword(auth, trimmedEmail, trimmedPw)
+      .then((userCredential) => {
+        setEmail("");
+        setPassword("");
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
+
+  if (error) {
+    console.log(error["code"]);
+  }
+
+  const dividerColor = useColorModeValue("brand.text.dark", "brand.text.light");
 
   return (
     <Flex className={styles.window}>
-      <Flex className={styles.graphicWindow}>
-        <Flex direction="column" minW="400px" maxW="400px">
-          <Text
-            fontSize="3.9rem"
-            lineHeight={0.3}
-            fontWeight="thin"
-            color="white"
-            as="span"
-            w="100%"
-            textAlign="left"
+      <GraphicWindow />
+      <Flex className={styles.formWindow}>
+        <Flex className={styles.verticalColumn}>
+          <form className={styles.formHTML} onSubmit={(e) => handleSubmit(e)}>
+            <WelcomeMessage
+              header="Welcome back!"
+              text="Login using your email/password or choose a provider."
+            />
+            <FormControl isRequired>
+              <StyledInput
+                name="email"
+                placeholder="Email"
+                autofillType="email"
+                error={false}
+                inputValue={email}
+                setInputValue={setEmail}
+              />
+              <FormErrorMessage></FormErrorMessage>
+            </FormControl>
+            <StyledInput
+              name="password"
+              placeholder="Password"
+              autofillType="current-password"
+              error={false}
+              inputValue={password}
+              setInputValue={setPassword}
+            />
+            <button
+              type="submit"
+              className={`${styles.buttons} ${styles.submitBtn}`}
+            >
+              Login
+            </button>
+          </form>
+          <Flex className={styles.signupDivider}>
+            <Flex bgColor={dividerColor}></Flex>
+            <Text as="span">or</Text>
+            <Flex bgColor={dividerColor}></Flex>
+          </Flex>
+          <button
+            className={`${styles.buttons} ${styles.githubBtn}`}
+            style={{
+              borderColor: dividerColor,
+            }}
+            onClick={() => signInViaGithub()}
           >
-            Share your&nbsp;
-          </Text>
-          <br />
-          <Text
-            lineHeight={1}
-            fontSize="5rem"
-            fontWeight="bold"
-            textAlign="center"
-            color="white"
-            as="span"
-          >
-            grandest
-          </Text>
-          <br />
-          <Text
-            fontSize="3.9rem"
-            lineHeight={0.3}
-            fontWeight="thin"
-            color="white"
-            w="100%"
-            textAlign="right"
-            as="span"
-          >
-            ideas
+            <Text as="span" color="inherit" mr="0.5rem">
+              Sign in with Github
+            </Text>
+            <Icon as={BsGithub} fontSize="1.4rem" />
+          </button>
+          <Text className={styles.alternateLoginLink}>
+            Don&apos;t have an account yet?&nbsp;
+            <Link to="/register">
+              <Text
+                decoration="underline"
+                as="span"
+                color="var(--inputLightblue)"
+              >
+                Sign up!
+              </Text>
+            </Link>
           </Text>
         </Flex>
-      </Flex>
-      <Flex className={styles.formWindow}>
-        <form className={styles.formHTML} onSubmit={(e) => handleSubmit(e)}>
-          <Flex className={styles.logoContainer}>
-            <Image src={smallLogo} alt="Chatmosphere logo" />
-          </Flex>
-          <Text fontWeight="semibold" fontSize="1.6rem">
-            Welcome back!
-          </Text>
-          <Text fontWeight="light" mb="1.8rem" textAlign="center">
-            Login using your email/password or choose a provider.
-          </Text>
-          <FormControl isRequired>
-            <StyledInput
-              name="email"
-              icon={HiOutlineAtSymbol}
-              placeholder="Email"
-              inputValue={email}
-              setInputValue={setEmail}
-            />
-            <FormErrorMessage></FormErrorMessage>
-          </FormControl>
-          <StyledInput
-            name="password"
-            icon={AiOutlineLock}
-            placeholder="Password"
-            inputValue={password}
-            setInputValue={setPassword}
-          />
-          <button type="submit" className={styles.submitBtn}>
-            Login
-          </button>
-        </form>
-        <Text mt="9rem">
-          Don&apos;t have an account yet?&nbsp;
-          <Link to="/register">
-            <Text
-              decoration="underline"
-              as="span"
-              color="var(--inputLightblue)"
-            >
-              Sign up!
-            </Text>
-          </Link>
-        </Text>
       </Flex>
     </Flex>
   );
