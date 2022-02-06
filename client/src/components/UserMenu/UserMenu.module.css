@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+
+  flex-direction: column;
+  align-items: center;
+}
+
+.userInfo {
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0 0.8rem 0;
+}
+
+.statusBtn {
+  height: 1.6rem;
+  font-size: 0.8rem;
+}
+
+.activeIndicator {
+  height: 0.7rem;
+  width: 0.7rem;
+  border-radius: 50%;
+  background-color: lightgreen;
+  border: 1px solid white;
+  margin-right: 6px;
+}
+
+.menuItem {
+  display: flex;
+  border-radius: 0;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 1.5rem;
+  height: 2.8rem;
+}

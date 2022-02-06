@@ -22,6 +22,7 @@ interface InputProps {
   error: boolean;
   inputValue: string;
   setInputValue: Function;
+  pending: boolean;
 }
 
 const StyledInput: React.FC<InputProps> = ({
@@ -31,6 +32,7 @@ const StyledInput: React.FC<InputProps> = ({
   error,
   inputValue,
   setInputValue,
+  pending,
 }) => {
   const inputBgColor = useColorModeValue(
     "var(--backgroundWhite)",
@@ -105,6 +107,7 @@ const StyledInput: React.FC<InputProps> = ({
         boxShadow={`0 0 0 30px ${inputBgColor} inset`}
         color={textColor}
         minLength={minLength}
+        isDisabled={pending}
       />
       <InputRightElement
         right={name === "email" ? "0px" : "10px"}

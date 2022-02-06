@@ -30,7 +30,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  border-left: 5px solid var(--primaryPink);
+  /* border-left: 5px solid var(--primaryPink); */
 }
 
 .verticalColumn {
@@ -70,6 +70,9 @@
   margin-bottom: 1rem;
   overflow: hidden;
   box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.176);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .submitBtn {
@@ -99,6 +102,20 @@
   left: 100%;
 }
 
+.loadingSpinner {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+
+  from {
+    transform: rotate(-360deg);
+  }
+}
+
 .signupDivider {
   width: 100%;
   align-items: center;
@@ -123,11 +140,31 @@
   align-items: center;
   background: transparent;
   border: 2px solid;
+  transition: 0.3s ease-in-out;
+  opacity: 0.7;
+}
+
+.githubBtn:active {
+  filter: brightness(70%);
+}
+.githubBtn:hover {
+  filter: brightness(70%);
 }
 
 .alternateLoginLink {
-  margin-top: 3rem;
+  margin-top: 2.6rem;
   user-select: none;
+}
+
+.errorMessage {
+  padding-bottom: 0.3rem;
+  min-height: 1.6rem;
+  transition: 0.3s ease-in-out;
+  user-select: none;
+  color: rgb(253, 100, 100);
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: right;
 }
 
 @media only screen and (min-width: 765px) {

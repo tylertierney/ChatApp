@@ -2,25 +2,28 @@ import { Flex, Input, Button, Icon, useColorModeValue } from "@chakra-ui/react";
 import { useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import styles from "./InputGroup.module.css";
-// import socket from "../../socket";
+import socket from "../../socket";
 
-interface InputGroupProps {}
+interface InputGroupProps {
+  panelShowing: string;
+  panelWidth: string;
+}
 
-const InputGroup: React.FC<InputGroupProps> = () => {
+const InputGroup: React.FC<InputGroupProps> = ({
+  panelShowing,
+  panelWidth,
+}) => {
   const [messageText, setMessageText] = useState("");
 
   const handleSubmit = () => {
-    // if (messageText) {
-    //   socket.emit("message", messageText);
-    //   setMessageText("");
-    // }
+    if (messageText) {
+      socket.emit("message", messageText);
+      setMessageText("");
+    }
   };
 
   return (
-    <Flex
-      boxShadow="0px 0px 10px 1px rgb(0, 0, 0, 0.1)"
-      borderTop="1px solid rgb(0, 0, 0, 0.1)"
-    >
+    <Flex className={styles.container}>
       <Flex
         bgColor={useColorModeValue("brand.softwhite", "brand.darkgray")}
         width="100%"

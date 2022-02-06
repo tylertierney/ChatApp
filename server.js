@@ -1,10 +1,10 @@
 const express = require("express");
 const http = require("http");
-const cors = require("cors");
+// const cors = require("cors");
 const socketIo = require("socket.io");
 
 const port = process.env.PORT || 4001;
-const index = require("./routes/index");
+// const index = require("./routes/index");
 
 const app = express();
 // app.use(index);
@@ -17,8 +17,6 @@ const io = socketIo(server, {
     methods: ["GET", "POST"],
   },
 });
-
-let interval;
 
 io.on("connection", (socket) => {
   console.log("New client connected, socket ID: " + socket.id);

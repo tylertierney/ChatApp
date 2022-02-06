@@ -5,33 +5,54 @@ import { Flex } from "@chakra-ui/react";
 import styles from "./Home.module.css";
 import { useState } from "react";
 import { message } from "../../models/message";
+import Sidebar from "../Sidebar/Sidebar";
+import UserMenu from "../UserMenu/UserMenu";
 
 interface HomeProps {
+  panelShowing: string;
+  setPanelShowing: Function;
   newMessages: message[];
 }
 
-const Home: React.FC<HomeProps> = ({ newMessages }) => {
-  const [panelShowing, setPanelShowing] = useState("default");
+const Home: React.FC<HomeProps> = ({
+  panelShowing,
+  setPanelShowing,
+  newMessages,
+}) => {
+  const panelWidth = "240px";
 
   return (
     <>
-      <ConversationsList
+      <Sidebar
         panelShowing={panelShowing}
         setPanelShowing={setPanelShowing}
-      />
+        side="left"
+        panelWidth={panelWidth}
+      >
+        <ConversationsList />
+      </Sidebar>
       <Flex
         className={styles.conversationWindow}
         direction="column"
-        filter={panelShowing === "default" ? "none" : "brightness(50%)"}
+        transition="0s ease-in-out"
+        filter={panelShowing === "default" ? "none" : "blur(1px)"}
       >
         <CurrentConversation newMessages={newMessages} />
-        <InputGroup />
+        <InputGroup panelShowing={panelShowing} panelWidth={panelWidth} />
         <Flex
           display={panelShowing === "default" ? "none" : "initial"}
           className={styles.overlay}
           onClick={() => setPanelShowing("default")}
         ></Flex>
       </Flex>
+      <Sidebar
+        panelShowing={panelShowing}
+        setPanelShowing={setPanelShowing}
+        side="right"
+        panelWidth={panelWidth}
+      >
+        <UserMenu />
+      </Sidebar>
     </>
   );
 };

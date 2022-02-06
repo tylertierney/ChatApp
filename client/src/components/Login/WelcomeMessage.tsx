@@ -16,7 +16,7 @@ const WelcomeMessage: React.FC<MsgProps> = ({ header, text }) => {
       <Text fontWeight="semibold" fontSize="1.6rem" userSelect="none">
         {header}
       </Text>
-      <Text fontWeight="light" mb="1.8rem" textAlign="center" userSelect="none">
+      <Text fontWeight="light" mb="1rem" textAlign="center" userSelect="none">
         {text}
       </Text>
     </>

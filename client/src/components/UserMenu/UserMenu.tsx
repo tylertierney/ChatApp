@@ -1,25 +1,19 @@
 import {
   Avatar,
   Button,
-  Menu,
-  MenuList,
-  MenuButton,
-  MenuItem,
   Flex,
   Text,
   Icon,
-  MenuDivider,
-  AvatarBadge,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { BiLogOut } from "react-icons/bi";
+import { AiOutlineLogout } from "react-icons/ai";
 import { useAuth } from "../../context/authContext";
+import styles from "./UserMenu.module.css";
 
 interface UserMenuProps {}
 const UserMenu: React.FC<UserMenuProps> = () => {
   const { currentUser, logout } = useAuth();
 
-  const bgColor = useColorModeValue("brand.softwhite", "brand.darkgray");
   const btnColor = useColorModeValue("brand.white", "brand.gray");
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
   const hoverColor = useColorModeValue(
@@ -30,72 +24,55 @@ const UserMenu: React.FC<UserMenuProps> = () => {
   const menuItems = [
     {
       text: "Sign Out",
-      icon: BiLogOut,
-      action: () => logout,
+      icon: AiOutlineLogout,
+      action: () => logout(),
     },
   ];
 
   const menuItemsArr = menuItems.map((item, idx) => {
     return (
-      <MenuItem
+      <Button
         key={idx}
-        onClick={() => logout()}
+        variant="unstyled"
+        className={styles.menuItem}
+        onClick={item.action}
         color={textColor}
         _hover={{ backgroundColor: hoverColor }}
         _focus={{ backgroundColor: hoverColor }}
+        w="100%"
+        borderRadius="0"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        padding="0.2rem 1.5rem"
+        borderTop="1px solid"
+        borderBottom="1px solid"
+        borderColor="rgb(0, 0, 0, 0.05)"
       >
-        <Flex align="center">
-          <Icon mr="10px" fontSize="1.2rem" as={item.icon} />
-          <Text>{item.text}</Text>
-        </Flex>
-      </MenuItem>
+        <Text as="span">{item.text}</Text>
+        <Icon fontSize="1.2rem" as={item.icon} />
+      </Button>
     );
   });
 
   if (currentUser == null) return null;
 
   return (
-    <Menu gutter={0}>
-      <MenuButton
-        border="2px solid transparent"
-        _focus={{ outline: "none" }}
-        as={Button}
-        height="100%"
-        p="0 1rem"
-        variant="unstyled"
-      >
-        <Avatar size="sm" cursor="poiner">
-          <AvatarBadge boxSize="0.7rem" bgColor="lightgreen" />
-        </Avatar>
-      </MenuButton>
-      <MenuList bgColor={bgColor}>
-        <Flex direction="column" align="center">
-          <Avatar size="md" />
-          <Text mb="6px">{currentUser["displayName"]}</Text>
-          <Button
-            bgColor={btnColor}
-            height="1.2rem"
-            fontSize="0.8rem"
-            _hover={{ backgroundColor: btnColor }}
-            cursor="pointer"
-          >
-            <div
-              style={{
-                height: "0.7rem",
-                width: "0.7rem",
-                borderRadius: "50%",
-                backgroundColor: "lightgreen",
-                border: "1px solid white",
-                marginRight: "6px",
-              }}
-            ></div>
-            <Text>Active</Text>
-          </Button>
-        </Flex>
-        <MenuDivider />
-        {menuItemsArr}
-      </MenuList>
-    </Menu>
+    <Flex className={styles.container}>
+      <Flex className={styles.userInfo}>
+        <Avatar size="md" mb="0.4rem" />
+        <Text mb="0.3rem">{currentUser["displayName"]}</Text>
+        <Button
+          className={styles.statusBtn}
+          bgColor={btnColor}
+          _hover={{ backgroundColor: btnColor }}
+        >
+          <div className={styles.activeIndicator}></div>
+          <Text>Active</Text>
+        </Button>
+      </Flex>
+      {menuItemsArr}
+    </Flex>
   );
 };
 

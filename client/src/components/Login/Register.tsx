@@ -9,12 +9,20 @@ import { Link } from "react-router-dom";
 import { BsGithub } from "react-icons/bs";
 import GraphicWindow from "./GraphicWindow";
 import WelcomeMessage from "./WelcomeMessage";
+import { readableErrorMessage } from "../../helperFunctions";
+import SubmitBtn from "./SubmitBtn";
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [pending, setPending] = useState(false);
 
   const { signInViaGithub } = useAuth();
+
+  if (error) {
+    console.log(error["message"]);
+  }
 
   const dividerColor = useColorModeValue("brand.text.dark", "brand.text.light");
 
@@ -28,6 +36,9 @@ const Register: React.FC = () => {
               header="Welcome to Chatmosphere!"
               text="Create an account with your email/password or choose a provider."
             />
+            <Text className={styles.errorMessage}>
+              {error ? readableErrorMessage(error["code"]) : " "}
+            </Text>
             <StyledInput
               name="email"
               placeholder="Email"
@@ -35,6 +46,7 @@ const Register: React.FC = () => {
               error={false}
               inputValue={email}
               setInputValue={setEmail}
+              pending={pending}
             />
             <StyledInput
               name="password"
@@ -43,14 +55,10 @@ const Register: React.FC = () => {
               error={false}
               inputValue={password}
               setInputValue={setPassword}
+              pending={pending}
             />
 
-            <button
-              type="submit"
-              className={`${styles.buttons} ${styles.submitBtn}`}
-            >
-              Create Account
-            </button>
+            <SubmitBtn text="Sign Up" pending={pending} />
           </form>
           <Flex className={styles.signupDivider}>
             <Flex bgColor={dividerColor}></Flex>

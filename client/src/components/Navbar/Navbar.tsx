@@ -6,8 +6,15 @@ import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../Logo/Logo";
+import UserMenuIcon from "./UserMenuIcon";
+import styles from "./Navbar.module.css";
 
-const Navbar: React.FC = () => {
+interface NavProps {
+  panelShowing: string;
+  setPanelShowing: Function;
+}
+
+const Navbar: React.FC<NavProps> = ({ panelShowing, setPanelShowing }) => {
   const darkgray = theme.colors.brand.darkgray;
   const primaryColorDarker = theme.colors.brand.primary.darker;
   const bgColor = useColorModeValue(theme.colors.brand.white, darkgray);
@@ -26,16 +33,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
+      className={styles.navbar}
       style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        height: "7%",
         backgroundColor: bgColor,
-        zIndex: 2,
-        boxShadow: "0px 0px 20px 1px rgb(0, 0, 0, 0.4)",
-        color: "white",
-        padding: "0 1rem",
       }}
     >
       <Flex
@@ -61,7 +61,11 @@ const Navbar: React.FC = () => {
       <Flex align="center">
         <ThemeSwitch />
         {currentUser ? (
-          <UserMenu />
+          // <UserMenu />
+          <UserMenuIcon
+            panelShowing={panelShowing}
+            setPanelShowing={setPanelShowing}
+          />
         ) : (
           <Link
             to={getBtnProps(location.pathname).link}

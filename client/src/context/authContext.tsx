@@ -46,11 +46,13 @@ const AuthProvider = ({ children }: any) => {
       if (user) {
         setCurrentUser(user);
         setPending(false);
-        navigate(`/${user.uid}`);
+        // Removing the navigate function in order for testing locally
+        // navigate(`/${user.uid}`);
       } else {
         setCurrentUser(null);
         setPending(false);
-        navigate("/login");
+        // Removing the navigate function in order for testing locally
+        // navigate("/login");
       }
     });
   }, []);

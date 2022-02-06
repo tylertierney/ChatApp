@@ -1,0 +1,58 @@
+.windowLeft {
+  box-shadow: 0px 0px 20px 1px rgb(0, 0, 0, 0.3);
+  transition: 0.3s ease-in-out;
+  z-index: 1;
+  height: 100%;
+  position: relative;
+  margin-left: -240px;
+}
+.windowRight {
+  box-shadow: 0px 0px 20px 1px rgb(0, 0, 0, 0.3);
+  transition: 0.3s ease-in-out;
+  z-index: 1;
+  height: 100%;
+  position: absolute;
+}
+
+.convosContainer {
+  height: 100%;
+  width: 100%;
+}
+
+.viewBtn {
+  position: absolute;
+  height: 50px;
+  width: 20px;
+  top: 50%;
+  left: 100%;
+  transform: translate(0, -50%);
+  color: white;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  filter: brightness(80%);
+  transition: inherit;
+  cursor: pointer;
+}
+
+.viewBtn:hover {
+  filter: brightness(100%);
+}
+
+.viewBtnArrow {
+  transition: 0.3s ease-in-out;
+}
+
+@media only screen and (min-width: 440px) {
+  .windowLeft {
+    margin-left: 0px;
+    transform: translate(240px, 0);
+  }
+
+  /* .windowRight {
+    margin-right: 0;
+  } */
+
+  .viewBtn {
+    transform: translate(-100%, -50%);
+  }
+}

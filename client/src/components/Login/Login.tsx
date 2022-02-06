@@ -18,6 +18,8 @@ import GraphicWindow from "./GraphicWindow";
 import WelcomeMessage from "./WelcomeMessage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
+import { readableErrorMessage } from "../../helperFunctions";
+import SubmitBtn from "./SubmitBtn";
 
 const Login: React.FC = () => {
   const { login, signInViaGithub } = useAuth();
@@ -25,25 +27,27 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [pending, setPending] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setPending(true);
     const trimmedEmail = email.trim();
     const trimmedPw = password.trim();
-    // const response = login(trimmedEmail, trimmedPw);
     signInWithEmailAndPassword(auth, trimmedEmail, trimmedPw)
       .then((userCredential) => {
         setEmail("");
         setPassword("");
+        setPending(false);
       })
       .catch((err) => {
         setError(err);
+        setPending(false);
       });
   };
 
   if (error) {
-    console.log(error["code"]);
+    console.log(error["message"]);
   }
 
   const dividerColor = useColorModeValue("brand.text.dark", "brand.text.light");
@@ -58,6 +62,9 @@ const Login: React.FC = () => {
               header="Welcome back!"
               text="Login using your email/password or choose a provider."
             />
+            <Text className={styles.errorMessage}>
+              {error ? readableErrorMessage(error["code"]) : " "}
+            </Text>
             <FormControl isRequired>
               <StyledInput
                 name="email"
@@ -66,6 +73,7 @@ const Login: React.FC = () => {
                 error={false}
                 inputValue={email}
                 setInputValue={setEmail}
+                pending={pending}
               />
               <FormErrorMessage></FormErrorMessage>
             </FormControl>
@@ -76,13 +84,9 @@ const Login: React.FC = () => {
               error={false}
               inputValue={password}
               setInputValue={setPassword}
+              pending={pending}
             />
-            <button
-              type="submit"
-              className={`${styles.buttons} ${styles.submitBtn}`}
-            >
-              Login
-            </button>
+            <SubmitBtn text="Log In" pending={pending} />
           </form>
           <Flex className={styles.signupDivider}>
             <Flex bgColor={dividerColor}></Flex>
