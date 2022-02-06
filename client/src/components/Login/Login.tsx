@@ -4,7 +4,6 @@ import {
   Text,
   Image,
   FormControl,
-  FormErrorMessage,
   useColorModeValue,
   Icon,
 } from "@chakra-ui/react";
@@ -22,7 +21,7 @@ import { readableErrorMessage } from "../../helperFunctions";
 import SubmitBtn from "./SubmitBtn";
 
 const Login: React.FC = () => {
-  const { login, signInViaGithub } = useAuth();
+  const { signInViaGithub } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,17 +74,18 @@ const Login: React.FC = () => {
                 setInputValue={setEmail}
                 pending={pending}
               />
-              <FormErrorMessage></FormErrorMessage>
             </FormControl>
-            <StyledInput
-              name="password"
-              placeholder="Password"
-              autofillType="current-password"
-              error={false}
-              inputValue={password}
-              setInputValue={setPassword}
-              pending={pending}
-            />
+            <FormControl isRequired>
+              <StyledInput
+                name="password"
+                placeholder="Password"
+                autofillType="current-password"
+                error={false}
+                inputValue={password}
+                setInputValue={setPassword}
+                pending={pending}
+              />
+            </FormControl>
             <SubmitBtn text="Log In" pending={pending} />
           </form>
           <Flex className={styles.signupDivider}>
@@ -94,6 +94,7 @@ const Login: React.FC = () => {
             <Flex bgColor={dividerColor}></Flex>
           </Flex>
           <button
+            disabled={pending}
             className={`${styles.buttons} ${styles.githubBtn}`}
             style={{
               borderColor: dividerColor,

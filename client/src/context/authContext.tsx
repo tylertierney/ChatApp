@@ -8,15 +8,6 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-const login = async (email: string, password: string) => {
-  const userCredential = await signInWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-  return userCredential;
-};
-
 const signInViaGithub = () => {
   signInWithRedirect(auth, provider);
 };
@@ -27,7 +18,6 @@ const logout = async () => {
 
 const initial = {
   currentUser: null,
-  login,
   signInViaGithub,
   logout,
   pending: true,
@@ -47,12 +37,12 @@ const AuthProvider = ({ children }: any) => {
         setCurrentUser(user);
         setPending(false);
         // Removing the navigate function in order for testing locally
-        // navigate(`/${user.uid}`);
+        navigate(`/${user.uid}`);
       } else {
         setCurrentUser(null);
         setPending(false);
         // Removing the navigate function in order for testing locally
-        // navigate("/login");
+        navigate("/login");
       }
     });
   }, []);
@@ -60,7 +50,6 @@ const AuthProvider = ({ children }: any) => {
   const ctx: any = {
     currentUser,
     pending,
-    login,
     signInViaGithub,
     logout,
   };
