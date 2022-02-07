@@ -50,7 +50,7 @@ const Register: React.FC = () => {
   const signInAnon = () => {
     setPending(true);
     signInAnonymously(auth)
-      .then(() => {})
+      .then((userCredential) => {})
       .catch((err) => {
         setError(err);
         setPending(false);

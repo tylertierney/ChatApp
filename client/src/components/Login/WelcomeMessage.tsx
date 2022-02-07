@@ -13,7 +13,13 @@ const WelcomeMessage: React.FC<MsgProps> = ({ header, text }) => {
       <Flex className={styles.logoContainer}>
         <Image src={smallLogo} alt="Chatmosphere logo" />
       </Flex>
-      <Text fontWeight="semibold" fontSize="1.6rem" userSelect="none">
+      <Text
+        fontWeight="semibold"
+        fontSize="1.6rem"
+        userSelect="none"
+        textAlign="center"
+        lineHeight={1}
+      >
         {header}
       </Text>
       <Text fontWeight="light" mb="0.2rem" textAlign="center" userSelect="none">

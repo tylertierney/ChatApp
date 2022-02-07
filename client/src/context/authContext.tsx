@@ -1,11 +1,8 @@
 import { useContext, createContext, useEffect, useState } from "react";
-import { auth, provider } from "../firebaseConfig";
+import { auth, db, provider } from "../firebaseConfig";
 import { onAuthStateChanged, User } from "firebase/auth";
-import {
-  signInWithEmailAndPassword,
-  signOut,
-  signInWithRedirect,
-} from "firebase/auth";
+import { signOut, signInWithRedirect } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const signInViaGithub = () => {
@@ -32,17 +29,36 @@ const AuthProvider = ({ children }: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user);
         setPending(false);
-        // Removing the navigate function in order for testing locally
-        navigate(`/${user.uid}`);
+
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          try {
+            const userObj = {
+              displayName: user.displayName,
+              email: user.email,
+              emailVerified: user.emailVerified,
+              isAnonymous: user.isAnonymous,
+              phoneNumber: user.phoneNumber,
+              photoURL: user.photoURL,
+              providerData: user.providerData,
+              uid: user.uid,
+            };
+            await setDoc(doc(db, "users", user.uid), userObj);
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
+        }
+        navigate(`/${user.uid}`, { replace: true });
       } else {
         setCurrentUser(null);
         setPending(false);
-        // Removing the navigate function in order for testing locally
-        navigate("/login");
+        navigate("/login", { replace: true });
       }
     });
   }, []);

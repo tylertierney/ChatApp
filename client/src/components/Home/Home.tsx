@@ -3,7 +3,7 @@ import ConversationsList from "../ConversationsList/ConversationsList";
 import InputGroup from "../InputGroup/InputGroup";
 import { Flex } from "@chakra-ui/react";
 import styles from "./Home.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { message } from "../../models/message";
 import Sidebar from "../Sidebar/Sidebar";
 import UserMenu from "../UserMenu/UserMenu";
@@ -20,6 +20,12 @@ const Home: React.FC<HomeProps> = ({
   newMessages,
 }) => {
   const panelWidth = "240px";
+
+  useEffect(() => {
+    if (panelShowing !== "default") {
+      setPanelShowing("default");
+    }
+  }, []);
 
   return (
     <>

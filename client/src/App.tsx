@@ -40,13 +40,11 @@ const App = () => {
         <Flex flexGrow={1} height="93%" position="relative">
           <Routes>
             <Route
-              path="/"
+              path="*"
               element={
-                <Home
-                  panelShowing={panelShowing}
-                  setPanelShowing={setPanelShowing}
-                  newMessages={newMessages}
-                />
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
               }
             />
             {currentUser && (
