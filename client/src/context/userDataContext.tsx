@@ -12,17 +12,17 @@ const initial: any = {
   rooms: [],
 };
 
-interface UserDataContextProps {
-  children: ReactChild;
-}
+// interface UserDataContextProps {
+//   children: ReactChild;
+// }
 
 export const UserDataContext = createContext(initial);
 
-const UserDataProvider: React.FC<UserDataContextProps> = ({ children }) => {
+const UserDataProvider: React.FC = ({ children }) => {
   const { currentUser, userFromDB, favoritePerson } = useAuth();
   useEffect(() => {
     let _rooms = null;
-    if (favoritePerson !== null) {
+    if (favoritePerson !== null && favoritePerson !== undefined) {
       _rooms = getRoomsFromUser(favoritePerson);
     }
     updateRooms(_rooms);

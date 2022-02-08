@@ -22,7 +22,17 @@ const initial = {
   pending: true,
   isNewUser: false,
   userFromDB: {},
-  favoritePerson: null,
+  favoritePerson: {
+    displayName: null,
+    email: null,
+    emailVerified: false,
+    isAnonymous: null,
+    phoneNumber: null,
+    photoURL: null,
+    providerData: null,
+    uid: null,
+    rooms: [],
+  },
 };
 
 export const AuthContext = createContext(initial);
@@ -39,7 +49,27 @@ const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        const displayName = user.displayName;
+        const welcomeRoomId = generateUUID();
+        const welcomeRoomObj = {
+          id: welcomeRoomId,
+          name: "Welcome!",
+          members: [{ uid: { nameInGroup: displayName } }],
+        };
+
+        const userObj = {
+          displayName: user.displayName,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          isAnonymous: user.isAnonymous,
+          phoneNumber: user.phoneNumber,
+          photoURL: user.photoURL,
+          providerData: user.providerData,
+          uid: user.uid,
+          rooms: [welcomeRoomId],
+        };
         setCurrentUser(user);
+        setFavoritePerson(userObj);
         setPending(false);
 
         const docRef = doc(db, "users", user.uid);
@@ -47,39 +77,39 @@ const AuthProvider = ({ children }: any) => {
 
         if (!docSnap.exists()) {
           const uid = user.uid;
-          const displayName = user.displayName;
+          // const displayName = user.displayName;
 
           try {
-            const welcomeRoomId = generateUUID();
-            const welcomeRoomObj = {
-              id: welcomeRoomId,
-              name: "Welcome!",
-              members: [{ uid: { nameInGroup: displayName } }],
-            };
+            // const welcomeRoomId = generateUUID();
+            // const welcomeRoomObj = {
+            //   id: welcomeRoomId,
+            //   name: "Welcome!",
+            //   members: [{ uid: { nameInGroup: displayName } }],
+            // };
 
-            const userObj = {
-              displayName: user.displayName,
-              email: user.email,
-              emailVerified: user.emailVerified,
-              isAnonymous: user.isAnonymous,
-              phoneNumber: user.phoneNumber,
-              photoURL: user.photoURL,
-              providerData: user.providerData,
-              uid: user.uid,
-              rooms: [welcomeRoomId],
-            };
+            // const userObj = {
+            //   displayName: user.displayName,
+            //   email: user.email,
+            //   emailVerified: user.emailVerified,
+            //   isAnonymous: user.isAnonymous,
+            //   phoneNumber: user.phoneNumber,
+            //   photoURL: user.photoURL,
+            //   providerData: user.providerData,
+            //   uid: user.uid,
+            //   rooms: [welcomeRoomId],
+            // };
+            setIsNewUser(true);
+            // setFavoritePerson(welcomeRoomObj);
 
             await setDoc(doc(db, "users", uid), userObj);
             await setDoc(doc(db, "rooms", welcomeRoomId), welcomeRoomObj);
-            setIsNewUser(true);
           } catch (e) {
             console.error("Error adding document: ", e);
           }
+        } else {
+          const userFromDatabase = { ...docSnap.data() };
+          setFavoritePerson(userFromDatabase);
         }
-        const userFromDatabase = { ...docSnap.data() };
-        setFavoritePerson(userFromDatabase);
-        // setUserFromDB(userFromDatabase);
-
         navigate(`/${user.uid}`, { replace: true });
       } else {
         setCurrentUser(null);
@@ -87,6 +117,8 @@ const AuthProvider = ({ children }: any) => {
         navigate("/register", { replace: true });
       }
     });
+
+    return () => setCurrentUser(null);
   }, []);
 
   // useEffect(() => {

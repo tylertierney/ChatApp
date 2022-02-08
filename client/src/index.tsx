@@ -13,9 +13,9 @@ ReactDOM.render(
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <AuthProvider>
-          <UserDataProvider>
-            <App />
-          </UserDataProvider>
+          {/* <UserDataProvider> */}
+          <App />
+          {/* </UserDataProvider> */}
         </AuthProvider>
       </ChakraProvider>
     </BrowserRouter>

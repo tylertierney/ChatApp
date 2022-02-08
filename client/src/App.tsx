@@ -15,7 +15,7 @@ import { useUserData } from "./context/userDataContext";
 const App = () => {
   const [newMessages, setNewMessages] = useState<message[] | []>([]);
   const { pending } = useAuth();
-  const { currentUser } = useAuth();
+  const { currentUser, favoritePerson } = useAuth();
 
   useEffect((): any => {
     socket.on("message", (msg: message) => {
@@ -26,11 +26,6 @@ const App = () => {
   useEffect(() => {
     setNewMessages([{ sender: "Bob", date: new Date(), text: "hi there" }]);
   }, []);
-
-  // const { userData } = useUserData();
-  // useEffect(() => {
-  //   console.log(userData.rooms);
-  // }, [userData.rooms.length]);
 
   const [panelShowing, setPanelShowing] = useState("default");
 

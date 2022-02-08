@@ -23,15 +23,14 @@ export const getRoomsFromUser = (userFromDB: any) => {
   const result: any[] = [];
   // if (userFromDB == undefined) return [];
 
-  // if (userFromDB["rooms"]) {
-  const _rooms = [...userFromDB["rooms"]];
-  // _rooms.forEach((roomID) => {
-  //   const roomData = getRoomFromID(roomID);
-  //   result.push(roomData);
-  // });
-  for (let i = 0; i < _rooms.length; i++) {
-    const roomData = getRoomFromID(_rooms[i]).then((data) => result.push(data));
-    // result.push(roomData);
+  if (userFromDB["rooms"]) {
+    const _rooms = [...userFromDB["rooms"]];
+
+    for (let i = 0; i < _rooms.length; i++) {
+      const roomData = getRoomFromID(_rooms[i]).then((data) =>
+        result.push(data)
+      );
+    }
   }
   // }
 

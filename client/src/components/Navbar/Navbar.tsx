@@ -1,7 +1,6 @@
 import { useColorModeValue, Button, Icon, Flex } from "@chakra-ui/react";
 import theme from "../../theme";
 import { useAuth } from "../../context/authContext";
-import UserMenu from "../UserMenu/UserMenu";
 import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";

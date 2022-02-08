@@ -22,7 +22,6 @@ const Home: React.FC<HomeProps> = ({
   newMessages,
 }) => {
   const { isNewUser } = useAuth();
-  const { userData } = useUserData();
 
   const panelWidth = "240px";
 
@@ -32,13 +31,6 @@ const Home: React.FC<HomeProps> = ({
     }
   }, []);
 
-  let first = {};
-  if (userData) {
-    if (userData.rooms) {
-      first = userData.rooms[0];
-    }
-  }
-
   return (
     <>
       <Sidebar
@@ -47,8 +39,9 @@ const Home: React.FC<HomeProps> = ({
         side="left"
         panelWidth={panelWidth}
       >
-        <ConversationsList rooms={userData.rooms} />
+        <ConversationsList />
       </Sidebar>
+      {/* <button onClick={() => console.log(userData)}>userdata</button> */}
       <Flex
         className={styles.conversationWindow}
         direction="column"
