@@ -5,7 +5,6 @@ import { signOut, signInWithRedirect } from "firebase/auth";
 import { doc, DocumentData, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { generateUUID, getRoomsFromUser } from "../helperFunctions";
-import { userFromDB } from "../models/userFromDB";
 
 const signInViaGithub = () => {
   signInWithRedirect(auth, provider);
@@ -21,8 +20,7 @@ const initial = {
   logout,
   pending: true,
   isNewUser: false,
-  userFromDB: {},
-  favoritePerson: {
+  userFromDB: {
     displayName: null,
     email: null,
     emailVerified: false,
@@ -41,20 +39,32 @@ const AuthProvider = ({ children }: any) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [pending, setPending] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
-  const [userFromDB, setUserFromDB] = useState<any>({});
-  const [favoritePerson, setFavoritePerson] = useState<any>(null);
+  const [userFromDB, setUserFromDB] = useState<any>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const displayName = user.displayName;
         const welcomeRoomId = generateUUID();
+        const welcomeRoomMemberObj: any = {};
+        welcomeRoomMemberObj[`${user.uid}`] = { nameInGroup: user.displayName };
         const welcomeRoomObj = {
           id: welcomeRoomId,
           name: "Welcome!",
-          members: [{ uid: { nameInGroup: displayName } }],
+          members: [welcomeRoomMemberObj],
+          messages: [
+            {
+              uid: "ChatmosBot",
+              date: new Date(),
+              text: "Welcome to Chatmosphere!",
+            },
+            {
+              uid: "ChatmosBot",
+              data: new Date(),
+              text: "I'm not a real person. Speaking to me will do nothing for you. This is your first conversation. ",
+            },
+          ],
         };
 
         const userObj = {
@@ -69,7 +79,7 @@ const AuthProvider = ({ children }: any) => {
           rooms: [welcomeRoomId],
         };
         setCurrentUser(user);
-        setFavoritePerson(userObj);
+        setUserFromDB(userObj);
         setPending(false);
 
         const docRef = doc(db, "users", user.uid);
@@ -77,30 +87,9 @@ const AuthProvider = ({ children }: any) => {
 
         if (!docSnap.exists()) {
           const uid = user.uid;
-          // const displayName = user.displayName;
 
           try {
-            // const welcomeRoomId = generateUUID();
-            // const welcomeRoomObj = {
-            //   id: welcomeRoomId,
-            //   name: "Welcome!",
-            //   members: [{ uid: { nameInGroup: displayName } }],
-            // };
-
-            // const userObj = {
-            //   displayName: user.displayName,
-            //   email: user.email,
-            //   emailVerified: user.emailVerified,
-            //   isAnonymous: user.isAnonymous,
-            //   phoneNumber: user.phoneNumber,
-            //   photoURL: user.photoURL,
-            //   providerData: user.providerData,
-            //   uid: user.uid,
-            //   rooms: [welcomeRoomId],
-            // };
             setIsNewUser(true);
-            // setFavoritePerson(welcomeRoomObj);
-
             await setDoc(doc(db, "users", uid), userObj);
             await setDoc(doc(db, "rooms", welcomeRoomId), welcomeRoomObj);
           } catch (e) {
@@ -108,9 +97,9 @@ const AuthProvider = ({ children }: any) => {
           }
         } else {
           const userFromDatabase = { ...docSnap.data() };
-          setFavoritePerson(userFromDatabase);
+          setUserFromDB(userFromDatabase);
         }
-        navigate(`/${user.uid}`, { replace: true });
+        // navigate(`/${user.uid}`, { replace: true });
       } else {
         setCurrentUser(null);
         setPending(false);
@@ -121,23 +110,6 @@ const AuthProvider = ({ children }: any) => {
     return () => setCurrentUser(null);
   }, []);
 
-  // useEffect(() => {
-  //   const getUserFromDB = async () => {
-  //     if (currentUser) {
-  //       const docRef = doc(db, "users", currentUser.uid);
-  //       const docSnap = await getDoc(docRef);
-  //       const userFromDB = { ...docSnap.data() };
-  //       return userFromDB;
-  //       // setUserFromDB(() => userFromDB);
-  //     } else {
-  //       return null;
-  //     }
-  //   };
-
-  //   const user = getUserFromDB();
-  //   setUserFromDB(user);
-  // }, [currentUser]);
-
   const ctx: any = {
     currentUser,
     pending,
@@ -145,7 +117,6 @@ const AuthProvider = ({ children }: any) => {
     logout,
     isNewUser,
     userFromDB,
-    favoritePerson,
   };
 
   return <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>;

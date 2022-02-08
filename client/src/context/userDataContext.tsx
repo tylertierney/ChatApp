@@ -12,29 +12,17 @@ const initial: any = {
   rooms: [],
 };
 
-// interface UserDataContextProps {
-//   children: ReactChild;
-// }
-
 export const UserDataContext = createContext(initial);
 
 const UserDataProvider: React.FC = ({ children }) => {
-  const { currentUser, userFromDB, favoritePerson } = useAuth();
+  const { currentUser, userFromDB } = useAuth();
   useEffect(() => {
     let _rooms = null;
-    if (favoritePerson !== null && favoritePerson !== undefined) {
-      _rooms = getRoomsFromUser(favoritePerson);
+    if (userFromDB !== null && userFromDB !== undefined) {
+      _rooms = getRoomsFromUser(userFromDB);
     }
     updateRooms(_rooms);
-    // updateRooms([{ favoriteColor: "blue" }, { name: "tyler" }]);
-  }, [currentUser, favoritePerson]);
-
-  //  This works, but getting userFromDB (above ^) seems to be having a problem
-  //   useEffect(() => {
-  //     console.log("current user has changed");
-
-  //     updateRooms([{ favoriteColor: "blue" }, { name: "tyler" }]);
-  //   }, [currentUser, userFromDB]);
+  }, [currentUser, userFromDB]);
 
   const reducer = (state: any, action: any) => {
     switch (action.type) {
@@ -46,11 +34,6 @@ const UserDataProvider: React.FC = ({ children }) => {
   const [userData, dispatch] = useReducer(reducer, initial);
 
   const updateRooms = (rooms: any) => {
-    // const copyOfUserData = { ...userData };
-
-    // copyOfUserData.rooms = rooms;
-    // console.log(copyOfUserData);
-
     dispatch({ type: "updateRooms", payload: rooms });
   };
 

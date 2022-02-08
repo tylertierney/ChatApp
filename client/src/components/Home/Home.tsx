@@ -32,7 +32,13 @@ const Home: React.FC<HomeProps> = ({
   }, []);
 
   return (
-    <>
+    <Flex
+      maxH="93vh"
+      flexGrow={1}
+      height="93%"
+      position="relative"
+      overflowX="hidden"
+    >
       <Sidebar
         panelShowing={panelShowing}
         setPanelShowing={setPanelShowing}
@@ -41,7 +47,6 @@ const Home: React.FC<HomeProps> = ({
       >
         <ConversationsList />
       </Sidebar>
-      {/* <button onClick={() => console.log(userData)}>userdata</button> */}
       <Flex
         className={styles.conversationWindow}
         direction="column"
@@ -64,7 +69,7 @@ const Home: React.FC<HomeProps> = ({
       >
         <UserMenu />
       </Sidebar>
-    </>
+    </Flex>
   );
 };
 

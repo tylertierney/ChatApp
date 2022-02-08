@@ -10,12 +10,12 @@ const ConversationsList: React.FC<ConvoListProps> = () => {
   const listBgColor = useColorModeValue("white", "brand.darkgray");
   const convosListBgColor = useColorModeValue("#f9f2f9", "#434354");
 
-  const { favoritePerson } = useAuth();
+  const { userFromDB } = useAuth();
 
   let arr: any = [];
-  if (favoritePerson) {
-    if (favoritePerson.rooms) {
-      arr = favoritePerson["rooms"];
+  if (userFromDB) {
+    if (userFromDB.rooms) {
+      arr = userFromDB["rooms"];
     }
   }
 
@@ -26,9 +26,12 @@ const ConversationsList: React.FC<ConvoListProps> = () => {
       zIndex={1}
     >
       <Text className={styles.groupTitle}>Rooms</Text>
-      <Flex className={styles.roomsContainer} bgColor={listBgColor}>
+      <Flex
+        className={styles.roomsContainer}
+        // bgColor={listBgColor}
+      >
         {arr.map((rm: any, idx: any) => (
-          <ConvoListItem key={idx} room={rm} />
+          <ConvoListItem key={idx} room={rm} bgColor={convosListBgColor} />
         ))}
       </Flex>
     </Flex>

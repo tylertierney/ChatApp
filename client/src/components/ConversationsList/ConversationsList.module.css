@@ -3,7 +3,7 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
-  padding: 0.6rem 0.5rem 0.6rem 0.5rem;
+  padding: 0.6rem 0rem 0.6rem 0rem;
 }
 
 .groupTitle {
@@ -11,25 +11,31 @@
   opacity: 1;
   margin-bottom: 0.4rem;
   font-weight: 600;
-  padding-left: 0.3rem;
+  padding-left: 1rem;
 }
 
 .roomsContainer {
   width: 100%;
-  border-radius: 6px;
+  /* border-radius: 6px; */
   overflow: hidden;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.053);
   flex-direction: column;
 }
 
+.linkComponent {
+  width: 100%;
+  /* overflow: hidden; */
+}
+
 .convoListItem {
   width: 100%;
-  height: 3.8rem;
+  height: 4.2rem;
   position: relative;
   display: flex;
+  align-items: center;
   text-align: left;
   align-items: center;
-  padding: 0.2rem 0 0.2rem 0.5rem;
+  padding: 0.4rem 0 0.4rem 0.5rem;
   justify-content: space-between;
   transition: 0.15s ease-in-out;
   color: inherit;
@@ -91,32 +97,16 @@
 .liHeader {
   color: inherit;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
 }
 
-.convoPreview {
+.convoPreviewText {
   overflow: hidden;
-  font-size: 0.8rem;
-  line-clamp: 1;
   text-overflow: ellipsis;
-  line-height: 1.1;
   white-space: nowrap;
-  height: 1rem;
   position: relative;
-}
-
-.convoPreview:after {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 2.4rem;
-  /* background-color: black; */
-  /* background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(35, 35, 42, 1) 100%
-  ); */
-
-  right: 0;
-  top: 0;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 300;
 }
