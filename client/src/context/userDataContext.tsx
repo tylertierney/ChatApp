@@ -6,40 +6,59 @@ import {
   useEffect,
 } from "react";
 import { useAuth } from "./authContext";
-import { getRoomsFromUser } from "../helperFunctions";
+import { getRoomFromID, getRoomsFromUser } from "../helperFunctions";
 
-const initial: any = {
-  rooms: [],
-};
-
-export const UserDataContext = createContext(initial);
+export const UserDataContext = createContext<any>({});
 
 const UserDataProvider: React.FC = ({ children }) => {
-  const { currentUser, userFromDB } = useAuth();
+  const { userFromDB } = useAuth();
+
   useEffect(() => {
-    let _rooms = null;
-    if (userFromDB !== null && userFromDB !== undefined) {
-      _rooms = getRoomsFromUser(userFromDB);
-    }
-    updateRooms(_rooms);
-  }, [currentUser, userFromDB]);
+    if (!userFromDB) return;
+    updateUserInitially(userFromDB);
+    enrichRooms(userFromDB);
+  }, [userFromDB]);
 
   const reducer = (state: any, action: any) => {
     switch (action.type) {
-      case "updateRooms":
-        return { ...state, rooms: action.payload };
+      case "updateUserInitially":
+        return action.payload;
+      case "enrichRooms":
+        console.log({ ...state, ...action.payload });
+        return { ...state, ...action.payload };
     }
   };
 
-  const [userData, dispatch] = useReducer(reducer, initial);
+  const [userData, dispatch] = useReducer(reducer, null);
 
-  const updateRooms = (rooms: any) => {
-    dispatch({ type: "updateRooms", payload: rooms });
+  const updateUserInitially = (userFromDB: any) => {
+    dispatch({ type: "updateUserInitially", payload: userFromDB });
+  };
+
+  const enrichRooms = (userFromDB: any) => {
+    let _userFromDB = { ...userFromDB };
+    // let _userData = { ...userData };
+
+    const newRooms: any = [];
+
+    _userFromDB.rooms.forEach((rm: any, idx: number) => {
+      getRoomFromID(rm)
+        .then((data) => {
+          newRooms.push(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+    // _userData.rooms = newRooms;
+    dispatch({ type: "enrichRooms", payload: { rooms: newRooms } });
   };
 
   const ctx: any = {
     userData,
-    updateRooms,
+    updateUserInitially,
+    enrichRooms,
   };
 
   return (

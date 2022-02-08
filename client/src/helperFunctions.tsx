@@ -6,6 +6,61 @@ export const generateUUID = () => {
   return uuidv4();
 };
 
+export const generateWelcomeRoom = (
+  uid: string,
+  displayName: string | null
+) => {
+  const welcomeRoomId = generateUUID();
+  const welcomeRoomMemberObj: any = {};
+  welcomeRoomMemberObj[`${uid}`] = { nameInGroup: displayName };
+  const welcomeRoomObj = {
+    id: welcomeRoomId,
+    name: "Welcome!",
+    members: [welcomeRoomMemberObj],
+    messages: [
+      {
+        uid: "ChatmosBot",
+        date: new Date(),
+        text: "Welcome to Chatmosphere!",
+      },
+      {
+        uid: "ChatmosBot",
+        data: new Date(),
+        text: "I'm not a real person. Speaking to me will do nothing for you. This is your first conversation. ",
+      },
+    ],
+  };
+
+  return welcomeRoomObj;
+};
+
+export const generateUserDBobject = (user: any, welcomeRoomId: string) => {
+  const {
+    displayName,
+    email,
+    emailVerified,
+    isAnonymous,
+    phoneNumber,
+    photoURL,
+    providerData,
+    uid,
+  } = user;
+
+  const userObj = {
+    displayName,
+    email,
+    emailVerified,
+    isAnonymous,
+    phoneNumber,
+    photoURL,
+    providerData,
+    uid,
+    rooms: [welcomeRoomId],
+  };
+
+  return userObj;
+};
+
 export const readableErrorMessage = (msg: string) => {
   switch (msg) {
     case "auth/user-not-found":

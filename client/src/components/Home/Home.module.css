@@ -14,6 +14,12 @@
   opacity: 0.6;
 }
 
+.messagesWindow {
+  flex-grow: 1;
+  width: 100%;
+  transition: 0.3s ease-in-out;
+}
+
 @media only screen and (min-width: 440px) {
   .conversationWindow {
     min-width: 0%;

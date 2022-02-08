@@ -2,9 +2,9 @@ import { useContext, createContext, useEffect, useState } from "react";
 import { auth, db, provider } from "../firebaseConfig";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { signOut, signInWithRedirect } from "firebase/auth";
-import { doc, DocumentData, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { generateUUID, getRoomsFromUser } from "../helperFunctions";
+import { generateUserDBobject, generateWelcomeRoom } from "../helperFunctions";
 
 const signInViaGithub = () => {
   signInWithRedirect(auth, provider);
@@ -46,42 +46,12 @@ const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const welcomeRoomId = generateUUID();
-        const welcomeRoomMemberObj: any = {};
-        welcomeRoomMemberObj[`${user.uid}`] = { nameInGroup: user.displayName };
-        const welcomeRoomObj = {
-          id: welcomeRoomId,
-          name: "Welcome!",
-          members: [welcomeRoomMemberObj],
-          messages: [
-            {
-              uid: "ChatmosBot",
-              date: new Date(),
-              text: "Welcome to Chatmosphere!",
-            },
-            {
-              uid: "ChatmosBot",
-              data: new Date(),
-              text: "I'm not a real person. Speaking to me will do nothing for you. This is your first conversation. ",
-            },
-          ],
-        };
+        const welcomeRoomObj = generateWelcomeRoom(user.uid, user.displayName);
+        const welcomeRoomId = welcomeRoomObj.id;
+        const userObj = generateUserDBobject(user, welcomeRoomId);
 
-        const userObj = {
-          displayName: user.displayName,
-          email: user.email,
-          emailVerified: user.emailVerified,
-          isAnonymous: user.isAnonymous,
-          phoneNumber: user.phoneNumber,
-          photoURL: user.photoURL,
-          providerData: user.providerData,
-          uid: user.uid,
-          rooms: [welcomeRoomId],
-        };
         setCurrentUser(user);
-        setUserFromDB(userObj);
         setPending(false);
-
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
 
@@ -95,19 +65,18 @@ const AuthProvider = ({ children }: any) => {
           } catch (e) {
             console.error("Error adding document: ", e);
           }
+          setUserFromDB(userObj);
         } else {
           const userFromDatabase = { ...docSnap.data() };
           setUserFromDB(userFromDatabase);
         }
-        // navigate(`/${user.uid}`, { replace: true });
+        navigate(`/${user.uid}`, { replace: true });
       } else {
         setCurrentUser(null);
         setPending(false);
         navigate("/register", { replace: true });
       }
     });
-
-    return () => setCurrentUser(null);
   }, []);
 
   const ctx: any = {

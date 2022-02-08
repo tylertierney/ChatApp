@@ -12,7 +12,9 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { db } from "../../firebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { usePanelShowing } from "../../App";
+import { getRoomFromID } from "../../helperFunctions";
 
 interface ConvoListItemProps {
   room: any;
@@ -20,21 +22,13 @@ interface ConvoListItemProps {
 }
 
 const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
-  const [roomInfo, setRoomInfo] = useState<any>({});
-  const liBgColor = useColorModeValue("white", "#23232a");
+  const [roomInfo, setRoomInfo] = useState<any>(null);
+
+  const { setPanelShowing } = usePanelShowing();
 
   useEffect(() => {
-    const getRoomFromID = async (roomID: string) => {
-      const docRef = doc(db, "rooms", roomID);
-      const docSnap = await getDoc(docRef);
-      const roomData = docSnap.data();
-
-      return roomData;
-    };
-
     getRoomFromID(room)
       .then((data) => {
-        console.log(data);
         setRoomInfo(() => data);
       })
       .catch((err) => {
@@ -42,53 +36,66 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
       });
   }, []);
 
-  if (roomInfo === {} || roomInfo == undefined) return null;
+  if (!roomInfo) return null;
+
+  const linkBaseClass = styles.linkComponent;
+  const linkActiveClass = styles.linkComponentActive;
+
+  const mostRecentMsg = roomInfo.messages[roomInfo.messages.length - 1].text;
 
   return (
-    <Link to={`${room}`} className={styles.linkComponent}>
-      <Button
-        bgColor="unset"
-        height="auto"
-        borderRadius="0px"
-        className={styles.convoListItem}
-        onClick={() => console.log(roomInfo)}
-        role="group"
-        width="100%"
+    <>
+      <NavLink
+        to={`${room}`}
+        className={({ isActive }) =>
+          isActive ? linkActiveClass : linkBaseClass
+        }
+        onClick={() => setPanelShowing("default")}
       >
-        <Avatar size="md" mr="10px" />
-        <Flex className={styles.listItemTextContainer}>
-          <Text className={styles.liHeader}>{roomInfo["name"]}</Text>
-          <Text
-            as="span"
-            className={styles.convoPreviewText}
-            transition="0.3s ease-in-out"
-            _after={{
-              content: `""`,
-              position: "absolute",
-              height: "100%",
-              width: "2.4rem",
-              right: 0,
-              top: 0,
-              background: `linear-gradient(90deg, transparent 0%, ${bgColor} 100%)`,
-              transition: "inherit",
-              opacity: 1,
-              _groupHover: {
-                opacity: 0,
-                background: `linear-gradient(90deg, transparent 0%, transparent 100%)`,
-              },
-            }}
-          >
-            Hey so for lunch I was thinking we could go to
-          </Text>
-        </Flex>
-        <Icon
-          as={MdArrowForwardIos}
-          className={styles.listItemArrow}
-          color="white"
-        />
-      </Button>
-      <Divider />
-    </Link>
+        <Button
+          bgColor="unset"
+          height="auto"
+          borderRadius="0px"
+          className={styles.convoListItem}
+          role="group"
+          width="100%"
+        >
+          <Avatar size="md" mr="10px" />
+          <Flex className={styles.listItemTextContainer}>
+            <Text className={styles.liHeader}>{roomInfo["name"]}</Text>
+            <Text
+              as="span"
+              className={styles.convoPreviewText}
+              transition="0.3s ease-in-out"
+              _after={{
+                content: `""`,
+                position: "absolute",
+                height: "100%",
+                width: "2.4rem",
+                right: 0,
+                top: 0,
+                background: `linear-gradient(90deg, transparent 0%, ${bgColor} 100%)`,
+                transition: "inherit",
+                opacity: 1,
+                _groupHover: {
+                  opacity: 0,
+                  background: `linear-gradient(90deg, transparent 0%, transparent 100%)`,
+                },
+              }}
+            >
+              {mostRecentMsg}
+              hello
+            </Text>
+          </Flex>
+          <Icon
+            as={MdArrowForwardIos}
+            className={styles.listItemArrow}
+            color="white"
+          />
+        </Button>
+        <Divider />
+      </NavLink>
+    </>
   );
 };
 
