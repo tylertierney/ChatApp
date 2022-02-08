@@ -1,4 +1,89 @@
 .convosContainer {
   height: 100%;
   width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.6rem 0.5rem 0.6rem 0.5rem;
+}
+
+.groupTitle {
+  width: 100%;
+  opacity: 1;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  padding-left: 0.3rem;
+}
+
+.roomsContainer {
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.053);
+}
+
+.roomMenuItem {
+  width: 100%;
+  height: 3.2rem;
+  position: relative;
+  display: flex;
+  text-align: left;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  justify-content: space-between;
+  transition: 0.15s ease-in-out;
+  color: inherit;
+}
+
+.roomMenuItem:hover {
+  color: white;
+}
+
+.roomMenuItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: inherit;
+  /* background: linear-gradient(
+    45deg,
+    rgba(244, 67, 54, 0.459),
+    rgba(224, 53, 233, 0.459)
+  ); */
+  background: linear-gradient(
+    45deg,
+    rgba(244, 67, 54, 0.786),
+    rgba(224, 53, 233, 0.8)
+  );
+  opacity: 0;
+}
+
+.roomMenuItem:hover::before {
+  opacity: 1;
+}
+
+.listItemArrow {
+  visibility: hidden;
+  color: white;
+  opacity: 0;
+}
+
+.roomMenuItem:hover .listItemArrow {
+  visibility: visible;
+  opacity: 0.7;
+}
+
+.listItemTextContainer {
+  color: inherit;
+  flex-direction: column;
+  width: 85%;
+  height: 100%;
+  justify-content: center;
+  z-index: 2;
+}
+
+.roomName {
+  color: inherit;
 }

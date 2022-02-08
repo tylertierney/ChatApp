@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { message } from "../../models/message";
 import Sidebar from "../Sidebar/Sidebar";
 import UserMenu from "../UserMenu/UserMenu";
+import { useAuth } from "../../context/authContext";
+import { useUserData } from "../../context/userDataContext";
 
 interface HomeProps {
   panelShowing: string;
@@ -19,6 +21,9 @@ const Home: React.FC<HomeProps> = ({
   setPanelShowing,
   newMessages,
 }) => {
+  const { isNewUser } = useAuth();
+  const { userData } = useUserData();
+
   const panelWidth = "240px";
 
   useEffect(() => {
@@ -26,6 +31,13 @@ const Home: React.FC<HomeProps> = ({
       setPanelShowing("default");
     }
   }, []);
+
+  let first = {};
+  if (userData) {
+    if (userData.rooms) {
+      first = userData.rooms[0];
+    }
+  }
 
   return (
     <>
@@ -35,7 +47,7 @@ const Home: React.FC<HomeProps> = ({
         side="left"
         panelWidth={panelWidth}
       >
-        <ConversationsList />
+        <ConversationsList rooms={userData.rooms} />
       </Sidebar>
       <Flex
         className={styles.conversationWindow}

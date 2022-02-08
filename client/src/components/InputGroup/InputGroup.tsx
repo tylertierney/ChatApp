@@ -49,13 +49,13 @@ const InputGroup: React.FC<InputGroupProps> = ({
           onClick={messageText ? () => handleSubmit() : () => null}
           _focus={{ outline: "none" }}
           borderRadius={0}
-          width="60px"
+          width="88px"
           height="100%"
           bgColor={messageText ? "brand.primary.1000" : "transparent"}
           color={messageText ? "white" : "brand.text.dark"}
           cursor={messageText ? "pointer" : "default"}
         >
-          <Icon as={RiSendPlaneFill} color="inherit" fontSize="1.3rem" />
+          <Icon as={RiSendPlaneFill} color="inherit" fontSize="2rem" />
         </Button>
       </Flex>
     </Flex>

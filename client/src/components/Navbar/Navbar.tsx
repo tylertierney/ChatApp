@@ -61,7 +61,6 @@ const Navbar: React.FC<NavProps> = ({ panelShowing, setPanelShowing }) => {
       <Flex align="center">
         <ThemeSwitch />
         {currentUser ? (
-          // <UserMenu />
           <UserMenuIcon
             panelShowing={panelShowing}
             setPanelShowing={setPanelShowing}

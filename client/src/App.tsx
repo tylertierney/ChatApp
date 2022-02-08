@@ -10,6 +10,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import socket from "./socket";
+import { useUserData } from "./context/userDataContext";
 
 const App = () => {
   const [newMessages, setNewMessages] = useState<message[] | []>([]);
@@ -26,6 +27,11 @@ const App = () => {
     setNewMessages([{ sender: "Bob", date: new Date(), text: "hi there" }]);
   }, []);
 
+  // const { userData } = useUserData();
+  // useEffect(() => {
+  //   console.log(userData.rooms);
+  // }, [userData.rooms.length]);
+
   const [panelShowing, setPanelShowing] = useState("default");
 
   return (
@@ -37,7 +43,13 @@ const App = () => {
         filter={pending ? "blur(2px)" : "none"}
       >
         <Navbar panelShowing={panelShowing} setPanelShowing={setPanelShowing} />
-        <Flex flexGrow={1} height="93%" position="relative">
+        <Flex
+          maxH="93vh"
+          flexGrow={1}
+          height="93%"
+          position="relative"
+          overflowX="hidden"
+        >
           <Routes>
             <Route
               path="*"
