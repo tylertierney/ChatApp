@@ -12,7 +12,6 @@ interface PanelContextType {
 
 const App = () => {
   const { pending } = useAuth();
-  // const { currentUser } = useAuth();
 
   const [panelShowing, setPanelShowing] = useState<string>("default");
 

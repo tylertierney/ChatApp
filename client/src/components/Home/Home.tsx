@@ -15,12 +15,14 @@ import { Outlet, useOutletContext } from "react-router-dom";
 
 interface NewMessagesType {
   newMessages: message[];
+  activeRoom: any;
+  setActiveRoom: Function;
 }
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
-  const { currentUser, isNewUser } = useAuth();
+  const { currentUser, isNewUser, enrichedUserData } = useAuth();
   const { panelShowing, setPanelShowing } = usePanelShowing();
 
   const panelWidth = "240px";
@@ -31,21 +33,16 @@ const Home: React.FC<HomeProps> = () => {
     }
   }, []);
 
-  const [newMessages, setNewMessages] = useState<message[]>([
-    { sender: "Bob", date: new Date(), text: "hi there" },
+  const [newMessages, setNewMessages] = useState<any[]>([
+    { uid: "12345", date: new Date(), text: "hi there" },
   ]);
+  const [activeRoom, setActiveRoom] = useState<any>({});
 
   useEffect((): any => {
     socket.on("message", (msg: message) => {
       setNewMessages(() => [...newMessages, msg]);
     });
   }, [newMessages.length]);
-
-  const { userData } = useUserData();
-
-  // console.log(userData);
-
-  if (!currentUser) return null;
 
   return (
     <Flex
@@ -61,7 +58,7 @@ const Home: React.FC<HomeProps> = () => {
         side="left"
         panelWidth={panelWidth}
       >
-        <ConversationsList />
+        <ConversationsList setActiveRoom={setActiveRoom} />
       </Sidebar>
       <Flex
         className={styles.conversationWindow}
@@ -70,7 +67,7 @@ const Home: React.FC<HomeProps> = () => {
         filter={panelShowing === "default" ? "none" : "blur(1px)"}
       >
         <Flex className={styles.messagesWindow} direction="column">
-          <Outlet context={{ newMessages }} />
+          <Outlet context={{ newMessages, activeRoom, setActiveRoom }} />
         </Flex>
         <InputGroup panelShowing={panelShowing} panelWidth={panelWidth} />
         <Flex

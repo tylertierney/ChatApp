@@ -3,35 +3,23 @@ import styles from "./ConversationsList.module.css";
 import { useAuth } from "../../context/authContext";
 
 import ConvoListItem from "./ConvoListItem";
-import { useUserData } from "../../context/userDataContext";
-import { useEffect, useState } from "react";
 
-interface ConvoListProps {}
+interface ConvoListProps {
+  setActiveRoom: Function;
+}
 
-const ConversationsList: React.FC<ConvoListProps> = () => {
+const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
   const convosListBgColor = useColorModeValue("#d9dceb", "#434354");
 
-  const { userFromDB } = useAuth();
+  const { enrichedUserData } = useAuth();
 
-  let arr: any = [];
-  if (userFromDB) {
-    if (userFromDB.rooms) {
-      arr = userFromDB["rooms"];
+  let rooms: any = [];
+
+  if (enrichedUserData) {
+    if (enrichedUserData.rooms) {
+      rooms = enrichedUserData["rooms"];
     }
   }
-
-  // NEW STUFF
-  // const { userData, enrichRooms } = useUserData();
-
-  // let rooms: any = [];
-
-  // if (userData) {
-  //   if (userData.rooms) {
-  //     rooms = userData.rooms;
-  //   }
-  // }
-
-  // END NEW STUFF
 
   return (
     <Flex
@@ -42,13 +30,14 @@ const ConversationsList: React.FC<ConvoListProps> = () => {
       <Text className={styles.groupTitle}>Rooms</Text>
       <Divider />
       <Flex className={styles.roomsContainer}>
-        {arr.map((rm: any, idx: any) => (
-          <ConvoListItem key={idx} room={rm} bgColor={convosListBgColor} />
+        {rooms.map((rm: any, idx: any) => (
+          <ConvoListItem
+            key={idx}
+            room={rm}
+            bgColor={convosListBgColor}
+            setActiveRoom={setActiveRoom}
+          />
         ))}
-        {/* {rooms.map((rm: any, idx: number) => (
-          <p key={idx}>{rm.name}</p>
-        ))} */}
-        {/* {userData.rooms.map((rm: any, idx: number)=><p key={idx}>{JSON.stringify(rm)}</p>)} */}
       </Flex>
     </Flex>
   );

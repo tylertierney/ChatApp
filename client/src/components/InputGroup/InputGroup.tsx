@@ -3,6 +3,7 @@ import { useState } from "react";
 import { RiSendPlaneFill } from "react-icons/ri";
 import styles from "./InputGroup.module.css";
 import socket from "../../socket";
+import { useAuth } from "../../context/authContext";
 
 interface InputGroupProps {
   panelShowing: string;
@@ -13,21 +14,27 @@ const InputGroup: React.FC<InputGroupProps> = ({
   panelShowing,
   panelWidth,
 }) => {
+  const { currentUser } = useAuth();
   const [messageText, setMessageText] = useState("");
+  const bgColor = useColorModeValue("brand.softwhite", "brand.darkgray");
 
-  const handleSubmit = () => {
-    if (messageText) {
-      socket.emit("message", messageText);
-      setMessageText("");
-    }
+  if (!currentUser) return null;
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!messageText) return;
+    const msgObj = {
+      uid: currentUser["uid"],
+      date: new Date(),
+      text: messageText,
+    };
+    socket.emit("message", messageText);
+    setMessageText("");
   };
 
   return (
-    <Flex className={styles.container}>
-      <Flex
-        bgColor={useColorModeValue("brand.softwhite", "brand.darkgray")}
-        width="100%"
-      >
+    <form className={styles.container} onSubmit={(e) => handleSubmit(e)}>
+      <Flex bgColor={bgColor} width="100%">
         <Input
           borderRadius={0}
           border="none"
@@ -46,7 +53,6 @@ const InputGroup: React.FC<InputGroupProps> = ({
         <Button
           className={styles.submitBtn}
           variant="unstyled"
-          onClick={messageText ? () => handleSubmit() : () => null}
           _focus={{ outline: "none" }}
           borderRadius={0}
           width="88px"
@@ -54,11 +60,12 @@ const InputGroup: React.FC<InputGroupProps> = ({
           bgColor={messageText ? "brand.primary.1000" : "transparent"}
           color={messageText ? "white" : "brand.text.dark"}
           cursor={messageText ? "pointer" : "default"}
+          type="submit"
         >
           <Icon as={RiSendPlaneFill} color="inherit" fontSize="2rem" />
         </Button>
       </Flex>
-    </Flex>
+    </form>
   );
 };
 

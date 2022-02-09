@@ -8,6 +8,7 @@ import {
   enrichUserData,
   generateUserDBobject,
   generateWelcomeRoom,
+  getRoomFromID,
 } from "../helperFunctions";
 
 const signInViaGithub = () => {
@@ -35,7 +36,17 @@ const initial = {
     uid: null,
     rooms: [],
   },
-  enriched: {},
+  enrichedUserData: {
+    displayName: null,
+    email: null,
+    emailVerified: false,
+    isAnonymous: null,
+    phoneNumber: null,
+    photoURL: null,
+    providerData: null,
+    uid: null,
+    rooms: [],
+  },
 };
 
 export const AuthContext = createContext(initial);
@@ -45,14 +56,18 @@ const AuthProvider = ({ children }: any) => {
   const [pending, setPending] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
   const [userFromDB, setUserFromDB] = useState<any>(null);
-  const [enriched, setEnriched] = useState<any>(null);
+  const [enrichedUserData, setEnriched] = useState<any>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const welcomeRoomObj = generateWelcomeRoom(user.uid, user.displayName);
+        const welcomeRoomObj = generateWelcomeRoom(
+          user.email,
+          user.uid,
+          user.displayName
+        );
         const welcomeRoomId = welcomeRoomObj.id;
         const userObj = generateUserDBobject(user, welcomeRoomId);
 
@@ -61,6 +76,7 @@ const AuthProvider = ({ children }: any) => {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
 
+        // This is a new signup
         if (!docSnap.exists()) {
           const uid = user.uid;
           console.log(userObj);
@@ -71,16 +87,16 @@ const AuthProvider = ({ children }: any) => {
           } catch (e) {
             console.error("Error adding document: ", e);
           }
-          setUserFromDB(userObj);
-        } else {
-          const userFromDatabase = { ...docSnap.data() };
-          console.log(userFromDatabase);
-          setUserFromDB(userFromDatabase);
+          // setUserFromDB(userObj);
 
-          // console.log(userFromDatabase);
-          const enrichedUserFromDatabase = enrichUserData(userFromDatabase);
-          // console.log(enrichedUserFromDatabase);
-          setEnriched(enrichedUserFromDatabase);
+          const enriched = await enrichUserData(userObj);
+          setEnriched(enriched);
+        }
+        // This is a returning user
+        else {
+          const userFromDatabase = { ...docSnap.data() };
+          const enriched = await enrichUserData(userFromDatabase);
+          setEnriched(enriched);
         }
         navigate(`/${user.uid}`, { replace: true });
       } else {
@@ -98,6 +114,7 @@ const AuthProvider = ({ children }: any) => {
     logout,
     isNewUser,
     userFromDB,
+    enrichedUserData,
   };
 
   return <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>;

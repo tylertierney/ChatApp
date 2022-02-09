@@ -22,8 +22,7 @@ io.on("connection", (socket) => {
   console.log("New client connected, socket ID: " + socket.id);
 
   socket.on("message", (msg) => {
-    const obj = { sender: "Bob", date: new Date(), text: msg };
-    io.emit("message", { sender: "Bob", date: new Date(), text: msg });
+    io.emit("message", msg);
   });
   socket.on("disconnect", () => {
     console.log("Client disconnected");

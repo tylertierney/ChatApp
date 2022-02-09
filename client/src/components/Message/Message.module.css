@@ -1,0 +1,43 @@
+.msgContainer {
+  padding: 0.5rem 20px;
+  width: 100%;
+  align-items: center;
+}
+
+.msgContainer:first-child {
+  padding: 1rem 20px 0.5rem 20px;
+}
+
+.avatarContainer {
+  height: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.avatar {
+  margin: 0 0.8rem 0 0.8rem;
+}
+
+.textContainer {
+  flex-direction: column;
+  width: 100%;
+}
+
+/* .nameAndDate {
+  margin: 0 0.7rem;
+} */
+
+.userName {
+  font-weight: bold;
+  margin: 0 10px 0 0;
+}
+
+.date {
+  font-size: 0.7rem;
+  margin: 0 10px 0 0;
+}
+
+.msgText {
+  max-width: 440px;
+}

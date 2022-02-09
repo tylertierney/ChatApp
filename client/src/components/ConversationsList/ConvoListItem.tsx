@@ -15,42 +15,40 @@ import { getDoc, doc } from "firebase/firestore";
 import { Link, NavLink } from "react-router-dom";
 import { usePanelShowing } from "../../App";
 import { getRoomFromID } from "../../helperFunctions";
+import { useNewMessages } from "../Home/Home";
 
 interface ConvoListItemProps {
   room: any;
   bgColor: string;
+  setActiveRoom: Function;
 }
 
-const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
-  // const [roomInfo, setRoomInfo] = useState<any>(null);
-
+const ConvoListItem: React.FC<ConvoListItemProps> = ({
+  room,
+  bgColor,
+  setActiveRoom,
+}) => {
   const { setPanelShowing } = usePanelShowing();
-
-  // useEffect(() => {
-  //   getRoomFromID(room)
-  //     .then((data) => {
-  //       setRoomInfo(() => data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // if (!roomInfo) return null;
 
   const linkBaseClass = styles.linkComponent;
   const linkActiveClass = styles.linkComponentActive;
 
-  // const mostRecentMsg = roomInfo.messages[roomInfo.messages.length - 1].text;
+  const mostRecentMsg = room.messages[room.messages.length - 1].text;
+
+  const handleClick = () => {
+    setPanelShowing("default");
+    setActiveRoom(room);
+  };
 
   return (
     <>
       <NavLink
-        to={`${room}`}
+        to={`${room.id}`}
         className={({ isActive }) =>
           isActive ? linkActiveClass : linkBaseClass
         }
-        onClick={() => setPanelShowing("default")}
+        // onClick={() => setPanelShowing("default")}
+        onClick={() => handleClick()}
       >
         <Button
           bgColor="unset"
@@ -62,7 +60,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
         >
           <Avatar size="md" mr="10px" />
           <Flex className={styles.listItemTextContainer}>
-            {/* <Text className={styles.liHeader}>{roomInfo["name"]}</Text> */}
+            <Text className={styles.liHeader}>{room["name"]}</Text>
             <Text
               as="span"
               className={styles.convoPreviewText}
@@ -83,8 +81,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
                 },
               }}
             >
-              {/* {mostRecentMsg} */}
-              hello
+              {mostRecentMsg}
             </Text>
           </Flex>
           <Icon

@@ -6,18 +6,12 @@ import {
   useEffect,
 } from "react";
 import { useAuth } from "./authContext";
-import { getRoomFromID, getRoomsFromUser } from "../helperFunctions";
+import { getRoomFromID } from "../helperFunctions";
 
 export const UserDataContext = createContext<any>({});
 
 const UserDataProvider: React.FC = ({ children }) => {
   const { userFromDB } = useAuth();
-
-  // useEffect(() => {
-  //   if (!userFromDB) return;
-  //   updateUserInitially(userFromDB);
-  //   enrichRooms(userFromDB);
-  // }, [userFromDB]);
 
   const reducer = (state: any, action: any) => {
     switch (action.type) {

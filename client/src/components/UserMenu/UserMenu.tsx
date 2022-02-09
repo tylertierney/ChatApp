@@ -45,9 +45,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
         justifyContent="space-between"
         alignItems="center"
         padding="0.2rem 1.5rem"
-        borderTop="1px solid"
-        borderBottom="1px solid"
-        borderColor="rgb(0, 0, 0, 0.05)"
+        height="3.6rem"
       >
         <Text as="span">{item.text}</Text>
         <Icon fontSize="1.2rem" as={item.icon} />

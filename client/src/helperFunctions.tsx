@@ -7,25 +7,28 @@ export const generateUUID = () => {
 };
 
 export const generateWelcomeRoom = (
+  email: string | null,
   uid: string,
   displayName: string | null
 ) => {
   const welcomeRoomId = generateUUID();
-  const welcomeRoomMemberObj: any = {};
-  welcomeRoomMemberObj[`${uid}`] = { nameInGroup: displayName };
+  let nameInGroup = displayName;
+  if (!displayName) nameInGroup = email;
+  const welcomeRoomMemberObj = { uid: uid, nameInGroup };
+  const chatmosBotMemberObj = { uid: "chatmosbot", nameInGroup: "ChatmosBot" };
   const welcomeRoomObj = {
     id: welcomeRoomId,
     name: "Welcome!",
-    members: [welcomeRoomMemberObj],
+    members: [welcomeRoomMemberObj, chatmosBotMemberObj],
     messages: [
       {
-        uid: "ChatmosBot",
+        uid: "chatmosbot",
         date: new Date(),
         text: "Welcome to Chatmosphere!",
       },
       {
-        uid: "ChatmosBot",
-        data: new Date(),
+        uid: "chatmosbot",
+        date: new Date(),
         text: "I'm not a real person. Speaking to me will do nothing for you. This is your first conversation. ",
       },
     ],
@@ -45,8 +48,6 @@ export const generateUserDBobject = (user: any, welcomeRoomId: string) => {
     providerData,
     uid,
   } = user;
-
-  console.log(welcomeRoomId);
 
   const userObj = {
     displayName,
@@ -76,46 +77,18 @@ export const readableErrorMessage = (msg: string) => {
   }
 };
 
-export const getRoomsFromUser = (userFromDB: any) => {
-  const result: any[] = [];
-  // if (userFromDB == undefined) return [];
-
-  if (userFromDB["rooms"]) {
-    const _rooms = [...userFromDB["rooms"]];
-
-    for (let i = 0; i < _rooms.length; i++) {
-      const roomData = getRoomFromID(_rooms[i]).then((data) =>
-        result.push(data)
-      );
-    }
-  }
-  // }
-
-  return result;
-};
-
-export const getRoomFromID = async (roomID: string) => {
-  const docRef = doc(db, "rooms", roomID);
+export const getRoomFromID = async (roomId: string) => {
+  const docRef = doc(db, "rooms", roomId);
   const docSnap = await getDoc(docRef);
-  const roomData = docSnap.data();
-
+  const roomData = { ...docSnap.data() };
   return roomData;
 };
 
-export const enrichUserData = (userFromDB: any) => {
-  const newRooms: any = [];
-  console.log(userFromDB);
-  userFromDB.rooms.forEach((rm: any) => {
-    getRoomFromID(rm)
-      .then((data) => {
-        newRooms.push(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
-
-  userFromDB.rooms = newRooms;
-  console.log(userFromDB);
-  return userFromDB;
+export const enrichUserData = async (userFromDatabase: any) => {
+  for (let i = 0; i < userFromDatabase.rooms.length; i++) {
+    let rm = userFromDatabase.rooms[i];
+    const roomData = await getRoomFromID(rm);
+    userFromDatabase.rooms[i] = roomData;
+  }
+  return userFromDatabase;
 };
