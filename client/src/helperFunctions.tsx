@@ -46,6 +46,8 @@ export const generateUserDBobject = (user: any, welcomeRoomId: string) => {
     uid,
   } = user;
 
+  console.log(welcomeRoomId);
+
   const userObj = {
     displayName,
     email,
@@ -98,4 +100,22 @@ export const getRoomFromID = async (roomID: string) => {
   const roomData = docSnap.data();
 
   return roomData;
+};
+
+export const enrichUserData = (userFromDB: any) => {
+  const newRooms: any = [];
+  console.log(userFromDB);
+  userFromDB.rooms.forEach((rm: any) => {
+    getRoomFromID(rm)
+      .then((data) => {
+        newRooms.push(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  userFromDB.rooms = newRooms;
+  console.log(userFromDB);
+  return userFromDB;
 };

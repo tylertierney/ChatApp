@@ -13,18 +13,17 @@ export const UserDataContext = createContext<any>({});
 const UserDataProvider: React.FC = ({ children }) => {
   const { userFromDB } = useAuth();
 
-  useEffect(() => {
-    if (!userFromDB) return;
-    updateUserInitially(userFromDB);
-    enrichRooms(userFromDB);
-  }, [userFromDB]);
+  // useEffect(() => {
+  //   if (!userFromDB) return;
+  //   updateUserInitially(userFromDB);
+  //   enrichRooms(userFromDB);
+  // }, [userFromDB]);
 
   const reducer = (state: any, action: any) => {
     switch (action.type) {
       case "updateUserInitially":
         return action.payload;
       case "enrichRooms":
-        console.log({ ...state, ...action.payload });
         return { ...state, ...action.payload };
     }
   };
@@ -41,7 +40,7 @@ const UserDataProvider: React.FC = ({ children }) => {
 
     const newRooms: any = [];
 
-    _userFromDB.rooms.forEach((rm: any, idx: number) => {
+    _userFromDB.rooms.forEach((rm: any) => {
       getRoomFromID(rm)
         .then((data) => {
           newRooms.push(data);

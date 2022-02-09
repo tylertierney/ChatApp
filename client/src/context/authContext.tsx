@@ -4,7 +4,11 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { signOut, signInWithRedirect } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { generateUserDBobject, generateWelcomeRoom } from "../helperFunctions";
+import {
+  enrichUserData,
+  generateUserDBobject,
+  generateWelcomeRoom,
+} from "../helperFunctions";
 
 const signInViaGithub = () => {
   signInWithRedirect(auth, provider);
@@ -31,6 +35,7 @@ const initial = {
     uid: null,
     rooms: [],
   },
+  enriched: {},
 };
 
 export const AuthContext = createContext(initial);
@@ -40,6 +45,7 @@ const AuthProvider = ({ children }: any) => {
   const [pending, setPending] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
   const [userFromDB, setUserFromDB] = useState<any>(null);
+  const [enriched, setEnriched] = useState<any>(null);
 
   const navigate = useNavigate();
 
@@ -57,7 +63,7 @@ const AuthProvider = ({ children }: any) => {
 
         if (!docSnap.exists()) {
           const uid = user.uid;
-
+          console.log(userObj);
           try {
             setIsNewUser(true);
             await setDoc(doc(db, "users", uid), userObj);
@@ -68,7 +74,13 @@ const AuthProvider = ({ children }: any) => {
           setUserFromDB(userObj);
         } else {
           const userFromDatabase = { ...docSnap.data() };
+          console.log(userFromDatabase);
           setUserFromDB(userFromDatabase);
+
+          // console.log(userFromDatabase);
+          const enrichedUserFromDatabase = enrichUserData(userFromDatabase);
+          // console.log(enrichedUserFromDatabase);
+          setEnriched(enrichedUserFromDatabase);
         }
         navigate(`/${user.uid}`, { replace: true });
       } else {

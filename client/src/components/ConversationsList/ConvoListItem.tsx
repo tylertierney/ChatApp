@@ -22,26 +22,26 @@ interface ConvoListItemProps {
 }
 
 const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
-  const [roomInfo, setRoomInfo] = useState<any>(null);
+  // const [roomInfo, setRoomInfo] = useState<any>(null);
 
   const { setPanelShowing } = usePanelShowing();
 
-  useEffect(() => {
-    getRoomFromID(room)
-      .then((data) => {
-        setRoomInfo(() => data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getRoomFromID(room)
+  //     .then((data) => {
+  //       setRoomInfo(() => data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
-  if (!roomInfo) return null;
+  // if (!roomInfo) return null;
 
   const linkBaseClass = styles.linkComponent;
   const linkActiveClass = styles.linkComponentActive;
 
-  const mostRecentMsg = roomInfo.messages[roomInfo.messages.length - 1].text;
+  // const mostRecentMsg = roomInfo.messages[roomInfo.messages.length - 1].text;
 
   return (
     <>
@@ -62,7 +62,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
         >
           <Avatar size="md" mr="10px" />
           <Flex className={styles.listItemTextContainer}>
-            <Text className={styles.liHeader}>{roomInfo["name"]}</Text>
+            {/* <Text className={styles.liHeader}>{roomInfo["name"]}</Text> */}
             <Text
               as="span"
               className={styles.convoPreviewText}
@@ -83,7 +83,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({ room, bgColor }) => {
                 },
               }}
             >
-              {mostRecentMsg}
+              {/* {mostRecentMsg} */}
               hello
             </Text>
           </Flex>
