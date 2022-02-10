@@ -21,8 +21,6 @@ ReactDOM.render(
           <UserDataProvider>
             <Routes>
               <Route path="/" element={<App />}>
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
                 <Route path=":userId" element={<Home />}>
                   <Route path=":groupId" element={<CurrentConversation />} />
                 </Route>
@@ -35,6 +33,8 @@ ReactDOM.render(
                   }
                 />
               </Route>
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
             </Routes>
           </UserDataProvider>
         </AuthProvider>

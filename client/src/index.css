@@ -13,6 +13,8 @@
     var(--primaryPink) 0%,
     var(--primaryPurple) 100%
   );
+  --hovergraylight: #dfdfdf;
+  --hovergraydark: #35353b;
 }
 
 body {

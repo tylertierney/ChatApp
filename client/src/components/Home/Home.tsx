@@ -1,6 +1,6 @@
 import ConversationsList from "../ConversationsList/ConversationsList";
 import InputGroup from "../InputGroup/InputGroup";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useToast } from "@chakra-ui/react";
 import styles from "./Home.module.css";
 import { useEffect, useState } from "react";
 import { message } from "../../models/message";
@@ -11,6 +11,7 @@ import { useUserData } from "../../context/userDataContext";
 import { usePanelShowing } from "../../App";
 import socket from "../../socket";
 
+import { useParams } from "react-router-dom";
 import { Outlet, useOutletContext } from "react-router-dom";
 
 interface NewMessagesType {
@@ -24,24 +25,39 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = () => {
   const { currentUser, isNewUser, enrichedUserData } = useAuth();
   const { panelShowing, setPanelShowing } = usePanelShowing();
+  const params = useParams();
 
-  const panelWidth = "240px";
+  const panelWidth = "260px";
+  const [newMessages, setNewMessages] = useState<any[]>([]);
+  const [activeRoom, setActiveRoom] = useState<any>({});
 
   useEffect(() => {
     if (panelShowing !== "default") {
       setPanelShowing("default");
     }
+    if (!enrichedUserData) return;
+    for (let i = 0; i < enrichedUserData.rooms.length; i++) {
+      const rm = enrichedUserData.rooms[i];
+      if (rm["id"] === params.groupId) {
+        setActiveRoom(rm);
+      }
+    }
+    console.log(params);
   }, []);
 
-  const [newMessages, setNewMessages] = useState<any[]>([
-    { uid: "12345", date: new Date(), text: "hi there" },
-  ]);
-  const [activeRoom, setActiveRoom] = useState<any>({});
-
   useEffect((): any => {
+    // SocketSubscribed is used to prevent memory leaks
+    let socketSubscribed = true;
+    const roomId = activeRoom["id"];
     socket.on("message", (msg: message) => {
-      setNewMessages(() => [...newMessages, msg]);
+      if (socketSubscribed) {
+        setNewMessages(() => [...newMessages, msg]);
+      }
     });
+
+    return () => {
+      socketSubscribed = false;
+    };
   }, [newMessages.length]);
 
   return (
@@ -70,7 +86,11 @@ const Home: React.FC<HomeProps> = () => {
         <Flex className={styles.messagesWindow} direction="column">
           <Outlet context={{ newMessages, activeRoom, setActiveRoom }} />
         </Flex>
-        <InputGroup panelShowing={panelShowing} panelWidth={panelWidth} />
+        <InputGroup
+          activeRoom={activeRoom}
+          panelShowing={panelShowing}
+          panelWidth={panelWidth}
+        />
         <Flex
           display={panelShowing === "default" ? "none" : "initial"}
           className={styles.overlay}
@@ -85,6 +105,7 @@ const Home: React.FC<HomeProps> = () => {
       >
         <UserMenu />
       </Sidebar>
+      {/* <Flex className={styles.copyTextToast} w="100px" h="20px" backgroundColor="green"></Flex> */}
     </Flex>
   );
 };

@@ -91,14 +91,20 @@ const AuthProvider = ({ children }: any) => {
 
           const enriched = await enrichUserData(userObj);
           setEnriched(enriched);
+          navigate(`/${user.uid}/${welcomeRoomId}`, { replace: true });
         }
         // This is a returning user
         else {
           const userFromDatabase = { ...docSnap.data() };
+          console.log(userFromDatabase);
           const enriched = await enrichUserData(userFromDatabase);
           setEnriched(enriched);
+          // const firstGroup = userFromDatabase.groups[0];
+          // console.log(firstGroup);
+          navigate(`/${user.uid}/${userFromDatabase.rooms[0].id}`, {
+            replace: true,
+          });
         }
-        navigate(`/${user.uid}`, { replace: true });
       } else {
         setCurrentUser(null);
         setPending(false);

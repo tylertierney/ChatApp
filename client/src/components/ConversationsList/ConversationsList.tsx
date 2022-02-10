@@ -1,19 +1,30 @@
-import { Divider, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Divider,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import styles from "./ConversationsList.module.css";
 import { useAuth } from "../../context/authContext";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import ConvoListItem from "./ConvoListItem";
+import Search from "../Search/Search";
+import { useState } from "react";
 
 interface ConvoListProps {
   setActiveRoom: Function;
 }
 
 const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
-  // const convosListBgColor = useColorModeValue("#f2f6f7", "#434354");
+  const [isSearching, setIsSearching] = useState(false);
   const convosListBgColor = useColorModeValue(
     "rgba(242, 246, 247, 1)",
     "rgba(67, 67, 84, 1)"
   );
+  const iconColor = useColorModeValue("brand.text.dark", "brand.text.light");
 
   const { enrichedUserData } = useAuth();
 
@@ -31,13 +42,29 @@ const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
       bgColor={convosListBgColor}
       zIndex={1}
     >
-      <Text className={styles.groupTitle}>Rooms</Text>
+      <Flex className={styles.groupControls}>
+        <Text className={styles.groupTitle}>DMs</Text>
+        <IconButton
+          icon={<AiOutlinePlusCircle />}
+          aria-label="Add new direct message"
+          fontSize="1.7rem"
+          variant="unstyled"
+          onClick={() => setIsSearching(true)}
+          color={iconColor}
+        />
+      </Flex>
       <Divider />
       <Flex className={styles.roomsContainer}>
         {rooms.map((rm: any, idx: any) => (
           <ConvoListItem key={idx} room={rm} setActiveRoom={setActiveRoom} />
         ))}
       </Flex>
+      <Search
+        isSearching={isSearching}
+        setIsSearching={setIsSearching}
+        iconColor={iconColor}
+        bgColor={convosListBgColor}
+      />
     </Flex>
   );
 };

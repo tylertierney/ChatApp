@@ -13,26 +13,28 @@ interface PanelContextType {
 const App = () => {
   const { currentUser, pending } = useAuth();
   const navigate = useNavigate();
+  const [windowSafeHeight, setWindowSafeHeight] = useState("");
 
   const [panelShowing, setPanelShowing] = useState<string>("default");
-
-  // if (!currentUser) {
-  //   navigate("/register");
-  // }
 
   useEffect(() => {
     if (!currentUser) {
       navigate("/register");
     }
+    const safeHeight = window.innerHeight + "px";
+    setWindowSafeHeight(safeHeight);
+    window.document.body.style.overflowY = "hidden";
   }, []);
 
   return (
     <>
       <Flex
         direction="column"
-        h="100%"
+        h={windowSafeHeight}
         width="100%"
         filter={pending ? "blur(2px)" : "none"}
+        overflow="hidden"
+        overscrollBehavior="contain"
       >
         <Navbar panelShowing={panelShowing} setPanelShowing={setPanelShowing} />
         <Outlet context={{ panelShowing, setPanelShowing }} />

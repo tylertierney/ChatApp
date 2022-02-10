@@ -17,6 +17,7 @@ interface MessageProps {
 const Message: React.FC<MessageProps> = ({ message }) => {
   const { uid, date, text, displayName } = message;
   const { enrichedUserData } = useAuth();
+  const msgClass = useColorModeValue(styles.msgLight, styles.msgDark);
 
   // const parsedDate = date.toDate().toLocaleTimeString([], {
   //   hour: "numeric",
@@ -70,14 +71,14 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 
   return (
     <Flex
-      _hover={{
-        backgroundColor: useColorModeValue(
-          "brand.hovergraylight",
-          "brand.hovergraydark"
-        ),
-      }}
+      className={`${styles.msgContainer} ${msgClass}`}
+      // _hover={{
+      //   backgroundColor: useColorModeValue(
+      //     "brand.hovergraylight",
+      //     "brand.hovergraydark"
+      //   ),
+      // }}
       onClick={() => console.log(message)}
-      className={styles.msgContainer}
       pl={incoming ? "0" : "1rem"}
       pr={incoming ? "1rem" : "0"}
     >

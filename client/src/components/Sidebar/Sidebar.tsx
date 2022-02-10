@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       className={styles.windowRight}
       width={panelWidth}
       minW={panelWidth}
-      left={panelShowing === "userMenu" ? "calc(100vw - 240px)" : "100vw"}
+      left={panelShowing === "userMenu" ? "calc(100vw - 260px)" : "100vw"}
       bgColor={bgColor}
     >
       {children}

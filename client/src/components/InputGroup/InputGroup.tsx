@@ -6,11 +6,13 @@ import socket from "../../socket";
 import { useAuth } from "../../context/authContext";
 
 interface InputGroupProps {
+  activeRoom: any;
   panelShowing: string;
   panelWidth: string;
 }
 
 const InputGroup: React.FC<InputGroupProps> = ({
+  activeRoom,
   panelShowing,
   panelWidth,
 }) => {
@@ -28,9 +30,11 @@ const InputGroup: React.FC<InputGroupProps> = ({
       date: new Date(),
       text: messageText,
     };
-    socket.emit("message", msgObj);
+
+    socket.emit("message", msgObj, activeRoom["id"]);
     setMessageText("");
   };
+  console.log(activeRoom["id"]);
 
   return (
     <form className={styles.container} onSubmit={(e) => handleSubmit(e)}>

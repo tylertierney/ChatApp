@@ -5,7 +5,14 @@
 }
 
 .msgContainer:hover .date {
-  opacity: 0.8;
+  opacity: 0.7;
+}
+
+.msgLight:hover {
+  background-color: var(--hovergraylight);
+}
+.msgDark:hover {
+  background-color: var(--hovergraydark);
 }
 
 .msgContainer:first-child {
@@ -50,4 +57,10 @@
 
 .msgText {
   max-width: 440px;
+}
+
+@media (hover: none) {
+  .msgContainer:hover {
+    background-color: inherit;
+  }
 }
