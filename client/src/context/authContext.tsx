@@ -96,7 +96,6 @@ const AuthProvider = ({ children }: any) => {
         // This is a returning user
         else {
           const userFromDatabase = { ...docSnap.data() };
-          console.log(userFromDatabase);
           const enriched = await enrichUserData(userFromDatabase);
           setEnriched(enriched);
           // const firstGroup = userFromDatabase.groups[0];

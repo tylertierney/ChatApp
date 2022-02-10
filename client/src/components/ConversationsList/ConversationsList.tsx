@@ -51,6 +51,7 @@ const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
           variant="unstyled"
           onClick={() => setIsSearching(true)}
           color={iconColor}
+          className={styles.plusButton}
         />
       </Flex>
       <Divider />

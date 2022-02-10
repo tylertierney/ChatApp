@@ -1,4 +1,8 @@
-import { Button, Avatar, AvatarBadge } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
+
+import { useAuth } from "../../context/authContext";
+
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 interface UserMenuIconProps {
   panelShowing: string;
@@ -9,6 +13,10 @@ const UserMenuIcon: React.FC<UserMenuIconProps> = ({
   panelShowing,
   setPanelShowing,
 }) => {
+  const { enrichedUserData } = useAuth();
+
+  if (!enrichedUserData) return null;
+
   const handlePanelOpen = (panelShowing: string) => {
     if (panelShowing === "userMenu") {
       setPanelShowing("default");
@@ -29,9 +37,11 @@ const UserMenuIcon: React.FC<UserMenuIconProps> = ({
       _active={{ backgroundColor: "transparent" }}
       _hover={{ backgroundColor: "transparent" }}
     >
-      <Avatar size="sm" cursor="poiner">
-        <AvatarBadge boxSize="0.7rem" bgColor="lightgreen" />
-      </Avatar>
+      <UserAvatar
+        size="sm"
+        enrichedUserData={enrichedUserData}
+        showStatus={true}
+      />
     </Button>
   );
 };

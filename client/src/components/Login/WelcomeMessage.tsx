@@ -19,10 +19,11 @@ const WelcomeMessage: React.FC<MsgProps> = ({ header, text }) => {
         userSelect="none"
         textAlign="center"
         lineHeight={1}
+        mb="0.5rem"
       >
         {header}
       </Text>
-      <Text fontWeight="light" mb="0.2rem" textAlign="center" userSelect="none">
+      <Text fontWeight="light" mb="0.5rem" textAlign="center" userSelect="none">
         {text}
       </Text>
     </>

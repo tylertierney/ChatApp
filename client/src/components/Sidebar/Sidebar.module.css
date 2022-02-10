@@ -42,15 +42,11 @@
   transition: 0.3s ease-in-out;
 }
 
-@media only screen and (min-width: 440px) {
+@media only screen and (min-width: 500px) {
   .windowLeft {
     margin-left: 0px;
     transform: translate(260px, 0);
   }
-
-  /* .windowRight {
-    margin-right: 0;
-  } */
 
   .viewBtn {
     transform: translate(-100%, -50%);

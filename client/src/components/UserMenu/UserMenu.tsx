@@ -5,26 +5,25 @@ import {
   Text,
   Icon,
   useColorModeValue,
-  IconButton,
   useToast,
 } from "@chakra-ui/react";
 import { AiOutlineLogout } from "react-icons/ai";
 import { useAuth } from "../../context/authContext";
 import styles from "./UserMenu.module.css";
 import { MdContentCopy } from "react-icons/md";
-import { useState } from "react";
+import UserAvatar from "../UserAvatar/UserAvatar";
+import { FaChevronDown } from "react-icons/fa";
 
 interface UserMenuProps {}
 const UserMenu: React.FC<UserMenuProps> = () => {
   const { currentUser, logout, enrichedUserData } = useAuth();
-  const [idIsCopied, setIdIsCopied] = useState(false);
-
+  // const bgColor = useColorModeValue(
+  //   "rgba(242, 246, 247, 1)",
+  //   "var(--hovergraydark)"
+  // );
   const btnColor = useColorModeValue("brand.white", "brand.gray");
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
-  const hoverColor = useColorModeValue(
-    "brand.hovergraylight",
-    "brand.hovergraydark"
-  );
+  const hoverColor = useColorModeValue("brand.hovergraylight", "#595969");
   const toast = useToast();
 
   if (!enrichedUserData) return null;
@@ -44,12 +43,10 @@ const UserMenu: React.FC<UserMenuProps> = () => {
         navigator.clipboard.writeText(enrichedUserData["uid"] || "");
         toast({
           title: "Copied User ID",
-          // status: "success",
           duration: 1500,
           isClosable: false,
           variant: "subtle",
         });
-        setIdIsCopied(true);
       },
     },
     {
@@ -81,9 +78,6 @@ const UserMenu: React.FC<UserMenuProps> = () => {
           {item.text}
         </Text>
         {item.icon}
-        {/* {item.text.includes("User") && (
-          <Text className={styles.copiedIndicator}>Copied!</Text>
-        )} */}
       </Button>
     );
   });
@@ -92,16 +86,23 @@ const UserMenu: React.FC<UserMenuProps> = () => {
 
   return (
     <Flex className={styles.container}>
-      <Flex className={styles.userInfo}>
-        <Avatar size="md" mb="0.4rem" />
+      <Flex className={styles.userInfo} gap="3px">
+        <UserAvatar
+          size="lg"
+          enrichedUserData={enrichedUserData}
+          showStatus={false}
+        />
         <Text mb="0.3rem">{enrichedUserData["displayName"]}</Text>
         <Button
           className={styles.statusBtn}
           bgColor={btnColor}
-          _hover={{ backgroundColor: btnColor }}
+          _hover={{ backgroundColor: hoverColor }}
+          height="1.8rem"
+          backgroundColor="transparent"
         >
           <div className={styles.activeIndicator}></div>
           <Text>Active</Text>
+          <Icon as={FaChevronDown} ml="0.2rem" />
         </Button>
       </Flex>
       {menuItemsArr}

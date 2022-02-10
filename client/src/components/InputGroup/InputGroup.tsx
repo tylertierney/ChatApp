@@ -34,7 +34,6 @@ const InputGroup: React.FC<InputGroupProps> = ({
     socket.emit("message", msgObj, activeRoom["id"]);
     setMessageText("");
   };
-  console.log(activeRoom["id"]);
 
   return (
     <form className={styles.container} onSubmit={(e) => handleSubmit(e)}>

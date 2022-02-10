@@ -42,7 +42,6 @@ const Home: React.FC<HomeProps> = () => {
         setActiveRoom(rm);
       }
     }
-    console.log(params);
   }, []);
 
   useEffect((): any => {

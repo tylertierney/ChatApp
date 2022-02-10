@@ -27,7 +27,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     }
   };
 
-  const bgColor = useColorModeValue("brand.softwhite", "#3b3a3d");
+  const bgColor = useColorModeValue(
+    "brand.softwhite",
+    "brand.independenceBlue"
+  );
 
   if (side === "left") {
     return (

@@ -24,6 +24,10 @@ const App = () => {
     const safeHeight = window.innerHeight + "px";
     setWindowSafeHeight(safeHeight);
     window.document.body.style.overflowY = "hidden";
+
+    return () => {
+      window.document.body.style.overflowY = "scroll";
+    };
   }, []);
 
   return (

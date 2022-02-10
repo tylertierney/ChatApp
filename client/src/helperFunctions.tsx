@@ -92,3 +92,15 @@ export const enrichUserData = async (userFromDatabase: any) => {
   }
   return userFromDatabase;
 };
+
+export const searchForUser = async (userId: string) => {
+  const docRef = doc(db, "users", userId);
+  const docSnap = await getDoc(docRef);
+  const userData = { ...docSnap.data() };
+  return userData;
+};
+
+export const getRandomColor = () => {
+  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  return "#" + randomColor;
+};

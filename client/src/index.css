@@ -14,7 +14,8 @@
     var(--primaryPurple) 100%
   );
   --hovergraylight: #dfdfdf;
-  --hovergraydark: #35353b;
+  --hovergraydark: #434349;
+  --independenceBlue: #434354;
 }
 
 body {

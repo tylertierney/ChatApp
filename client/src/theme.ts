@@ -40,8 +40,10 @@ const themeObj = {
       white: "#f8f8f8",
       gray: "#49494e",
       hovergraylight: "#dfdfdf",
-      hovergraydark: "#35353b",
+      // hovergraydark: "#35353b",
+      hovergraydark: "#434349",
       darkgray: "#232329",
+      independenceBlue: "#434354",
       text: {
         dark: "#696969",
         light: "#E1E1E1",
