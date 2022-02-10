@@ -14,22 +14,19 @@ const CurrentConversation: React.FC<CurrentConvoProps> = () => {
 
   const dictionary: any = {};
 
+  const allMessages = [...activeRoom.messages, ...newMessages];
+
   for (let i = 0; i < activeRoom.members.length; i++) {
     const member = activeRoom.members[i];
     dictionary[member.uid] = member.nameInGroup;
   }
 
-  for (let j = 0; j < activeRoom.messages.length; j++) {
-    const msg = activeRoom.messages[j];
-    console.log(msg.uid);
-    console.log(dictionary[`${msg.uid}`]);
-    activeRoom.messages[j].displayName = dictionary[`${msg.uid}`];
+  for (let j = 0; j < allMessages.length; j++) {
+    const msg = allMessages[j];
+    allMessages[j].displayName = dictionary[`${msg.uid}`];
   }
 
-  console.log(activeRoom.messages);
-
   return (
-    // <Flex direction="column" w="100%" flexGrow={1}>
     <>
       {activeRoom.messages.map((msg: any, idx: any) => {
         return <Message key={idx} message={msg} />;
@@ -38,7 +35,6 @@ const CurrentConversation: React.FC<CurrentConvoProps> = () => {
         return <Message key={idx} message={msg} />;
       })}
     </>
-    // </Flex>
   );
 };
 

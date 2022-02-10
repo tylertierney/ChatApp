@@ -9,7 +9,11 @@ interface ConvoListProps {
 }
 
 const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
-  const convosListBgColor = useColorModeValue("#d9dceb", "#434354");
+  // const convosListBgColor = useColorModeValue("#f2f6f7", "#434354");
+  const convosListBgColor = useColorModeValue(
+    "rgba(242, 246, 247, 1)",
+    "rgba(67, 67, 84, 1)"
+  );
 
   const { enrichedUserData } = useAuth();
 
@@ -31,12 +35,7 @@ const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
       <Divider />
       <Flex className={styles.roomsContainer}>
         {rooms.map((rm: any, idx: any) => (
-          <ConvoListItem
-            key={idx}
-            room={rm}
-            bgColor={convosListBgColor}
-            setActiveRoom={setActiveRoom}
-          />
+          <ConvoListItem key={idx} room={rm} setActiveRoom={setActiveRoom} />
         ))}
       </Flex>
     </Flex>

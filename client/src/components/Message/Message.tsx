@@ -29,7 +29,6 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   if (uid === enrichedUserData.uid) {
     incoming = false;
   }
-  console.log(typeof new Date());
 
   const avatarBox = (
     <Flex className={styles.avatarContainer}>
@@ -47,14 +46,22 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       align={incoming ? "flex-start" : "flex-end"}
       className={styles.textContainer}
     >
-      <Text className={styles.nameAndDate}>
-        <Text className={styles.userName} as="span">
+      <Flex
+        className={styles.nameAndDate}
+        justify={incoming ? "flex-start" : "flex-end"}
+        flexFlow={incoming ? "initial" : "row-reverse"}
+      >
+        <Text
+          className={styles.userName}
+          as="span"
+          textAlign={incoming ? "left" : "right"}
+        >
           {displayName}
         </Text>
         <Text className={styles.date} as="span" fontWeight="medium">
           {parsedDate}
         </Text>
-      </Text>
+      </Flex>
       <Text textAlign={incoming ? "left" : "right"} className={styles.msgText}>
         {text}
       </Text>
@@ -71,6 +78,8 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       }}
       onClick={() => console.log(message)}
       className={styles.msgContainer}
+      pl={incoming ? "0" : "1rem"}
+      pr={incoming ? "1rem" : "0"}
     >
       {incoming ? (
         <>

@@ -20,6 +20,11 @@
   transition: 0.3s ease-in-out;
   overflow-y: scroll;
   overflow-x: hidden;
+  max-height: 90vh;
+}
+
+.messagesWindow::-webkit-scrollbar {
+  display: none;
 }
 
 @media only screen and (min-width: 440px) {

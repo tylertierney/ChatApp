@@ -17,7 +17,6 @@
 
 .roomsContainer {
   width: 100%;
-  /* border-radius: 6px; */
   overflow: hidden;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.053);
   flex-direction: column;
@@ -26,7 +25,6 @@
 .linkComponent {
   width: 100%;
   position: relative;
-  /* overflow: hidden; */
 }
 
 .linkComponentActive {
@@ -52,7 +50,6 @@
   align-items: center;
   text-align: left;
   align-items: center;
-  padding: 0.4rem 0 0.4rem 1rem;
   justify-content: space-between;
   transition: 0.15s ease-in-out;
   color: inherit;
@@ -72,11 +69,6 @@
   height: 100%;
   z-index: 0;
   transition: inherit;
-  /* background: linear-gradient(
-    45deg,
-    rgba(244, 67, 54, 0.459),
-    rgba(224, 53, 233, 0.459)
-  ); */
   background: linear-gradient(
     45deg,
     rgba(244, 67, 54, 1),
@@ -103,12 +95,12 @@
 .listItemTextContainer {
   color: inherit;
   flex-direction: column;
-
   height: 100%;
   justify-content: center;
   z-index: 2;
   flex-grow: 1;
   overflow: hidden;
+  position: relative;
 }
 
 .liHeader {
@@ -116,6 +108,8 @@
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .convoPreviewText {

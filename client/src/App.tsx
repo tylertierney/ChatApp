@@ -1,9 +1,9 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import Navbar from "./components/Navbar/Navbar";
 import { useAuth } from "./context/authContext";
-import { Outlet, useOutletContext } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 
 interface PanelContextType {
   panelShowing: string;
@@ -11,9 +11,20 @@ interface PanelContextType {
 }
 
 const App = () => {
-  const { pending } = useAuth();
+  const { currentUser, pending } = useAuth();
+  const navigate = useNavigate();
 
   const [panelShowing, setPanelShowing] = useState<string>("default");
+
+  // if (!currentUser) {
+  //   navigate("/register");
+  // }
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/register");
+    }
+  }, []);
 
   return (
     <>

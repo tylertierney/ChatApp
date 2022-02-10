@@ -28,7 +28,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
       date: new Date(),
       text: messageText,
     };
-    socket.emit("message", messageText);
+    socket.emit("message", msgObj);
     setMessageText("");
   };
 
@@ -48,6 +48,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
           maxH="50px"
           overflow="hidden"
           background="transparent"
+          inputMode="search"
         />
 
         <Button

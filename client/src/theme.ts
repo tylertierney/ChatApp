@@ -52,7 +52,7 @@ const themeObj = {
     global: (props: any) => ({
       body: {
         bg: mode("brand.white", "brand.gray")(props),
-        minHeight: "100vh",
+        // minHeight: "100vh",
         overflowX: "hidden",
       },
 

@@ -19,16 +19,26 @@ import { useNewMessages } from "../Home/Home";
 
 interface ConvoListItemProps {
   room: any;
-  bgColor: string;
   setActiveRoom: Function;
 }
 
 const ConvoListItem: React.FC<ConvoListItemProps> = ({
   room,
-  bgColor,
   setActiveRoom,
 }) => {
   const { setPanelShowing } = usePanelShowing();
+  // const bgColor = useColorModeValue(
+  //   "rgba(242, 246, 247, 1)",
+  //   "rgba(67, 67, 84, 1)"
+  // );
+  const bgColor = useColorModeValue(
+    "rgba(242, 246, 247, 1)",
+    "rgba(67, 67, 84, 1)"
+  );
+  const transp = useColorModeValue(
+    "rgba(242, 246, 247, 0)",
+    "rgba(67, 67, 84, 0)"
+  );
 
   const linkBaseClass = styles.linkComponent;
   const linkActiveClass = styles.linkComponentActive;
@@ -47,7 +57,6 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
         className={({ isActive }) =>
           isActive ? linkActiveClass : linkBaseClass
         }
-        // onClick={() => setPanelShowing("default")}
         onClick={() => handleClick()}
       >
         <Button
@@ -57,32 +66,30 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
           className={styles.convoListItem}
           role="group"
           width="100%"
+          padding="0.7rem 0 0.7rem 1rem"
         >
-          <Avatar size="md" mr="10px" />
+          <Avatar size="md" mr="10px" iconLabel={room.name} name={room.name} />
           <Flex className={styles.listItemTextContainer}>
             <Text className={styles.liHeader}>{room["name"]}</Text>
-            <Text
-              as="span"
-              className={styles.convoPreviewText}
-              transition="0.3s ease-in-out"
-              _after={{
-                content: `""`,
-                position: "absolute",
-                height: "100%",
-                width: "2.4rem",
-                right: 0,
-                top: 0,
-                background: `linear-gradient(90deg, transparent 0%, ${bgColor} 100%)`,
-                transition: "inherit",
-                opacity: 1,
-                _groupHover: {
-                  opacity: 0,
-                  background: `linear-gradient(90deg, transparent 0%, transparent 100%)`,
-                },
-              }}
-            >
+            <Text as="span" className={styles.convoPreviewText}>
               {mostRecentMsg}
             </Text>
+            <Flex
+              display="block"
+              height="100%"
+              transition="0.2s ease-in-out"
+              width="3rem"
+              top="0"
+              right="0"
+              position="absolute"
+              opacity="1"
+              backgroundColor="transparent"
+              background={`linear-gradient(to right, ${transp} 0%, ${bgColor} 100%)`}
+              _groupHover={{
+                opacity: "0",
+                right: "-100px",
+              }}
+            ></Flex>
           </Flex>
           <Icon
             as={MdArrowForwardIos}

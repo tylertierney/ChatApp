@@ -46,11 +46,12 @@ const Home: React.FC<HomeProps> = () => {
 
   return (
     <Flex
-      maxH="93vh"
+      maxH="92vh"
       flexGrow={1}
-      height="93%"
+      height="92%"
       position="relative"
       overflowX="hidden"
+      className={styles.homeContainer}
     >
       <Sidebar
         panelShowing={panelShowing}
