@@ -10,7 +10,7 @@ import searchStyles from "./Search.module.css";
 import styles from "../ConversationsList/ConversationsList.module.css";
 import { useAuth } from "../../context/authContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, RefObject, useState } from "react";
 import { searchForUser } from "../../helperFunctions";
 import SearchResult from "./SearchResult";
 
@@ -19,6 +19,7 @@ interface SearchProps {
   setIsSearching: Function;
   iconColor: string;
   bgColor: string;
+  homeRef: RefObject<HTMLDivElement>;
 }
 
 const Search: React.FC<SearchProps> = ({
@@ -26,6 +27,7 @@ const Search: React.FC<SearchProps> = ({
   setIsSearching,
   iconColor,
   bgColor,
+  homeRef,
 }) => {
   const { enrichedUserData } = useAuth();
   const [searchText, setSearchText] = useState("");
@@ -89,7 +91,7 @@ const Search: React.FC<SearchProps> = ({
           <Divider />
           <Flex className={styles.roomsContainer} position="relative">
             {results.map((res: any, idx: any) => (
-              <SearchResult key={idx} result={res} />
+              <SearchResult key={idx} result={res} homeRef={homeRef} />
             ))}
           </Flex>
         </>

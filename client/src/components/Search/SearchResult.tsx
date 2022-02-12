@@ -10,19 +10,24 @@ import {
 } from "@chakra-ui/react";
 import styles from "../ConversationsList/ConversationsList.module.css";
 import { MdArrowForwardIos } from "react-icons/md";
+
 import { FaUserAlt } from "react-icons/fa";
 import { getRandomColor } from "../../helperFunctions";
-import { useState } from "react";
-import { BiUserPlus } from "react-icons/bi";
+import { RefObject, useState } from "react";
+import { IoIosChatbubbles } from "react-icons/io";
 import { useAuth } from "../../context/authContext";
 import InfoModal from "../Modal/InfoModal";
+import { usePanelShowing } from "../../App";
+import { AiOutlinePlus } from "react-icons/ai";
 
 interface SearchResultProps {
   result: any;
+  homeRef: RefObject<HTMLDivElement>;
 }
 
-const SearchResult: React.FC<SearchResultProps> = ({ result }) => {
+const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
   const { enrichedUserData } = useAuth();
+  const { setPanelShowing } = usePanelShowing();
 
   const bgColor = useColorModeValue(
     "rgba(242, 246, 247, 1)",
@@ -42,6 +47,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ result }) => {
   const { onOpen, isOpen, onClose } = useDisclosure();
 
   const openModal = () => {
+    setPanelShowing("default");
     onOpen();
   };
 
@@ -110,24 +116,37 @@ const SearchResult: React.FC<SearchResultProps> = ({ result }) => {
           align="center"
           justify="space-around"
           color={textColor}
-          opacity="0.8"
+          opacity="0.85"
           _hover={{
             opacity: "1",
           }}
           transition="0.3s ease-in-out"
-          onClick={onOpen}
+          onClick={() => openModal()}
         >
-          <Icon as={BiUserPlus} fontSize="2.8rem" opacity="inherit" />
-          <Text fontSize="1.4rem" color="inherit" opacity="inherit">
-            New chat
-          </Text>
           <Icon
-            as={MdArrowForwardIos}
+            as={IoIosChatbubbles}
+            fontSize="2.8rem"
             opacity="inherit"
-            fontSize="1.5rem"
-            color="inherit"
+            color="var(--primaryPink)"
           />
-          <InfoModal onOpen={onOpen} isOpen={isOpen} onClose={onClose} />
+          <Flex align="center">
+            <Text fontSize="1.4rem" color="inherit" opacity="inherit" mr="10px">
+              New chat
+            </Text>
+            <Icon
+              as={AiOutlinePlus}
+              opacity="inherit"
+              fontSize="1.5rem"
+              color="inherit"
+            />
+          </Flex>
+          <InfoModal
+            onOpen={onOpen}
+            isOpen={isOpen}
+            onClose={onClose}
+            homeRef={homeRef}
+            targetUser={result}
+          />
         </Flex>
       </Button>
       <Divider />

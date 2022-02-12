@@ -7,14 +7,8 @@
 .userInfo {
   flex-direction: column;
   align-items: center;
-  margin: 1rem 0 0.8rem 0;
-}
-
-.statusBtn {
-  height: 1.6rem;
-  font-size: 0.8rem;
-  box-shadow: 0px 0px 10px 1px #00000040;
-  background: transparent;
+  margin: 1rem 0 0 0;
+  width: 100%;
 }
 
 .activeIndicator {

@@ -38,6 +38,10 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     fontSize = "4.3rem";
     mt = "1.7rem";
   }
+  if (size === "2xl") {
+    fontSize = "5.9rem";
+    mt = "2.2rem";
+  }
 
   return (
     <Flex align="center" justify="center" position="relative">

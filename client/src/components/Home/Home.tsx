@@ -1,18 +1,20 @@
 import ConversationsList from "../ConversationsList/ConversationsList";
 import InputGroup from "../InputGroup/InputGroup";
-import { Flex, useToast } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import styles from "./Home.module.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Ref, RefObject } from "react";
 import { message } from "../../models/message";
 import Sidebar from "../Sidebar/Sidebar";
 import UserMenu from "../UserMenu/UserMenu";
 import { useAuth } from "../../context/authContext";
-import { useUserData } from "../../context/userDataContext";
 import { usePanelShowing } from "../../App";
 import socket from "../../socket";
-
 import { useParams } from "react-router-dom";
 import { Outlet, useOutletContext } from "react-router-dom";
+
+interface HomeRefType {
+  homeRef: any;
+}
 
 interface NewMessagesType {
   newMessages: message[];
@@ -23,6 +25,7 @@ interface NewMessagesType {
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
+  const homeRef = useRef(null);
   const { enrichedUserData } = useAuth();
   const { panelShowing, setPanelShowing } = usePanelShowing();
   const params = useParams();
@@ -80,6 +83,7 @@ const Home: React.FC<HomeProps> = () => {
       position="relative"
       overflowX="hidden"
       className={styles.homeContainer}
+      ref={homeRef}
     >
       <Sidebar
         panelShowing={panelShowing}
@@ -87,7 +91,7 @@ const Home: React.FC<HomeProps> = () => {
         side="left"
         panelWidth={panelWidth}
       >
-        <ConversationsList setActiveRoom={setActiveRoom} />
+        <ConversationsList setActiveRoom={setActiveRoom} homeRef={homeRef} />
       </Sidebar>
       <Flex
         className={styles.conversationWindow}
@@ -130,4 +134,8 @@ export default Home;
 
 export const useNewMessages = () => {
   return useOutletContext<NewMessagesType>();
+};
+
+export const useHomeRef = () => {
+  return useOutletContext<HomeRefType>();
 };

@@ -7,8 +7,9 @@ import {
   useColorModeValue,
   Divider,
   useClipboard,
+  IconButton,
 } from "@chakra-ui/react";
-import { AiOutlineLogout } from "react-icons/ai";
+import { AiFillCamera, AiOutlineEdit, AiOutlineLogout } from "react-icons/ai";
 import { useAuth } from "../../context/authContext";
 import styles from "./UserMenu.module.css";
 import { MdContentCopy } from "react-icons/md";
@@ -17,12 +18,17 @@ import { FaChevronDown } from "react-icons/fa";
 import UserMenuItem from "./UserMenuItem";
 import { useToast } from "../../context/Toast/Toast";
 import { useEffect, useState } from "react";
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 
 interface UserMenuProps {}
 const UserMenu: React.FC<UserMenuProps> = () => {
   const { currentUser, logout, enrichedUserData } = useAuth();
   const [uid, setUid] = useState("");
   const { onCopy } = useClipboard(uid);
+  const editIconColor = useColorModeValue(
+    "brand.text.dark",
+    "brand.text.light"
+  );
 
   useEffect(() => {
     if (enrichedUserData && enrichedUserData["uid"]) {
@@ -30,9 +36,11 @@ const UserMenu: React.FC<UserMenuProps> = () => {
     }
   }, [enrichedUserData]);
 
-  const btnColor = useColorModeValue("brand.white", "brand.gray");
+  // const btnColor = useColorModeValue("brand.white", "brand.gray");
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
-  const hoverColor = useColorModeValue("brand.hovergraylight", "#595969");
+  // const hoverColor = useColorModeValue("brand.hovergraylight", "#595969");
+  const [activeStatus, setActiveStatus] = useState(true);
+
   const { addToast } = useToast();
 
   if (!enrichedUserData) return null;
@@ -47,33 +55,89 @@ const UserMenu: React.FC<UserMenuProps> = () => {
     addToast({ type: "info", text: "User ID Copied!" });
   };
 
+  let status = "Active";
+  if (!activeStatus) {
+    status = "Offline";
+  }
+
+  let toggleSwitchTrackColor = "lightgreen";
+
+  if (!activeStatus) {
+    toggleSwitchTrackColor = "orange";
+  }
+
   return (
     <>
       <Flex className={styles.container}>
         <Flex className={styles.userInfo} gap="3px">
-          <UserAvatar
-            size="xl"
-            enrichedUserData={enrichedUserData}
-            showStatus={false}
-          />
-          <Text mb="0.3rem" fontWeight="semibold">
-            {enrichedUserData["displayName"] ||
-              enrichedUserData["email"] ||
-              "Anonymous"}
-          </Text>
-          <Button
-            className={styles.statusBtn}
-            bgColor={btnColor}
-            _hover={{ backgroundColor: hoverColor }}
-            height="1.8rem"
-            backgroundColor="transparent"
-          >
-            <div className={styles.activeIndicator}></div>
-            <Text>Active</Text>
-            <Icon as={FaChevronDown} ml="0.2rem" />
-          </Button>
+          <Flex position="relative">
+            <UserAvatar
+              size="2xl"
+              enrichedUserData={enrichedUserData}
+              showStatus={false}
+            />
+            <IconButton
+              fontSize="1.8rem"
+              aria-label="Edit Profile Picture"
+              variant="unstyled"
+              position="absolute"
+              bottom="0"
+              right="0"
+              transform="translate(0, 25%)"
+              opacity="1"
+              borderRadius="50%"
+              backgroundColor="var(--independenceBlue)"
+              border="2px solid"
+              borderColor="rgb(255, 255, 255, 0.7)"
+            >
+              <Icon as={AiFillCamera} color="brand.text.light" />
+            </IconButton>
+          </Flex>
+          <Flex align="center" justify="center" w="100%">
+            <Text
+              mb="0.3rem"
+              fontWeight="semibold"
+              fontSize="1.6rem"
+              // maxW="80%"
+              overflow="hidden"
+              overflowWrap="normal"
+              textOverflow="ellipsis"
+              textAlign="center"
+            >
+              {enrichedUserData["displayName"] ||
+                enrichedUserData["email"] ||
+                "Anonymous"}
+            </Text>
+            <Button
+              color={editIconColor}
+              position="absolute"
+              right="10px"
+              variant="unstyled"
+              // ml="auto"
+            >
+              <Icon as={AiOutlineEdit} fontSize="1.6rem" />
+            </Button>
+          </Flex>
         </Flex>
         <Divider />
+        <UserMenuItem
+          textColor={textColor}
+          clickHandler={() => setActiveStatus(!activeStatus)}
+        >
+          <>
+            <Text as="span" fontSize="1.25rem">
+              Status:&nbsp;
+              <Text as="span" fontWeight="light">
+                {status}
+              </Text>
+            </Text>
+
+            <ToggleSwitch
+              trackColor={toggleSwitchTrackColor}
+              active={activeStatus}
+            />
+          </>
+        </UserMenuItem>
         <UserMenuItem textColor={textColor} clickHandler={clickHandlerForToast}>
           <>
             <Flex direction="column" maxW="160px">
@@ -94,7 +158,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
               className={styles.copyIcon}
               as={MdContentCopy}
               aria-label="Copy User ID"
-              fontSize="1.2rem"
+              fontSize="1.4rem"
             />
           </>
         </UserMenuItem>

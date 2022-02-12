@@ -33,6 +33,10 @@ const Register: React.FC = () => {
   }
 
   const dividerColor = useColorModeValue("brand.text.dark", "brand.text.light");
+  const inputBgColor = useColorModeValue(
+    "var(--backgroundWhite)",
+    "var(--backgroundGray)"
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,10 +79,10 @@ const Register: React.FC = () => {
                 name="email"
                 placeholder="Email"
                 autofillType="email"
-                error={false}
                 inputValue={email}
                 setInputValue={setEmail}
                 pending={pending}
+                inputBgColor={inputBgColor}
               />
             </FormControl>
             <FormControl isRequired>
@@ -86,10 +90,10 @@ const Register: React.FC = () => {
                 name="password"
                 placeholder="Password"
                 autofillType="new-password"
-                error={false}
                 inputValue={password}
                 setInputValue={setPassword}
                 pending={pending}
+                inputBgColor={inputBgColor}
               />
             </FormControl>
 

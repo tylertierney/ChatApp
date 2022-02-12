@@ -14,30 +14,31 @@ import {
 } from "@chakra-ui/react";
 import styles from "./StyledInput.module.css";
 import { useState } from "react";
+import { AiOutlineUser } from "react-icons/ai";
 
 interface InputProps {
   name: string;
   placeholder: string;
   autofillType: string;
-  error: boolean;
   inputValue: string;
   setInputValue: Function;
   pending: boolean;
+  inputBgColor: string;
 }
 
 const StyledInput: React.FC<InputProps> = ({
   name,
   placeholder,
   autofillType,
-  error,
   inputValue,
   setInputValue,
   pending,
+  inputBgColor,
 }) => {
-  const inputBgColor = useColorModeValue(
-    "var(--backgroundWhite)",
-    "var(--backgroundGray)"
-  );
+  // const inputBgColor = useColorModeValue(
+  //   "var(--backgroundWhite)",
+  //   "var(--backgroundGray)"
+  // );
   const inputPlaceholderColor = useColorModeValue(
     "rgb(0, 0, 0, 0.4)",
     "rgb(255, 255, 255, 0.4)"
@@ -58,6 +59,13 @@ const StyledInput: React.FC<InputProps> = ({
       return (
         <>
           <Icon as={HiOutlineAtSymbol} fontSize="1.4rem" />
+        </>
+      );
+    }
+    if (name === "username") {
+      return (
+        <>
+          <Icon as={AiOutlineUser} fontSize="1.4rem" />
         </>
       );
     }

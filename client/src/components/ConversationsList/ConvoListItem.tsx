@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import styles from "./ConversationsList.module.css";
 import { MdArrowForwardIos } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { db } from "../../firebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
 import { Link, NavLink } from "react-router-dom";

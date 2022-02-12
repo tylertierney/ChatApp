@@ -78,7 +78,6 @@
 .submitBtn {
   background: var(--pinkGradient);
   color: white;
-
   position: relative;
 }
 
@@ -88,18 +87,18 @@
 
 .submitBtn::after {
   content: "";
-  transform: rotate(45deg) translate(0, -50%);
-  width: 50%;
-  height: 46px;
+  transform: translate(0, -50%) rotate(-20deg);
+  width: 42px;
+  height: 140px;
   background-color: rgb(255, 255, 255, 0.3);
   position: absolute;
   top: 50%;
-  left: -46%;
+  left: -60px;
   transition: 0.27s ease-in-out;
 }
 
 .submitBtn:hover::after {
-  left: 100%;
+  left: 110%;
 }
 
 .loadingSpinner {

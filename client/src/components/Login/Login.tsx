@@ -28,6 +28,11 @@ const Login: React.FC = () => {
   const [error, setError] = useState(null);
   const [pending, setPending] = useState(false);
 
+  const inputBgColor = useColorModeValue(
+    "var(--backgroundWhite)",
+    "var(--backgroundGray)"
+  );
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
@@ -69,10 +74,10 @@ const Login: React.FC = () => {
                 name="email"
                 placeholder="Email"
                 autofillType="email"
-                error={false}
                 inputValue={email}
                 setInputValue={setEmail}
                 pending={pending}
+                inputBgColor={inputBgColor}
               />
             </FormControl>
             <FormControl isRequired>
@@ -80,10 +85,10 @@ const Login: React.FC = () => {
                 name="password"
                 placeholder="Password"
                 autofillType="current-password"
-                error={false}
                 inputValue={password}
                 setInputValue={setPassword}
                 pending={pending}
+                inputBgColor={inputBgColor}
               />
             </FormControl>
             <SubmitBtn text="Log In" pending={pending} />

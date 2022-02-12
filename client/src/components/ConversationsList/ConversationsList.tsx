@@ -12,13 +12,17 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import ConvoListItem from "./ConvoListItem";
 import Search from "../Search/Search";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 
 interface ConvoListProps {
   setActiveRoom: Function;
+  homeRef: RefObject<HTMLDivElement>;
 }
 
-const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
+const ConversationsList: React.FC<ConvoListProps> = ({
+  setActiveRoom,
+  homeRef,
+}) => {
   const [isSearching, setIsSearching] = useState(false);
   const convosListBgColor = useColorModeValue(
     "rgba(242, 246, 247, 1)",
@@ -65,6 +69,7 @@ const ConversationsList: React.FC<ConvoListProps> = ({ setActiveRoom }) => {
         setIsSearching={setIsSearching}
         iconColor={iconColor}
         bgColor={convosListBgColor}
+        homeRef={homeRef}
       />
     </Flex>
   );
