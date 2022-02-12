@@ -81,7 +81,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
         />
         <Flex className={styles.listItemTextContainer} overflow="hidden">
           <Text className={styles.liHeader} fontSize="1.2rem">
-            {result.displayName || result.email}
+            {result.displayName || result.email || "Anonymous"}
           </Text>
           <Flex
             display="block"

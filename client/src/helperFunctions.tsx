@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 export const generateUUID = () => {
@@ -136,6 +136,31 @@ export const formatDate = (isoString: string, difference: number) => {
   return parsedDate;
 };
 
-export const createNewRoom = (targetUser: any, currentUser: any) => {
+export const createNewRoom = async (members: any[]) => {
+  const UIDs = [];
+  for (let i = 0; i < members.length; i++) {
+    UIDs.push(members[i].uid);
+  }
+
   const newRoomId = generateUUID();
+
+  const newRoomObj = {
+    id: newRoomId,
+    name: "New room",
+    members: [...UIDs],
+    messages: [],
+  };
+
+  await setDoc(doc(db, "rooms", newRoomId), newRoomObj);
+
+  await addRoomToUsers(members, newRoomId);
+};
+
+export const addRoomToUsers = async (users: any[], newRoomId: string) => {
+  users.forEach(async (user) => {
+    const userObj = await searchForUser(user.uid);
+    const rooms = userObj.rooms;
+    const newRooms = [...userObj.rooms, newRoomId];
+    await updateDoc(doc(db, "users", user.uid), { rooms: newRooms });
+  });
 };

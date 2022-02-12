@@ -19,6 +19,8 @@ import { BsGearFill } from "react-icons/bs";
 import StyledInput from "../StyledInput/StyledInput";
 import SubmitBtn from "../Login/SubmitBtn";
 import UserAvatar from "../UserAvatar/UserAvatar";
+import { useAuth } from "../../context/authContext";
+import { addRoomToUsers, createNewRoom } from "../../helperFunctions";
 
 interface InfoModalProps {
   onOpen: any;
@@ -35,6 +37,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
   homeRef,
   targetUser,
 }) => {
+  const { enrichedUserData } = useAuth();
   const [username, setUsername] = useState("");
   const [pending, setPending] = useState(false);
 
@@ -45,12 +48,12 @@ const InfoModal: React.FC<InfoModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(username);
+    createNewRoom([targetUser, enrichedUserData]);
   };
 
   return (
     <>
-      <Modal
+      {/* <Modal
         isOpen={isOpen}
         onClose={onClose}
         portalProps={{ containerRef: homeRef }}
@@ -110,7 +113,8 @@ const InfoModal: React.FC<InfoModalProps> = ({
             </ModalFooter>
           </form>
         </ModalContent>
-      </Modal>
+      </Modal> */}
+      <p>hi</p>
     </>
   );
 };
