@@ -79,7 +79,6 @@ const AuthProvider = ({ children }: any) => {
         // This is a new signup
         if (!docSnap.exists()) {
           const uid = user.uid;
-          console.log(userObj);
           try {
             setIsNewUser(true);
             await setDoc(doc(db, "users", uid), userObj);
@@ -98,8 +97,6 @@ const AuthProvider = ({ children }: any) => {
           const userFromDatabase = { ...docSnap.data() };
           const enriched = await enrichUserData(userFromDatabase);
           setEnriched(enriched);
-          // const firstGroup = userFromDatabase.groups[0];
-          // console.log(firstGroup);
           navigate(`/${user.uid}/${userFromDatabase.rooms[0].id}`, {
             replace: true,
           });

@@ -30,9 +30,20 @@ const InputGroup: React.FC<InputGroupProps> = ({
       date: new Date(),
       text: messageText,
     };
-
+    console.log(activeRoom["id"]);
     socket.emit("message", msgObj, activeRoom["id"]);
     setMessageText("");
+  };
+
+  const handleIosKeyboardScroll = () => {
+    window.document.body.style.overflow = "hidden";
+    const safeHeight = window.innerHeight;
+    const scrollPosition = safeHeight - 340;
+    window.scrollBy({ left: 0, top: scrollPosition, behavior: "smooth" });
+  };
+
+  const resetScrollPosition = () => {
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
 
   return (
@@ -52,6 +63,8 @@ const InputGroup: React.FC<InputGroupProps> = ({
           overflow="hidden"
           background="transparent"
           inputMode="search"
+          onTouchEnd={() => handleIosKeyboardScroll()}
+          onBlur={() => resetScrollPosition()}
         />
 
         <Button

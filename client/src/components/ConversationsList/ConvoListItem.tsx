@@ -14,7 +14,7 @@ import { db } from "../../firebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
 import { Link, NavLink } from "react-router-dom";
 import { usePanelShowing } from "../../App";
-import { getRoomFromID } from "../../helperFunctions";
+import { getRoomFromID, searchForUser } from "../../helperFunctions";
 import { useNewMessages } from "../Home/Home";
 
 interface ConvoListItemProps {
@@ -27,10 +27,6 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
   setActiveRoom,
 }) => {
   const { setPanelShowing } = usePanelShowing();
-  // const bgColor = useColorModeValue(
-  //   "rgba(242, 246, 247, 1)",
-  //   "rgba(67, 67, 84, 1)"
-  // );
   const bgColor = useColorModeValue(
     "rgba(242, 246, 247, 1)",
     "rgba(67, 67, 84, 1)"
@@ -46,9 +42,22 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
   const mostRecentMsg = room.messages[room.messages.length - 1].text;
 
   const handleClick = () => {
+    console.log(room);
     setPanelShowing("default");
     setActiveRoom(room);
   };
+
+  useEffect(() => {
+    for (let i = 0; i < room.members.length; i++) {
+      const member = room.members[i];
+
+      searchForUser(member.uid)
+        .then((res) => {
+          room.members[i].photoURL = res.photoURL;
+        })
+        .catch((err) => console.log(err));
+    }
+  });
 
   return (
     <>

@@ -87,7 +87,7 @@ const Search: React.FC<SearchProps> = ({
       {results.length > 0 && (
         <>
           <Divider />
-          <Flex className={styles.roomsContainer}>
+          <Flex className={styles.roomsContainer} position="relative">
             {results.map((res: any, idx: any) => (
               <SearchResult key={idx} result={res} />
             ))}

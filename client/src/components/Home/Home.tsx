@@ -2,7 +2,7 @@ import ConversationsList from "../ConversationsList/ConversationsList";
 import InputGroup from "../InputGroup/InputGroup";
 import { Flex, useToast } from "@chakra-ui/react";
 import styles from "./Home.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { message } from "../../models/message";
 import Sidebar from "../Sidebar/Sidebar";
 import UserMenu from "../UserMenu/UserMenu";
@@ -23,24 +23,34 @@ interface NewMessagesType {
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
-  const { currentUser, isNewUser, enrichedUserData } = useAuth();
+  const { enrichedUserData } = useAuth();
   const { panelShowing, setPanelShowing } = usePanelShowing();
   const params = useParams();
 
   const panelWidth = "260px";
   const [newMessages, setNewMessages] = useState<any[]>([]);
   const [activeRoom, setActiveRoom] = useState<any>({});
+  const currentConvoRef = useRef<any>(null);
+
+  const handleSmoothScroll = (ref: any) => {
+    if (ref.current) {
+      const height = parseInt(window.getComputedStyle(ref.current).height);
+      ref.current.scrollTo({ top: height, left: 0, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    if (!enrichedUserData) return;
+    const rm = enrichedUserData.rooms.filter(
+      (rm) => rm["id"] === params.groupId
+    )[0];
+    setActiveRoom(rm);
+    handleSmoothScroll(currentConvoRef);
+  }, [enrichedUserData]);
 
   useEffect(() => {
     if (panelShowing !== "default") {
       setPanelShowing("default");
-    }
-    if (!enrichedUserData) return;
-    for (let i = 0; i < enrichedUserData.rooms.length; i++) {
-      const rm = enrichedUserData.rooms[i];
-      if (rm["id"] === params.groupId) {
-        setActiveRoom(rm);
-      }
     }
   }, []);
 
@@ -53,6 +63,9 @@ const Home: React.FC<HomeProps> = () => {
         setNewMessages(() => [...newMessages, msg]);
       }
     });
+    if (currentConvoRef.current) {
+      handleSmoothScroll(currentConvoRef);
+    }
 
     return () => {
       socketSubscribed = false;
@@ -82,7 +95,11 @@ const Home: React.FC<HomeProps> = () => {
         transition="0s ease-in-out"
         filter={panelShowing === "default" ? "none" : "blur(1px)"}
       >
-        <Flex className={styles.messagesWindow} direction="column">
+        <Flex
+          className={styles.messagesWindow}
+          direction="column"
+          ref={currentConvoRef}
+        >
           <Outlet context={{ newMessages, activeRoom, setActiveRoom }} />
         </Flex>
         <InputGroup

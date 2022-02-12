@@ -8,34 +8,35 @@ import {
 } from "@chakra-ui/react";
 import styles from "./Message.module.css";
 import { useAuth } from "../../context/authContext";
+import UserAvatar from "../UserAvatar/UserAvatar";
+import { formatDate } from "../../helperFunctions";
 
 interface MessageProps {
-  // room: any;
   message: any;
 }
 
 const Message: React.FC<MessageProps> = ({ message }) => {
-  const { uid, date, text, displayName } = message;
+  const { uid, formattedDate, text, displayName, photoURL, isThreaded } =
+    message;
   const { enrichedUserData } = useAuth();
   const msgClass = useColorModeValue(styles.msgLight, styles.msgDark);
 
-  // const parsedDate = date.toDate().toLocaleTimeString([], {
-  //   hour: "numeric",
-  //   minute: "2-digit",
-  // });
-  const parsedDate = "11/11/2022";
-
   let incoming = true;
-
   if (uid === enrichedUserData.uid) {
     incoming = false;
   }
 
+  const threadedClass = styles.isThreaded;
+
   const avatarBox = (
-    <Flex className={styles.avatarContainer}>
+    <Flex
+      className={styles.avatarContainer}
+      visibility={isThreaded ? "hidden" : "visible"}
+    >
       <Avatar
         size="sm"
         className={styles.avatar}
+        src={photoURL}
         name={displayName}
         iconLabel={uid + " avatar"}
       />
@@ -51,16 +52,17 @@ const Message: React.FC<MessageProps> = ({ message }) => {
         className={styles.nameAndDate}
         justify={incoming ? "flex-start" : "flex-end"}
         flexFlow={incoming ? "initial" : "row-reverse"}
+        display={isThreaded ? "none" : "flex"}
       >
         <Text
           className={styles.userName}
           as="span"
           textAlign={incoming ? "left" : "right"}
         >
-          {displayName}
+          {displayName || "Anonymous"}
         </Text>
         <Text className={styles.date} as="span" fontWeight="medium">
-          {parsedDate}
+          {formattedDate}
         </Text>
       </Flex>
       <Text textAlign={incoming ? "left" : "right"} className={styles.msgText}>
@@ -72,15 +74,11 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   return (
     <Flex
       className={`${styles.msgContainer} ${msgClass}`}
-      // _hover={{
-      //   backgroundColor: useColorModeValue(
-      //     "brand.hovergraylight",
-      //     "brand.hovergraydark"
-      //   ),
-      // }}
       onClick={() => console.log(message)}
       pl={incoming ? "0" : "1rem"}
       pr={incoming ? "1rem" : "0"}
+      pt={isThreaded ? "0" : "initial"}
+      // pb={isThreaded ? "0" : "initial"}
     >
       {incoming ? (
         <>

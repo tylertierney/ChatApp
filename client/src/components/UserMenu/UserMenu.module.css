@@ -31,6 +31,14 @@
   border: 1px solid rgb(0, 0, 0, 0.05);
 }
 
+.menuItemLight:hover {
+  background-color: var(--hovergraylight);
+}
+
+.menuItemDark:hover {
+  background-color: #595969;
+}
+
 .copiedIndicator {
   position: absolute;
   top: 3px;
@@ -38,4 +46,10 @@
   font-weight: 500;
   font-size: 0.8rem;
   opacity: 0.8;
+}
+
+@media (hover: none) {
+  .menuItem:hover {
+    background-color: initial;
+  }
 }

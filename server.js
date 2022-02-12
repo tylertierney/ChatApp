@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
   console.log("New client connected, socket ID: " + socket.id);
 
   socket.on("message", (msg, roomId) => {
-    socket.join(roomId);
+    // socket.join(roomId);
     io.to(roomId).emit("message", msg);
   });
   socket.on("disconnect", () => {

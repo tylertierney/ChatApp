@@ -12,31 +12,33 @@ import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Home from "./components/Home/Home";
 import CurrentConversation from "./components/CurrentConversation/CurrentConversation";
+import ToastProvider from "./context/Toast/Toast";
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <AuthProvider>
-          <UserDataProvider>
-            <Routes>
-              <Route path="/" element={<App />}>
-                <Route path=":userId" element={<Home />}>
-                  <Route path=":groupId" element={<CurrentConversation />} />
-                </Route>
-                <Route
-                  path="*"
-                  element={
-                    <main style={{ padding: "1rem" }}>
-                      <p>There's nothing here!</p>
-                    </main>
-                  }
-                />
+          {/* <UserDataProvider> */}
+
+          <Routes>
+            <Route path="/" element={<App />}>
+              <Route path=":userId" element={<Home />}>
+                <Route path=":groupId" element={<CurrentConversation />} />
               </Route>
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-            </Routes>
-          </UserDataProvider>
+              <Route
+                path="*"
+                element={
+                  <main style={{ padding: "1rem" }}>
+                    <p>There's nothing here!</p>
+                  </main>
+                }
+              />
+            </Route>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Routes>
+          {/* </UserDataProvider> */}
         </AuthProvider>
       </BrowserRouter>
     </ChakraProvider>
