@@ -1,6 +1,4 @@
 import {
-  Avatar,
-  Button,
   Flex,
   Text,
   Icon,
@@ -8,37 +6,36 @@ import {
   Divider,
   useClipboard,
   IconButton,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { AiFillCamera, AiOutlineEdit, AiOutlineLogout } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineLogout } from "react-icons/ai";
 import { useAuth } from "../../context/authContext";
 import styles from "./UserMenu.module.css";
 import { MdContentCopy } from "react-icons/md";
 import UserAvatar from "../UserAvatar/UserAvatar";
-import { FaChevronDown } from "react-icons/fa";
 import UserMenuItem from "./UserMenuItem";
 import { useToast } from "../../context/Toast/Toast";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
+import { usePanelShowing } from "../../App";
+import InfoModal from "../Modal/InfoModal";
 
-interface UserMenuProps {}
-const UserMenu: React.FC<UserMenuProps> = () => {
+interface UserMenuProps {
+  homeRef: RefObject<HTMLDivElement>;
+}
+const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
   const { currentUser, logout, enrichedUserData } = useAuth();
+  const { panelShowing, setPanelShowing } = usePanelShowing();
+  const { onOpen, onClose, isOpen } = useDisclosure();
   const [uid, setUid] = useState("");
   const { onCopy } = useClipboard(uid);
-  const editIconColor = useColorModeValue(
-    "brand.text.dark",
-    "brand.text.light"
-  );
 
   useEffect(() => {
     if (enrichedUserData && enrichedUserData["uid"]) {
       setUid(enrichedUserData["uid"]);
     }
   }, [enrichedUserData]);
-
-  // const btnColor = useColorModeValue("brand.white", "brand.gray");
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
-  // const hoverColor = useColorModeValue("brand.hovergraylight", "#595969");
   const [activeStatus, setActiveStatus] = useState(true);
 
   const { addToast } = useToast();
@@ -61,16 +58,22 @@ const UserMenu: React.FC<UserMenuProps> = () => {
   }
 
   let toggleSwitchTrackColor = "lightgreen";
-
   if (!activeStatus) {
     toggleSwitchTrackColor = "orange";
   }
+
+  const openModal = () => {
+    // setPanelShowing("default");
+    onOpen();
+  };
+
+  // if (panelShowing !== "userMenu") return null;
 
   return (
     <>
       <Flex className={styles.container}>
         <Flex className={styles.userInfo} gap="3px">
-          <Flex position="relative">
+          <Flex position="relative" mb="1rem">
             <UserAvatar
               size="2xl"
               enrichedUserData={enrichedUserData}
@@ -89,16 +92,22 @@ const UserMenu: React.FC<UserMenuProps> = () => {
               backgroundColor="var(--independenceBlue)"
               border="2px solid"
               borderColor="rgb(255, 255, 255, 0.7)"
+              _hover={{
+                transform: "translate(0, 25%) scale(1.1)",
+              }}
+              _active={{
+                transform: "translate(1px, 27%) scale(1.1)",
+              }}
+              onClick={() => openModal()}
             >
-              <Icon as={AiFillCamera} color="brand.text.light" />
+              <Icon as={AiOutlineEdit} color="brand.text.light" />
             </IconButton>
           </Flex>
           <Flex align="center" justify="center" w="100%">
             <Text
               mb="0.3rem"
               fontWeight="semibold"
-              fontSize="1.6rem"
-              // maxW="80%"
+              fontSize="1.5rem"
               overflow="hidden"
               overflowWrap="normal"
               textOverflow="ellipsis"
@@ -108,15 +117,6 @@ const UserMenu: React.FC<UserMenuProps> = () => {
                 enrichedUserData["email"] ||
                 "Anonymous"}
             </Text>
-            <Button
-              color={editIconColor}
-              position="absolute"
-              right="10px"
-              variant="unstyled"
-              // ml="auto"
-            >
-              <Icon as={AiOutlineEdit} fontSize="1.6rem" />
-            </Button>
           </Flex>
         </Flex>
         <Divider />
@@ -176,6 +176,14 @@ const UserMenu: React.FC<UserMenuProps> = () => {
             <AiOutlineLogout fontSize="1.5rem" />
           </>
         </UserMenuItem>
+        <InfoModal
+          onOpen={onOpen}
+          isOpen={isOpen}
+          onClose={onClose}
+          homeRef={homeRef}
+          targetUser={null}
+          type="Customize Profile"
+        />
       </Flex>
     </>
   );

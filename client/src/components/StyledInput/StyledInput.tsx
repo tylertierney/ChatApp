@@ -49,9 +49,13 @@ const StyledInput: React.FC<InputProps> = ({
   const [showPw, setShowPw] = useState(false);
 
   let minLength = 1;
-
   if (name === "password") {
     minLength = 7;
+  }
+
+  let maxLength: number | undefined = undefined;
+  if (name === "username") {
+    maxLength = 18;
   }
 
   const getInputRightElemChildren = (name: string) => {
@@ -116,6 +120,8 @@ const StyledInput: React.FC<InputProps> = ({
         color={textColor}
         minLength={minLength}
         isDisabled={pending}
+        maxLength={maxLength}
+        spellCheck={false}
       />
       <InputRightElement
         right={name === "email" ? "0px" : "10px"}

@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { BsGithub } from "react-icons/bs";
 import GraphicWindow from "./GraphicWindow";
 import WelcomeMessage from "./WelcomeMessage";
-import { readableErrorMessage } from "../../helperFunctions";
+import { readableErrorMessage } from "../../utilities/ui";
 import SubmitBtn from "./SubmitBtn";
 import { auth } from "../../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";

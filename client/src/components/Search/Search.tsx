@@ -11,7 +11,7 @@ import styles from "../ConversationsList/ConversationsList.module.css";
 import { useAuth } from "../../context/authContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ChangeEvent, ChangeEventHandler, RefObject, useState } from "react";
-import { searchForUser } from "../../helperFunctions";
+import { searchForUser } from "../../utilities/database";
 import SearchResult from "./SearchResult";
 
 interface SearchProps {

@@ -2,7 +2,6 @@ import { useAuth } from "../../context/authContext";
 import {
   Flex,
   Text,
-  Image,
   FormControl,
   useColorModeValue,
   Icon,
@@ -11,13 +10,13 @@ import styles from "./Login.module.css";
 
 import StyledInput from "../StyledInput/StyledInput";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { BsGithub } from "react-icons/bs";
 import GraphicWindow from "./GraphicWindow";
 import WelcomeMessage from "./WelcomeMessage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
-import { readableErrorMessage } from "../../helperFunctions";
+import { readableErrorMessage } from "../../utilities/ui";
 import SubmitBtn from "./SubmitBtn";
 
 const Login: React.FC = () => {

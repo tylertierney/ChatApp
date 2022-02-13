@@ -6,6 +6,8 @@ import { useAuth } from "./context/authContext";
 import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import smoothscroll from "smoothscroll-polyfill";
 import ToastProvider from "./context/Toast/Toast";
+import { db } from "./firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 interface PanelContextType {
   panelShowing: string;
@@ -32,6 +34,13 @@ const App = () => {
       window.document.body.style.overflowY = "scroll";
     };
   }, []);
+
+  useEffect(() => {
+    const test = async () => {
+      await setDoc(doc(db, "rooms", "12345"), { something: "hi" });
+    };
+    test();
+  });
 
   return (
     <ToastProvider>

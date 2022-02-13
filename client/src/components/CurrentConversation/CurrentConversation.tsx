@@ -1,10 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import styles from "./CurrentConversation.module.css";
-import { message } from "../../models/message";
 import Message from "../Message/Message";
-import { useAuth } from "../../context/authContext";
 import { useNewMessages } from "../Home/Home";
-import { formatDate } from "../../helperFunctions";
+import { formatDate } from "../../utilities/ui";
 
 interface CurrentConvoProps {}
 
@@ -68,13 +66,24 @@ const CurrentConversation: React.FC<CurrentConvoProps> = () => {
     prevMsgTime = messageTimeInSeconds;
   }
 
+  const noMessagesPlaceholder = (
+    <Text mt="1rem" w="100%" textAlign="center">
+      There's nothing here yet. Say something!
+    </Text>
+  );
+
   return (
     <>
-      {activeRoom.messages.map((msg: any, idx: any) => {
-        return <Message key={idx} message={msg} />;
-      })}
+      {activeRoom.messages.length === 0 && newMessages.length === 0
+        ? noMessagesPlaceholder
+        : activeRoom.messages.map((msg: any, idx: any) => {
+            return <Message key={idx} message={msg} />;
+          })}
       {newMessages.map((msg, idx) => {
-        return <Message key={idx} message={msg} />;
+        const newMsg: any = { ...msg };
+        if (newMsg.roomId === activeRoom["id"]) {
+          return <Message key={idx} message={msg} />;
+        }
       })}
     </>
   );

@@ -12,7 +12,7 @@ import styles from "../ConversationsList/ConversationsList.module.css";
 import { MdArrowForwardIos } from "react-icons/md";
 
 import { FaUserAlt } from "react-icons/fa";
-import { getRandomColor } from "../../helperFunctions";
+import { getRandomColor } from "../../utilities/ui";
 import { RefObject, useState } from "react";
 import { IoIosChatbubbles } from "react-icons/io";
 import { useAuth } from "../../context/authContext";
@@ -26,7 +26,6 @@ interface SearchResultProps {
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
-  const { enrichedUserData } = useAuth();
   const { setPanelShowing } = usePanelShowing();
 
   const bgColor = useColorModeValue(
@@ -41,8 +40,6 @@ const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
 
   const [isMoved, setIsMoved] = useState(false);
-
-  const handleCreateNewRoom = (targetUser: any, currentUser: any) => {};
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -146,6 +143,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
             onClose={onClose}
             homeRef={homeRef}
             targetUser={result}
+            type="Create Group"
           />
         </Flex>
       </Button>

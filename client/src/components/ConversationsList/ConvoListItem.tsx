@@ -9,13 +9,10 @@ import {
 } from "@chakra-ui/react";
 import styles from "./ConversationsList.module.css";
 import { MdArrowForwardIos } from "react-icons/md";
-import { RefObject, useEffect, useState } from "react";
-import { db } from "../../firebaseConfig";
-import { getDoc, doc } from "firebase/firestore";
-import { Link, NavLink } from "react-router-dom";
+import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { usePanelShowing } from "../../App";
-import { getRoomFromID, searchForUser } from "../../helperFunctions";
-import { useNewMessages } from "../Home/Home";
+import { searchForUser } from "../../utilities/database";
 
 interface ConvoListItemProps {
   room: any;
@@ -39,7 +36,13 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
   const linkBaseClass = styles.linkComponent;
   const linkActiveClass = styles.linkComponentActive;
 
-  const mostRecentMsg = room.messages[room.messages.length - 1].text;
+  // const mostRecentMsg = room.messages[room.messages.length - 1].text;
+
+  let mostRecentMsg: string | null = null;
+
+  if (room.messages.length > 0) {
+    mostRecentMsg = room.messages[room.messages.length - 1].text;
+  }
 
   const handleClick = () => {
     console.log(room);
@@ -80,9 +83,11 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
           <Avatar size="md" mr="10px" iconLabel={room.name} name={room.name} />
           <Flex className={styles.listItemTextContainer}>
             <Text className={styles.liHeader}>{room["name"]}</Text>
-            <Text as="span" className={styles.convoPreviewText}>
-              {mostRecentMsg}
-            </Text>
+            {mostRecentMsg && (
+              <Text as="span" className={styles.convoPreviewText}>
+                {mostRecentMsg}
+              </Text>
+            )}
             <Flex
               display="block"
               height="100%"

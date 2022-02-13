@@ -1,6 +1,6 @@
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://192.168.254.32:4001";
+const ENDPOINT = "http://192.168.254.32:6066";
 const socket = socketIOClient(ENDPOINT);
 
 export default socket;

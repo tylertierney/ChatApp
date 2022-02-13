@@ -11,6 +11,7 @@ import { usePanelShowing } from "../../App";
 import socket from "../../socket";
 import { useParams } from "react-router-dom";
 import { Outlet, useOutletContext } from "react-router-dom";
+import { addNewMessageToDb } from "../../utilities/database";
 
 interface HomeRefType {
   homeRef: any;
@@ -31,7 +32,7 @@ const Home: React.FC<HomeProps> = () => {
   const params = useParams();
 
   const panelWidth = "260px";
-  const [newMessages, setNewMessages] = useState<any[]>([]);
+  const [newMessages, setNewMessages] = useState<any>([]);
   const [activeRoom, setActiveRoom] = useState<any>({});
   const currentConvoRef = useRef<any>(null);
 
@@ -60,10 +61,13 @@ const Home: React.FC<HomeProps> = () => {
   useEffect((): any => {
     // SocketSubscribed is used to prevent memory leaks
     let socketSubscribed = true;
-    const roomId = activeRoom["id"];
-    socket.on("message", (msg: message) => {
+    socket.on("message", (msg: message, roomId: string) => {
+      addNewMessageToDb(msg, roomId);
+      let newMsg: any = { ...msg };
+      newMsg.roomId = roomId;
+
       if (socketSubscribed) {
-        setNewMessages(() => [...newMessages, msg]);
+        setNewMessages(() => [...newMessages, newMsg]);
       }
     });
     if (currentConvoRef.current) {
@@ -123,9 +127,8 @@ const Home: React.FC<HomeProps> = () => {
         side="right"
         panelWidth={panelWidth}
       >
-        <UserMenu />
+        <UserMenu homeRef={homeRef} />
       </Sidebar>
-      {/* <Flex className={styles.copyTextToast} w="100px" h="20px" backgroundColor="green"></Flex> */}
     </Flex>
   );
 };

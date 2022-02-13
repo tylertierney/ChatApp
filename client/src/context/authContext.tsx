@@ -4,12 +4,12 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { signOut, signInWithRedirect } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+
 import {
   enrichUserData,
   generateUserDBobject,
   generateWelcomeRoom,
-  getRoomFromID,
-} from "../helperFunctions";
+} from "../utilities/database";
 
 const signInViaGithub = () => {
   signInWithRedirect(auth, provider);

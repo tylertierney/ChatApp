@@ -6,7 +6,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import AuthProvider from "./context/authContext";
 import { BrowserRouter } from "react-router-dom";
-import UserDataProvider from "./context/userDataContext";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
@@ -19,8 +18,6 @@ ReactDOM.render(
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <AuthProvider>
-          {/* <UserDataProvider> */}
-
           <Routes>
             <Route path="/" element={<App />}>
               <Route path=":userId" element={<Home />}>
@@ -38,7 +35,6 @@ ReactDOM.render(
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Routes>
-          {/* </UserDataProvider> */}
         </AuthProvider>
       </BrowserRouter>
     </ChakraProvider>

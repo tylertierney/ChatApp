@@ -30,7 +30,6 @@ const InputGroup: React.FC<InputGroupProps> = ({
       date: new Date(),
       text: messageText,
     };
-    console.log(activeRoom["id"]);
     socket.emit("message", msgObj, activeRoom["id"]);
     setMessageText("");
   };

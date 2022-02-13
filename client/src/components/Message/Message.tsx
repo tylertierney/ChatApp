@@ -1,15 +1,7 @@
-import { message } from "../../models/message";
-import {
-  Flex,
-  Divider,
-  Text,
-  Avatar,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, Text, Avatar, useColorModeValue } from "@chakra-ui/react";
 import styles from "./Message.module.css";
 import { useAuth } from "../../context/authContext";
 import UserAvatar from "../UserAvatar/UserAvatar";
-import { formatDate } from "../../helperFunctions";
 
 interface MessageProps {
   message: any;

@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "./firebaseConfig";
+import { db } from "../firebaseConfig";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../firebaseConfig";
 
 export const generateUUID = () => {
   return uuidv4();
@@ -64,19 +66,6 @@ export const generateUserDBobject = (user: any, welcomeRoomId: string) => {
   return userObj;
 };
 
-export const readableErrorMessage = (msg: string) => {
-  switch (msg) {
-    case "auth/user-not-found":
-      return "A user wasn't found at that email address";
-    case "auth/wrong-password":
-      return "Incorrect password";
-    case "auth/email-already-in-use":
-      return "A user already exists with that email address";
-    default:
-      return "Something went wrong";
-  }
-};
-
 export const getRoomFromID = async (roomId: string) => {
   const docRef = doc(db, "rooms", roomId);
   const docSnap = await getDoc(docRef);
@@ -100,54 +89,26 @@ export const searchForUser = async (userId: string) => {
   return userData;
 };
 
-export const getRandomColor = () => {
-  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-  return "#" + randomColor;
-};
-
-export const formatDate = (isoString: string, difference: number) => {
-  let parsedDate;
-  if (difference < 10) {
-    parsedDate = "Just now";
-  } else if (difference < 60) {
-    parsedDate = difference + "s ago";
-  } else if (difference < 600) {
-    parsedDate = Math.floor(difference / 60) + "m ago";
-  } else if (difference < 86400) {
-    parsedDate = new Date(isoString).toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    });
-  } else if (difference < 604800) {
-    const time = new Date(isoString).toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    });
-    const weekday = new Date(isoString).toLocaleDateString([], {
-      weekday: "short",
-    });
-    parsedDate = weekday + " " + time;
-  } else {
-    parsedDate = new Date(isoString).toLocaleDateString([], {
-      day: "numeric",
-      month: "short",
-    });
-  }
-  return parsedDate;
-};
-
-export const createNewRoom = async (members: any[]) => {
-  const UIDs = [];
-  for (let i = 0; i < members.length; i++) {
-    UIDs.push(members[i].uid);
-  }
+export const createNewRoom = async (
+  members: any[],
+  currentUserUid: string,
+  nameInGroup: string
+) => {
+  const membersArr = members.map((member) => {
+    let nameToUse = member.displayName || member.email || "Anonymous";
+    const { uid } = member;
+    if (uid === currentUserUid) {
+      return { uid, nameInGroup: nameInGroup };
+    }
+    return { uid, nameInGroup: nameToUse };
+  });
 
   const newRoomId = generateUUID();
 
   const newRoomObj = {
     id: newRoomId,
-    name: "New room",
-    members: [...UIDs],
+    name: "",
+    members: [...membersArr],
     messages: [],
   };
 
@@ -160,7 +121,30 @@ export const addRoomToUsers = async (users: any[], newRoomId: string) => {
   users.forEach(async (user) => {
     const userObj = await searchForUser(user.uid);
     const rooms = userObj.rooms;
-    const newRooms = [...userObj.rooms, newRoomId];
+    const newRooms = [rooms, newRoomId];
     await updateDoc(doc(db, "users", user.uid), { rooms: newRooms });
   });
+};
+
+export const addNewMessageToDb = async (newMessage: any, roomId: string) => {
+  const roomData = await getRoomFromID(roomId);
+  const messages = roomData.messages;
+  const newMessages = [...messages, newMessage];
+  await updateDoc(doc(db, "rooms", roomId), { messages: newMessages });
+};
+
+export const updateUserProfile = async (uid: string, newUsername: string) => {
+  if (!auth.currentUser) return null;
+
+  // First, update the user in the users database in Firestore
+  const userObj = await searchForUser(uid);
+  await updateDoc(doc(db, "users", uid), { displayName: newUsername });
+
+  // Then, update the user profile in Firebase Auth
+  await updateProfile(auth.currentUser, {
+    displayName: newUsername,
+  });
+
+  // TODO: add a .then/.catch in order to return a success or error response
+  // Then, use the toast context to display this to the user
 };
