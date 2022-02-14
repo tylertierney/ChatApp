@@ -36,6 +36,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     "rgba(242, 246, 247, 0)",
     "rgba(67, 67, 84, 0)"
   );
+  const [enrichedRoom, setEnrichedRoom] = useState(room.members);
 
   const linkBaseClass = styles.linkComponent;
   const linkActiveClass = styles.linkComponentActive;
@@ -50,8 +51,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     mostRecentMsg = newMessages[newMessages.length - 1].text;
   }
 
-  const handleClick = () => {
-    console.log(room);
+  const handleClick = (room: any) => {
     setPanelShowing("default");
     setActiveRoom(room);
   };
@@ -62,21 +62,31 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     uid: "",
   });
 
-  useEffect(() => {
-    for (let i = 0; i < room.members.length; i++) {
-      const member = room.members[i];
-
+  const enrichRoomMembers = (room: any) => {
+    const newMembers = room.members.map((member: any) => {
       if (member.uid !== enrichedUserData["uid"]) {
         setTargetUser(member);
       }
-
       searchForUser(member.uid)
         .then((res) => {
-          room.members[i].photoURL = res.photoURL;
-          console.log(room.members[i]);
+          member.photoURL = res.photoURL;
         })
         .catch((err) => console.log(err));
-    }
+
+      if (member.uid === "chatmosbot") {
+        member.photoURL =
+          "https://firebasestorage.googleapis.com/v0/b/chatapp-dadb0.appspot.com/o/chatmosbot.png?alt=media&token=f8abab1f-e200-4130-b0ca-aabeff83fd56";
+      }
+
+      return member;
+    });
+    room.members = newMembers;
+    return room;
+  };
+
+  useEffect(() => {
+    const newRoom = enrichRoomMembers(room);
+    setEnrichedRoom(newRoom);
   }, []);
 
   return (
@@ -86,7 +96,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
         className={({ isActive }) =>
           isActive ? linkActiveClass : linkBaseClass
         }
-        onClick={() => handleClick()}
+        onClick={() => handleClick(enrichedRoom)}
       >
         <Button
           bgColor="unset"

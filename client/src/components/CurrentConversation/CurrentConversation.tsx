@@ -19,19 +19,6 @@ const CurrentConversation: React.FC<CurrentConvoProps> = () => {
   for (let i = 0; i < activeRoom.members.length; i++) {
     const member = activeRoom.members[i];
 
-    // const getPhotoUrl = async (uid: string) => {
-    //   await searchForUser(member.uid)
-    //     .then((user) => {
-    //       console.log(user.photoURL);
-    //       return user.photoURL;
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
-
-    // const photoURL = getPhotoUrl(member.uid);
-
     dictionary[member.uid] = {
       displayName: member.nameInGroup,
       photoURL: member.photoURL,
