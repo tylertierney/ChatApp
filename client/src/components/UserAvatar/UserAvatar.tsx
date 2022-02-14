@@ -5,11 +5,13 @@ interface UserAvatarProps {
   enrichedUserData: any;
   size: string;
   showStatus: boolean;
+  src?: string;
 }
 const UserAvatar: React.FC<UserAvatarProps> = ({
   enrichedUserData,
   size,
   showStatus,
+  src,
 }) => {
   const borderColor = useColorModeValue("brand.hovergraydark", "white");
 
@@ -48,12 +50,13 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
       <Avatar
         size={size}
         cursor="poiner"
-        src={userPhoto}
+        src={src || userPhoto}
         icon={<Icon as={FaUserAlt} fontSize={fontSize} mt={mt} />}
         borderWidth="2px"
         borderStyle="solid"
         overflow="hidden"
         borderColor={borderColor}
+        bgColor={src ? "white" : ""}
       />
       {showStatus && (
         <Flex

@@ -29,6 +29,7 @@ interface InfoModalProps {
   homeRef: RefObject<HTMLDivElement>;
   targetUser?: any;
   type: string;
+  setIsSearching?: Function;
 }
 
 const InfoModal: React.FC<InfoModalProps> = ({
@@ -38,6 +39,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
   homeRef,
   targetUser,
   type,
+  setIsSearching,
 }) => {
   const inputBgColor = useColorModeValue(
     "var(--backgroundWhite)",
@@ -50,15 +52,19 @@ const InfoModal: React.FC<InfoModalProps> = ({
         isOpen={isOpen}
         onClose={onClose}
         portalProps={{ containerRef: homeRef }}
+        size="sm"
       >
         <ModalOverlay />
         <ModalContent backgroundColor={inputBgColor}>
           {type === "Create Group" ? (
-            <NewRoomTemplate
-              targetUser={targetUser}
-              onClose={onClose}
-              inputBgColor={inputBgColor}
-            />
+            setIsSearching && (
+              <NewRoomTemplate
+                targetUser={targetUser}
+                onClose={onClose}
+                inputBgColor={inputBgColor}
+                setIsSearching={setIsSearching}
+              />
+            )
           ) : (
             <CustomizeProfileTemplate
               onClose={onClose}

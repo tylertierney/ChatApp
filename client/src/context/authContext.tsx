@@ -2,7 +2,7 @@ import { useContext, createContext, useEffect, useState } from "react";
 import { auth, db, provider } from "../firebaseConfig";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { signOut, signInWithRedirect } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -25,17 +25,7 @@ const initial = {
   logout,
   pending: true,
   isNewUser: false,
-  userFromDB: {
-    displayName: null,
-    email: null,
-    emailVerified: false,
-    isAnonymous: null,
-    phoneNumber: null,
-    photoURL: null,
-    providerData: null,
-    uid: null,
-    rooms: [],
-  },
+  setIsNewUser: (isNewUser: boolean) => false,
   enrichedUserData: {
     displayName: null,
     email: null,
@@ -46,6 +36,7 @@ const initial = {
     providerData: null,
     uid: null,
     rooms: [],
+    isActive: true,
   },
 };
 
@@ -55,7 +46,6 @@ const AuthProvider = ({ children }: any) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [pending, setPending] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
-  const [userFromDB, setUserFromDB] = useState<any>(null);
   const [enrichedUserData, setEnriched] = useState<any>(null);
 
   const navigate = useNavigate();
@@ -86,7 +76,6 @@ const AuthProvider = ({ children }: any) => {
           } catch (e) {
             console.error("Error adding document: ", e);
           }
-          // setUserFromDB(userObj);
 
           const enriched = await enrichUserData(userObj);
           setEnriched(enriched);
@@ -101,6 +90,15 @@ const AuthProvider = ({ children }: any) => {
             replace: true,
           });
         }
+
+        // This listens for changes to the user object in firestore
+        // and keeps the UI in-sync with any changes to any field
+
+        const unsub = onSnapshot(doc(db, "users", user.uid), async (doc) => {
+          const data = { ...doc.data() };
+          const enriched = await enrichUserData(data);
+          setEnriched(enriched);
+        });
       } else {
         setCurrentUser(null);
         setPending(false);
@@ -115,7 +113,7 @@ const AuthProvider = ({ children }: any) => {
     signInViaGithub,
     logout,
     isNewUser,
-    userFromDB,
+    setIsNewUser,
     enrichedUserData,
   };
 

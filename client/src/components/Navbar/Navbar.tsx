@@ -18,7 +18,7 @@ const Navbar: React.FC<NavProps> = ({ panelShowing, setPanelShowing }) => {
   const primaryColorDarker = theme.colors.brand.primary.darker;
   const bgColor = useColorModeValue(theme.colors.brand.white, darkgray);
 
-  const { currentUser, userFromDB, enrichedUserData } = useAuth();
+  const { currentUser, enrichedUserData } = useAuth();
 
   const location = useLocation();
 

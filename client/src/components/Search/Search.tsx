@@ -41,7 +41,6 @@ const Search: React.FC<SearchProps> = ({
       return;
     }
     const res = await searchForUser(e.target.value);
-    console.log(res);
     if (!res.uid) {
       setResults([]);
       return;
@@ -91,7 +90,12 @@ const Search: React.FC<SearchProps> = ({
           <Divider />
           <Flex className={styles.roomsContainer} position="relative">
             {results.map((res: any, idx: any) => (
-              <SearchResult key={idx} result={res} homeRef={homeRef} />
+              <SearchResult
+                key={idx}
+                result={res}
+                homeRef={homeRef}
+                setIsSearching={setIsSearching}
+              />
             ))}
           </Flex>
         </>

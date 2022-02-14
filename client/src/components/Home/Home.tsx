@@ -1,6 +1,6 @@
 import ConversationsList from "../ConversationsList/ConversationsList";
 import InputGroup from "../InputGroup/InputGroup";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import styles from "./Home.module.css";
 import { useEffect, useState, useRef, Ref, RefObject } from "react";
 import { message } from "../../models/message";
@@ -12,6 +12,7 @@ import socket from "../../socket";
 import { useParams } from "react-router-dom";
 import { Outlet, useOutletContext } from "react-router-dom";
 import { addNewMessageToDb } from "../../utilities/database";
+import InfoModal from "../Modal/InfoModal";
 
 interface HomeRefType {
   homeRef: any;
@@ -26,8 +27,9 @@ interface NewMessagesType {
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const homeRef = useRef(null);
-  const { enrichedUserData } = useAuth();
+  const { enrichedUserData, isNewUser } = useAuth();
   const { panelShowing, setPanelShowing } = usePanelShowing();
   const params = useParams();
 
@@ -50,6 +52,9 @@ const Home: React.FC<HomeProps> = () => {
     )[0];
     setActiveRoom(rm);
     handleSmoothScroll(currentConvoRef);
+    if (isNewUser) {
+      onOpen();
+    }
   }, [enrichedUserData]);
 
   useEffect(() => {
@@ -95,7 +100,11 @@ const Home: React.FC<HomeProps> = () => {
         side="left"
         panelWidth={panelWidth}
       >
-        <ConversationsList setActiveRoom={setActiveRoom} homeRef={homeRef} />
+        <ConversationsList
+          setActiveRoom={setActiveRoom}
+          homeRef={homeRef}
+          newMessages={newMessages}
+        />
       </Sidebar>
       <Flex
         className={styles.conversationWindow}
@@ -129,6 +138,14 @@ const Home: React.FC<HomeProps> = () => {
       >
         <UserMenu homeRef={homeRef} />
       </Sidebar>
+      <InfoModal
+        homeRef={homeRef}
+        onClose={onClose}
+        onOpen={onOpen}
+        isOpen={isOpen}
+        type="Customize Profile"
+        targetUser={null}
+      />
     </Flex>
   );
 };

@@ -9,20 +9,24 @@ import {
 } from "@chakra-ui/react";
 import styles from "./ConversationsList.module.css";
 import { MdArrowForwardIos } from "react-icons/md";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { usePanelShowing } from "../../App";
 import { searchForUser } from "../../utilities/database";
+import { useAuth } from "../../context/authContext";
 
 interface ConvoListItemProps {
   room: any;
   setActiveRoom: Function;
+  newMessages: any[];
 }
 
 const ConvoListItem: React.FC<ConvoListItemProps> = ({
   room,
   setActiveRoom,
+  newMessages,
 }) => {
+  const { enrichedUserData } = useAuth();
   const { setPanelShowing } = usePanelShowing();
   const bgColor = useColorModeValue(
     "rgba(242, 246, 247, 1)",
@@ -36,12 +40,14 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
   const linkBaseClass = styles.linkComponent;
   const linkActiveClass = styles.linkComponentActive;
 
-  // const mostRecentMsg = room.messages[room.messages.length - 1].text;
-
   let mostRecentMsg: string | null = null;
 
   if (room.messages.length > 0) {
     mostRecentMsg = room.messages[room.messages.length - 1].text;
+  }
+
+  if (newMessages.length > 0) {
+    mostRecentMsg = newMessages[newMessages.length - 1].text;
   }
 
   const handleClick = () => {
@@ -50,17 +56,28 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     setActiveRoom(room);
   };
 
+  const [targetUser, setTargetUser] = useState({
+    nameInGroup: "",
+    photoURL: "",
+    uid: "",
+  });
+
   useEffect(() => {
     for (let i = 0; i < room.members.length; i++) {
       const member = room.members[i];
 
+      if (member.uid !== enrichedUserData["uid"]) {
+        setTargetUser(member);
+      }
+
       searchForUser(member.uid)
         .then((res) => {
           room.members[i].photoURL = res.photoURL;
+          console.log(room.members[i]);
         })
         .catch((err) => console.log(err));
     }
-  });
+  }, []);
 
   return (
     <>
@@ -80,9 +97,16 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
           width="100%"
           padding="0.7rem 0 0.7rem 1rem"
         >
-          <Avatar size="md" mr="10px" iconLabel={room.name} name={room.name} />
+          <Avatar
+            size="md"
+            mr="10px"
+            iconLabel={room.name}
+            name={targetUser.nameInGroup}
+            src={targetUser.photoURL}
+            boxShadow="0px 0px 10px 1px rgb(0, 0, 0, 0.2)"
+          />
           <Flex className={styles.listItemTextContainer}>
-            <Text className={styles.liHeader}>{room["name"]}</Text>
+            <Text className={styles.liHeader}>{targetUser.nameInGroup}</Text>
             {mostRecentMsg && (
               <Text as="span" className={styles.convoPreviewText}>
                 {mostRecentMsg}

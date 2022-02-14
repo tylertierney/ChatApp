@@ -11,13 +11,21 @@
   width: 100%;
 }
 
-.activeIndicator {
-  height: 0.7rem;
-  width: 0.7rem;
-  border-radius: 50%;
-  background-color: lightgreen;
-  border: 1px solid white;
-  margin-right: 6px;
+.editProfileBtn {
+  bottom: 0;
+  right: 0;
+  transform: translate(0, 25%);
+  opacity: 1;
+  border: 2px solid;
+  border-color: rgb(255, 255, 255, 0.7);
+}
+
+.editProfileBtn:hover {
+  transform: translate(0, 25%) scale(1.1);
+}
+
+.editProfileBtn:active {
+  transform: translate(1px, 27%) scale(1.1);
 }
 
 .menuItem {

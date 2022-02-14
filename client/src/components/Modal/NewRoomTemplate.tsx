@@ -20,28 +20,32 @@ interface NewRoomTemplateProps {
   targetUser: any;
   onClose: any;
   inputBgColor: string;
+  setIsSearching: Function;
 }
 
 const NewRoomTemplate: React.FC<NewRoomTemplateProps> = ({
   targetUser,
   onClose,
   inputBgColor,
+  setIsSearching,
 }) => {
   const { enrichedUserData } = useAuth();
   const [username, setUsername] = useState("");
   const [pending, setPending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
     if (!enrichedUserData) return;
     if (!enrichedUserData["uid"]) return;
-    createNewRoom(
+
+    await createNewRoom(
       [targetUser, enrichedUserData],
       enrichedUserData["uid"],
       username
     );
     setPending(false);
+    setIsSearching(false);
     onClose();
   };
 
@@ -55,6 +59,7 @@ const NewRoomTemplate: React.FC<NewRoomTemplateProps> = ({
             enrichedUserData={targetUser}
             showStatus={false}
             size="2xl"
+            src={targetUser["photoURL"]}
           />
           <Text
             mb="0.3rem"

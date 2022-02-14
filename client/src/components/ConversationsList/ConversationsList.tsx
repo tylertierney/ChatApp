@@ -17,11 +17,13 @@ import { RefObject, useState } from "react";
 interface ConvoListProps {
   setActiveRoom: Function;
   homeRef: RefObject<HTMLDivElement>;
+  newMessages: any[];
 }
 
 const ConversationsList: React.FC<ConvoListProps> = ({
   setActiveRoom,
   homeRef,
+  newMessages,
 }) => {
   const [isSearching, setIsSearching] = useState(false);
   const convosListBgColor = useColorModeValue(
@@ -61,7 +63,12 @@ const ConversationsList: React.FC<ConvoListProps> = ({
       <Divider />
       <Flex className={styles.roomsContainer}>
         {rooms.map((rm: any, idx: any) => (
-          <ConvoListItem key={idx} room={rm} setActiveRoom={setActiveRoom} />
+          <ConvoListItem
+            key={idx}
+            room={rm}
+            setActiveRoom={setActiveRoom}
+            newMessages={newMessages}
+          />
         ))}
       </Flex>
       <Search

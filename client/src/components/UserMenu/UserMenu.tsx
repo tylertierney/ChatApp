@@ -25,7 +25,6 @@ interface UserMenuProps {
 }
 const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
   const { currentUser, logout, enrichedUserData } = useAuth();
-  const { panelShowing, setPanelShowing } = usePanelShowing();
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [uid, setUid] = useState("");
   const { onCopy } = useClipboard(uid);
@@ -42,7 +41,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
 
   if (!enrichedUserData) return null;
 
-  if (currentUser == null) return null;
+  if (!currentUser) return null;
 
   const clickHandlerForToast = () => {
     if (uid) {
@@ -63,11 +62,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
   }
 
   const openModal = () => {
-    // setPanelShowing("default");
     onOpen();
   };
-
-  // if (panelShowing !== "userMenu") return null;
 
   return (
     <>
@@ -78,27 +74,17 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
               size="2xl"
               enrichedUserData={enrichedUserData}
               showStatus={false}
+              src={enrichedUserData["photoURL"] || ""}
             />
             <IconButton
-              fontSize="1.8rem"
-              aria-label="Edit Profile Picture"
+              className={styles.editProfileBtn}
+              aria-label="Edit Profile"
               variant="unstyled"
-              position="absolute"
-              bottom="0"
-              right="0"
-              transform="translate(0, 25%)"
-              opacity="1"
-              borderRadius="50%"
-              backgroundColor="var(--independenceBlue)"
-              border="2px solid"
-              borderColor="rgb(255, 255, 255, 0.7)"
-              _hover={{
-                transform: "translate(0, 25%) scale(1.1)",
-              }}
-              _active={{
-                transform: "translate(1px, 27%) scale(1.1)",
-              }}
               onClick={() => openModal()}
+              borderRadius="50%"
+              fontSize="1.8rem"
+              position="absolute"
+              bgColor="var(--independenceBlue)"
             >
               <Icon as={AiOutlineEdit} color="brand.text.light" />
             </IconButton>
@@ -113,16 +99,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
               textOverflow="ellipsis"
               textAlign="center"
             >
-              {enrichedUserData["displayName"] ||
-                enrichedUserData["email"] ||
-                "Anonymous"}
+              {enrichedUserData["displayName"]}
             </Text>
           </Flex>
         </Flex>
         <Divider />
         <UserMenuItem
           textColor={textColor}
-          clickHandler={() => setActiveStatus(!activeStatus)}
+          // clickHandler={() => setActiveStatus(!activeStatus)}
+          clickHandler={() => console.log(enrichedUserData)}
         >
           <>
             <Text as="span" fontSize="1.25rem">

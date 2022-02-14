@@ -15,7 +15,7 @@ export const generateWelcomeRoom = (
 ) => {
   const welcomeRoomId = generateUUID();
   let nameInGroup = displayName;
-  if (!displayName) nameInGroup = email;
+  if (!displayName) nameInGroup = email || "Anonymous";
   const welcomeRoomMemberObj = { uid: uid, nameInGroup };
   const chatmosBotMemberObj = { uid: "chatmosbot", nameInGroup: "ChatmosBot" };
   const welcomeRoomObj = {
@@ -61,6 +61,7 @@ export const generateUserDBobject = (user: any, welcomeRoomId: string) => {
     providerData,
     uid,
     rooms: [welcomeRoomId],
+    isActive: true,
   };
 
   return userObj;
@@ -108,7 +109,7 @@ export const createNewRoom = async (
   const newRoomObj = {
     id: newRoomId,
     name: "",
-    members: [...membersArr],
+    members: membersArr,
     messages: [],
   };
 
@@ -121,7 +122,7 @@ export const addRoomToUsers = async (users: any[], newRoomId: string) => {
   users.forEach(async (user) => {
     const userObj = await searchForUser(user.uid);
     const rooms = userObj.rooms;
-    const newRooms = [rooms, newRoomId];
+    const newRooms = [...rooms, newRoomId];
     await updateDoc(doc(db, "users", user.uid), { rooms: newRooms });
   });
 };
@@ -133,17 +134,15 @@ export const addNewMessageToDb = async (newMessage: any, roomId: string) => {
   await updateDoc(doc(db, "rooms", roomId), { messages: newMessages });
 };
 
-export const updateUserProfile = async (uid: string, newUsername: string) => {
+export const updateUserProfile = async (uid: string, newData: any) => {
   if (!auth.currentUser) return null;
 
   // First, update the user in the users database in Firestore
   const userObj = await searchForUser(uid);
-  await updateDoc(doc(db, "users", uid), { displayName: newUsername });
+  await updateDoc(doc(db, "users", uid), newData);
 
   // Then, update the user profile in Firebase Auth
-  await updateProfile(auth.currentUser, {
-    displayName: newUsername,
-  });
+  await updateProfile(auth.currentUser, newData);
 
   // TODO: add a .then/.catch in order to return a success or error response
   // Then, use the toast context to display this to the user

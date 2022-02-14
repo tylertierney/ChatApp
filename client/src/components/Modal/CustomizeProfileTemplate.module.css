@@ -1,0 +1,27 @@
+.cameraIcon {
+  font-size: 1.8rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(0, 25%);
+  opacity: 1;
+  border-radius: 50%;
+  background-color: var(--independenceBlue);
+  border: 2px solid;
+  border-color: rgb(255, 255, 255, 0.7);
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.cameraIcon:hover {
+  transform: translate(0, 25%) scale(1.1);
+}
+
+.cameraIcon:active {
+  transform: translate(1px, 27%) scale(1.1);
+}

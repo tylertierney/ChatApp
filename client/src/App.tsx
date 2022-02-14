@@ -35,13 +35,6 @@ const App = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const test = async () => {
-      await setDoc(doc(db, "rooms", "12345"), { something: "hi" });
-    };
-    test();
-  });
-
   return (
     <ToastProvider>
       <Flex

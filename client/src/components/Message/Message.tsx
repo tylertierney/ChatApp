@@ -18,8 +18,6 @@ const Message: React.FC<MessageProps> = ({ message }) => {
     incoming = false;
   }
 
-  const threadedClass = styles.isThreaded;
-
   const avatarBox = (
     <Flex
       className={styles.avatarContainer}
@@ -31,6 +29,8 @@ const Message: React.FC<MessageProps> = ({ message }) => {
         src={photoURL}
         name={displayName}
         iconLabel={uid + " avatar"}
+        bgColor={photoURL ? "white" : ""}
+        boxShadow="0px 0px 10px 1px rgb(0, 0, 0, 0.2)"
       />
     </Flex>
   );
@@ -66,11 +66,10 @@ const Message: React.FC<MessageProps> = ({ message }) => {
   return (
     <Flex
       className={`${styles.msgContainer} ${msgClass}`}
-      onClick={() => console.log(message)}
       pl={incoming ? "0" : "1rem"}
       pr={incoming ? "1rem" : "0"}
-      pt={isThreaded ? "0" : "initial"}
-      // pb={isThreaded ? "0" : "initial"}
+      pt={isThreaded ? "0" : ""}
+      onClick={() => console.log(message)}
     >
       {incoming ? (
         <>

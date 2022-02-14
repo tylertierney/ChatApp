@@ -12,10 +12,8 @@ import styles from "../ConversationsList/ConversationsList.module.css";
 import { MdArrowForwardIos } from "react-icons/md";
 
 import { FaUserAlt } from "react-icons/fa";
-import { getRandomColor } from "../../utilities/ui";
 import { RefObject, useState } from "react";
 import { IoIosChatbubbles } from "react-icons/io";
-import { useAuth } from "../../context/authContext";
 import InfoModal from "../Modal/InfoModal";
 import { usePanelShowing } from "../../App";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -23,9 +21,14 @@ import { AiOutlinePlus } from "react-icons/ai";
 interface SearchResultProps {
   result: any;
   homeRef: RefObject<HTMLDivElement>;
+  setIsSearching: Function;
 }
 
-const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
+const SearchResult: React.FC<SearchResultProps> = ({
+  result,
+  homeRef,
+  setIsSearching,
+}) => {
   const { setPanelShowing } = usePanelShowing();
 
   const bgColor = useColorModeValue(
@@ -71,7 +74,8 @@ const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
           overflow="hidden"
           icon={<Icon as={FaUserAlt} fontSize="2.2rem" mt="0.7rem" />}
           src={result.photoURL}
-          bgColor={getRandomColor()}
+          bgColor={result.photoURL && "white"}
+          name={result.displayName}
           borderWidth="2px"
           borderStyle="solid"
           borderColor={borderColor}
@@ -144,6 +148,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ result, homeRef }) => {
             homeRef={homeRef}
             targetUser={result}
             type="Create Group"
+            setIsSearching={setIsSearching}
           />
         </Flex>
       </Button>
