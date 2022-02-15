@@ -4,6 +4,11 @@
   flex-direction: column;
   align-items: center;
   padding: 0.6rem 0rem 0.6rem 0rem;
+  overflow-y: scroll;
+}
+
+.convosContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .groupControls {
@@ -34,13 +39,6 @@
 .groupTitle {
   font-weight: 600;
   font-size: 1.2rem;
-}
-
-.roomsContainer {
-  width: 100%;
-  overflow: hidden;
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.053);
-  flex-direction: column;
 }
 
 .linkComponent {
@@ -74,7 +72,6 @@
   justify-content: space-between;
   transition: 0.15s ease-in-out;
   color: inherit;
-  overflow: hidden;
 }
 
 .convoListItem:hover {

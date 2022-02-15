@@ -42,7 +42,7 @@
   transition: 0.3s ease-in-out;
 }
 
-@media only screen and (min-width: 500px) {
+@media only screen and (min-width: 540px) {
   .windowLeft {
     margin-left: 0px;
     transform: translate(260px, 0);

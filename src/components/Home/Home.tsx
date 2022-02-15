@@ -63,10 +63,21 @@ const Home: React.FC<HomeProps> = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!enrichedUserData) return;
+    enrichedUserData.rooms.forEach((rm: any) => {
+      const roomId = rm.id;
+      socket.emit("joinRoom", roomId);
+    });
+  }, [enrichedUserData]);
+
   useEffect((): any => {
     // SocketSubscribed is used to prevent memory leaks
     let socketSubscribed = true;
+    // const roomId = activeRoom["id"];
+    // socket.emit("joinRoom", roomId);
     socket.on("message", (msg: message, roomId: string) => {
+      console.log(msg);
       addNewMessageToDb(msg, roomId);
       let newMsg: any = { ...msg };
       newMsg.roomId = roomId;
@@ -82,7 +93,7 @@ const Home: React.FC<HomeProps> = () => {
     return () => {
       socketSubscribed = false;
     };
-  }, [newMessages.length]);
+  }, [activeRoom.id]);
 
   return (
     <Flex

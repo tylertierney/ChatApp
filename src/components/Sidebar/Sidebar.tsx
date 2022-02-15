@@ -62,6 +62,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       minW={panelWidth}
       left={panelShowing === "userMenu" ? "calc(100vw - 260px)" : "100vw"}
       bgColor={bgColor}
+      visibility={
+        side === "right" && panelShowing !== "userMenu" ? "hidden" : "visible"
+      }
     >
       {children}
     </Flex>

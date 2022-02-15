@@ -37,7 +37,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
     ) {
       setUid(enrichedUserData["uid"]);
       setActiveStatus(enrichedUserData["isActive"]);
-      console.log(enrichedUserData["isActive"]);
     }
   }, [enrichedUserData]);
 

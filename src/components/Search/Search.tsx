@@ -86,16 +86,17 @@ const Search: React.FC<SearchProps> = ({
       {results.length > 0 && (
         <>
           <Divider />
-          <Flex className={styles.roomsContainer} position="relative">
-            {results.map((res: any, idx: any) => (
+          {results.map((res: any, idx: any) => (
+            <>
               <SearchResult
                 key={idx}
                 result={res}
                 homeRef={homeRef}
                 setIsSearching={setIsSearching}
               />
-            ))}
-          </Flex>
+              <Divider />
+            </>
+          ))}
         </>
       )}
     </Flex>

@@ -11,7 +11,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import ConvoListItem from "./ConvoListItem";
 import Search from "../Search/Search";
-import { RefObject, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 
 interface ConvoListProps {
   setActiveRoom: Function;
@@ -41,7 +41,34 @@ const ConversationsList: React.FC<ConvoListProps> = ({
     }
   }
 
-  const roomsArr = rooms.map((rm: any, idx: any) => {
+  const sortedRoomsArr = rooms.sort((a: any, b: any) => {
+    const mostRecentMsgA = a.messages[a.messages.length - 1];
+    const mostRecentMsgB = b.messages[b.messages.length - 1];
+
+    if (!mostRecentMsgA || !mostRecentMsgB) {
+      return 1;
+    }
+    if (
+      typeof mostRecentMsgA.date !== "string" ||
+      typeof mostRecentMsgB.date !== "string"
+    ) {
+      return 0;
+    }
+    const timeOfA = mostRecentMsgA.date;
+    const timeOfB = mostRecentMsgB.date;
+
+    if (timeOfA > timeOfB) {
+      return -1;
+    }
+    if (timeOfA < timeOfB) {
+      return 1;
+    }
+
+    // names must be equal
+    return 0;
+  });
+
+  const roomsArr = sortedRoomsArr.map((rm: any, idx: any) => {
     const filteredNewMessages = newMessages.filter(
       (msg: any) => msg.roomId === rm.id
     );
@@ -74,17 +101,7 @@ const ConversationsList: React.FC<ConvoListProps> = ({
         />
       </Flex>
       <Divider />
-      <Flex className={styles.roomsContainer}>
-        {/* {rooms.map((rm: any, idx: any) => (
-          <ConvoListItem
-            key={idx}
-            room={rm}
-            setActiveRoom={setActiveRoom}
-            newMessages={newMessages}
-          />
-        ))} */}
-        {roomsArr}
-      </Flex>
+      {roomsArr}
       <Search
         isSearching={isSearching}
         setIsSearching={setIsSearching}
