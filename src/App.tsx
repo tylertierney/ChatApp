@@ -3,11 +3,9 @@ import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import Navbar from "./components/Navbar/Navbar";
 import { useAuth } from "./context/authContext";
-import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import smoothscroll from "smoothscroll-polyfill";
 import ToastProvider from "./context/Toast/Toast";
-import { db } from "./firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
 
 interface PanelContextType {
   panelShowing: string;
@@ -15,16 +13,12 @@ interface PanelContextType {
 }
 
 const App = () => {
-  const { currentUser, pending } = useAuth();
-  const navigate = useNavigate();
+  const { pending } = useAuth();
   const [windowSafeHeight, setWindowSafeHeight] = useState("");
 
   const [panelShowing, setPanelShowing] = useState<string>("default");
 
   useEffect(() => {
-    // if (!currentUser) {
-    //   navigate("/register");
-    // }
     const safeHeight = window.innerHeight + "px";
     setWindowSafeHeight(safeHeight);
     window.document.body.style.overflowY = "hidden";

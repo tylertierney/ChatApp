@@ -2,7 +2,7 @@ import ConversationsList from "../ConversationsList/ConversationsList";
 import InputGroup from "../InputGroup/InputGroup";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import styles from "./Home.module.css";
-import { useEffect, useState, useRef, Ref, RefObject } from "react";
+import { useEffect, useState, useRef } from "react";
 import { message } from "../../models/message";
 import Sidebar from "../Sidebar/Sidebar";
 import UserMenu from "../UserMenu/UserMenu";
@@ -55,7 +55,7 @@ const Home: React.FC<HomeProps> = () => {
     if (isNewUser) {
       onOpen();
     }
-  }, [enrichedUserData]);
+  }, [enrichedUserData, params.groupId, isNewUser, onOpen]);
 
   useEffect(() => {
     if (panelShowing !== "default") {
@@ -72,7 +72,7 @@ const Home: React.FC<HomeProps> = () => {
       newMsg.roomId = roomId;
 
       if (socketSubscribed) {
-        setNewMessages(() => [...newMessages, newMsg]);
+        setNewMessages((newMessages: any[]) => [...newMessages, newMsg]);
       }
     });
     if (currentConvoRef.current) {

@@ -8,9 +8,8 @@ import {
 } from "@chakra-ui/react";
 import searchStyles from "./Search.module.css";
 import styles from "../ConversationsList/ConversationsList.module.css";
-import { useAuth } from "../../context/authContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ChangeEvent, ChangeEventHandler, RefObject, useState } from "react";
+import { ChangeEvent, RefObject, useState } from "react";
 import { searchForUser } from "../../utilities/database";
 import SearchResult from "./SearchResult";
 
@@ -29,7 +28,6 @@ const Search: React.FC<SearchProps> = ({
   bgColor,
   homeRef,
 }) => {
-  const { enrichedUserData } = useAuth();
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const searchInputColor = useColorModeValue("brand.gray", "brand.darkgray");

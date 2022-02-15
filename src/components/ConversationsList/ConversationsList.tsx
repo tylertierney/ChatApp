@@ -1,7 +1,6 @@
 import {
   Divider,
   Flex,
-  Icon,
   IconButton,
   Text,
   useColorModeValue,
@@ -42,6 +41,20 @@ const ConversationsList: React.FC<ConvoListProps> = ({
     }
   }
 
+  const roomsArr = rooms.map((rm: any, idx: any) => {
+    const filteredNewMessages = newMessages.filter(
+      (msg: any) => msg.roomId === rm.id
+    );
+    return (
+      <ConvoListItem
+        key={idx}
+        room={rm}
+        setActiveRoom={setActiveRoom}
+        newMessages={filteredNewMessages}
+      />
+    );
+  });
+
   return (
     <Flex
       className={styles.convosContainer}
@@ -62,14 +75,15 @@ const ConversationsList: React.FC<ConvoListProps> = ({
       </Flex>
       <Divider />
       <Flex className={styles.roomsContainer}>
-        {rooms.map((rm: any, idx: any) => (
+        {/* {rooms.map((rm: any, idx: any) => (
           <ConvoListItem
             key={idx}
             room={rm}
             setActiveRoom={setActiveRoom}
             newMessages={newMessages}
           />
-        ))}
+        ))} */}
+        {roomsArr}
       </Flex>
       <Search
         isSearching={isSearching}

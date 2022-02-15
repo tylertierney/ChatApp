@@ -1,24 +1,10 @@
 import {
   Modal,
   ModalContent,
-  ModalBody,
-  Button,
   ModalOverlay,
-  ModalFooter,
-  Heading,
-  Icon,
-  Flex,
   useColorModeValue,
-  FormControl,
-  Text,
 } from "@chakra-ui/react";
-import { RefObject, useState } from "react";
-import { BsGearFill } from "react-icons/bs";
-import StyledInput from "../StyledInput/StyledInput";
-import SubmitBtn from "../Login/SubmitBtn";
-import UserAvatar from "../UserAvatar/UserAvatar";
-import { useAuth } from "../../context/authContext";
-import { createNewRoom } from "../../utilities/database";
+import { RefObject } from "react";
 import NewRoomTemplate from "./NewRoomTemplate";
 import CustomizeProfileTemplate from "./CustomizeProfileTemplate";
 

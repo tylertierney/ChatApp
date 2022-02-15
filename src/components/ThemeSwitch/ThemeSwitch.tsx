@@ -12,7 +12,6 @@ const ThemeSwitch: React.FC = () => {
   const icon = useColorModeValue(moonIcon, sunIcon);
 
   const active = useColorModeValue(false, true);
-  const setActive = toggleColorMode;
 
   return (
     <button style={{ appearance: "none" }} onClick={toggleColorMode}>

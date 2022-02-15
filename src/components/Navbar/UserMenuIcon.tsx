@@ -42,6 +42,7 @@ const UserMenuIcon: React.FC<UserMenuIconProps> = ({
         enrichedUserData={enrichedUserData}
         showStatus={true}
         src={enrichedUserData["photoURL"] || ""}
+        status={enrichedUserData["isActive"]}
       />
     </Button>
   );

@@ -6,16 +6,17 @@ interface UserAvatarProps {
   size: string;
   showStatus: boolean;
   src?: string;
+  status?: boolean;
 }
 const UserAvatar: React.FC<UserAvatarProps> = ({
   enrichedUserData,
   size,
   showStatus,
   src,
+  status,
 }) => {
   const borderColor = useColorModeValue("brand.hovergraydark", "white");
 
-  let result = { userName: "", userPhoto: "" };
   let userName, userPhoto;
 
   if (enrichedUserData["displayName"]) {
@@ -57,15 +58,16 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         overflow="hidden"
         borderColor={borderColor}
         bgColor={src ? "white" : ""}
+        name={userName}
       />
       {showStatus && (
         <Flex
-          width="10px"
-          height="10px"
+          width="12px"
+          height="12px"
           position="absolute"
           borderRadius="50%"
-          backgroundColor="lightgreen"
-          bottom="0"
+          backgroundColor={status ? "lightgreen" : "orange"}
+          bottom="-1px"
           right="0"
           border="2px solid"
           borderColor={borderColor}

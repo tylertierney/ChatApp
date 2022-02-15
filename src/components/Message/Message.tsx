@@ -1,7 +1,6 @@
 import { Flex, Text, Avatar, useColorModeValue } from "@chakra-ui/react";
 import styles from "./Message.module.css";
 import { useAuth } from "../../context/authContext";
-import UserAvatar from "../UserAvatar/UserAvatar";
 
 interface MessageProps {
   message: any;
@@ -69,6 +68,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       pl={incoming ? "0" : "1rem"}
       pr={incoming ? "1rem" : "0"}
       pt={isThreaded ? "0" : ""}
+      onClick={() => console.log(message)}
     >
       {incoming ? (
         <>

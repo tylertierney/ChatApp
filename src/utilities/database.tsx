@@ -3,6 +3,7 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import { formatDate } from "./ui";
 
 export const generateUUID = () => {
   return uuidv4();
@@ -75,12 +76,92 @@ export const getRoomFromID = async (roomId: string) => {
 };
 
 export const enrichUserData = async (userFromDatabase: any) => {
-  for (let i = 0; i < userFromDatabase.rooms.length; i++) {
-    let rm = userFromDatabase.rooms[i];
-    const roomData = await getRoomFromID(rm);
-    userFromDatabase.rooms[i] = roomData;
-  }
+  // At this point each "room" is an ID reference to a room.
+  // Below, we go through each room and get the enriched version,
+
+  const enrichedRooms = await Promise.all(
+    userFromDatabase.rooms.map(async (rm: any) => {
+      const updatedRoom = await getRoomFromID(rm);
+
+      // Then through each member and enrich each with the photoURL field
+      // We also initiate a dictionary to use as a reference with the user's
+      // in-group displayName. This will help when we enrich the messages.
+      const dictionary: any = {};
+      const enrichedMembers = await Promise.all(
+        updatedRoom.members.map(async (member: any) => {
+          dictionary[member.uid] = {
+            displayName: member.nameInGroup,
+            photoURL: member.photoURL,
+          };
+          if (member.uid === "chatmosbot") {
+            member.photoURL = process.env.REACT_APP_CHATBOT_PROFILE_PIC_URL;
+            return member;
+          }
+          const updatedMember = await searchForUser(member.uid);
+          member.photoURL = updatedMember.photoURL;
+
+          return member;
+        })
+      );
+
+      // Now we loop through messages and enrich them with fields like
+      // displayName, photoURL, formattedDate, and isThreaded
+      const enrichedMessages = enrichMessages(
+        updatedRoom.messages,
+        dictionary,
+        updatedRoom.id
+      );
+
+      updatedRoom.messages = enrichedMessages;
+      updatedRoom.members = enrichedMembers;
+      return updatedRoom;
+    })
+  );
+  userFromDatabase.rooms = enrichedRooms;
+
   return userFromDatabase;
+};
+
+export const enrichMessages = (
+  messages: any[],
+  dictionary: any,
+  roomId: string
+) => {
+  let prevMsgSender = "";
+  let prevMsgTime = -Infinity;
+  const enrichedMessages = messages.map((msg: any) => {
+    msg.roomId = roomId;
+    msg.displayName = dictionary[`${msg.uid}`].displayName;
+    msg.photoURL = dictionary[`${msg.uid}`].photoURL;
+    const { date } = msg;
+    let isoString;
+    switch (typeof date) {
+      case "string":
+        isoString = date;
+        break;
+      default:
+        isoString = new Date(date.toDate()).toISOString();
+    }
+    const currentTimeInSeconds = Math.round(new Date().getTime() / 1000);
+    const messageTimeInSeconds = Math.round(
+      new Date(isoString).getTime() / 1000
+    );
+    const difference = currentTimeInSeconds - messageTimeInSeconds;
+    const parsedDate = formatDate(isoString, difference);
+    msg.formattedDate = parsedDate;
+
+    let isThreaded = false;
+    if (messageTimeInSeconds - prevMsgTime < 60 && prevMsgSender === msg.uid) {
+      isThreaded = true;
+    }
+    msg.isThreaded = isThreaded;
+
+    prevMsgSender = msg.uid;
+    prevMsgTime = messageTimeInSeconds;
+
+    return msg;
+  });
+  return enrichedMessages;
 };
 
 export const searchForUser = async (userId: string) => {
@@ -138,7 +219,6 @@ export const updateUserProfile = async (uid: string, newData: any) => {
   if (!auth.currentUser) return null;
 
   // First, update the user in the users database in Firestore
-  const userObj = await searchForUser(uid);
   await updateDoc(doc(db, "users", uid), newData);
 
   // Then, update the user profile in Firebase Auth
@@ -146,4 +226,10 @@ export const updateUserProfile = async (uid: string, newData: any) => {
 
   // TODO: add a .then/.catch in order to return a success or error response
   // Then, use the toast context to display this to the user
+};
+
+export const updateUserProfileOnlyInDB = async (uid: string, newData: any) => {
+  if (!auth.currentUser) return null;
+
+  await updateDoc(doc(db, "users", uid), newData);
 };

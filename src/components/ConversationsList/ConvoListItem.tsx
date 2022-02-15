@@ -9,10 +9,8 @@ import {
 } from "@chakra-ui/react";
 import styles from "./ConversationsList.module.css";
 import { MdArrowForwardIos } from "react-icons/md";
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { usePanelShowing } from "../../App";
-import { searchForUser } from "../../utilities/database";
 import { useAuth } from "../../context/authContext";
 
 interface ConvoListItemProps {
@@ -26,8 +24,6 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
   setActiveRoom,
   newMessages,
 }) => {
-  const { enrichedUserData } = useAuth();
-  const { setPanelShowing } = usePanelShowing();
   const bgColor = useColorModeValue(
     "rgba(242, 246, 247, 1)",
     "rgba(67, 67, 84, 1)"
@@ -36,10 +32,11 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     "rgba(242, 246, 247, 0)",
     "rgba(67, 67, 84, 0)"
   );
-  const [enrichedRoom, setEnrichedRoom] = useState(room.members);
-
   const linkBaseClass = styles.linkComponent;
   const linkActiveClass = styles.linkComponentActive;
+
+  const { enrichedUserData } = useAuth();
+  const { setPanelShowing } = usePanelShowing();
 
   let mostRecentMsg: string | null = null;
 
@@ -51,43 +48,16 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     mostRecentMsg = newMessages[newMessages.length - 1].text;
   }
 
+  let targetUser = room.members.filter(
+    (member: any) => member.uid !== enrichedUserData["uid"]
+  );
+  targetUser = targetUser[0];
+
   const handleClick = (room: any) => {
     setPanelShowing("default");
     setActiveRoom(room);
+    console.log(room);
   };
-
-  const [targetUser, setTargetUser] = useState({
-    nameInGroup: "",
-    photoURL: "",
-    uid: "",
-  });
-
-  const enrichRoomMembers = (room: any) => {
-    const newMembers = room.members.map((member: any) => {
-      if (member.uid !== enrichedUserData["uid"]) {
-        setTargetUser(member);
-      }
-      searchForUser(member.uid)
-        .then((res) => {
-          member.photoURL = res.photoURL;
-        })
-        .catch((err) => console.log(err));
-
-      if (member.uid === "chatmosbot") {
-        member.photoURL =
-          "https://firebasestorage.googleapis.com/v0/b/chatapp-dadb0.appspot.com/o/chatmosbot.png?alt=media&token=f8abab1f-e200-4130-b0ca-aabeff83fd56";
-      }
-
-      return member;
-    });
-    room.members = newMembers;
-    return room;
-  };
-
-  useEffect(() => {
-    const newRoom = enrichRoomMembers(room);
-    setEnrichedRoom(newRoom);
-  }, []);
 
   return (
     <>
@@ -96,7 +66,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
         className={({ isActive }) =>
           isActive ? linkActiveClass : linkBaseClass
         }
-        onClick={() => handleClick(enrichedRoom)}
+        onClick={() => handleClick(room)}
       >
         <Button
           bgColor="unset"
@@ -110,10 +80,11 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
           <Avatar
             size="md"
             mr="10px"
-            iconLabel={room.name}
+            iconLabel={targetUser.nameInGroup}
             name={targetUser.nameInGroup}
             src={targetUser.photoURL}
             boxShadow="0px 0px 10px 1px rgb(0, 0, 0, 0.2)"
+            bgColor={targetUser.photoURL && "white"}
           />
           <Flex className={styles.listItemTextContainer}>
             <Text className={styles.liHeader}>{targetUser.nameInGroup}</Text>

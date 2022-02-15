@@ -53,14 +53,6 @@ const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const welcomeRoomObj = generateWelcomeRoom(
-          user.email,
-          user.uid,
-          user.displayName
-        );
-        const welcomeRoomId = welcomeRoomObj.id;
-        const userObj = generateUserDBobject(user, welcomeRoomId);
-
         setCurrentUser(user);
         setPending(false);
         const docRef = doc(db, "users", user.uid);
@@ -68,6 +60,13 @@ const AuthProvider = ({ children }: any) => {
 
         // This is a new signup
         if (!docSnap.exists()) {
+          const welcomeRoomObj = generateWelcomeRoom(
+            user.email,
+            user.uid,
+            user.displayName
+          );
+          const welcomeRoomId = welcomeRoomObj.id;
+          const userObj = generateUserDBobject(user, welcomeRoomId);
           const uid = user.uid;
           try {
             setIsNewUser(true);
@@ -94,7 +93,7 @@ const AuthProvider = ({ children }: any) => {
         // This listens for changes to the user object in firestore
         // and keeps the UI in-sync with any changes to any field
 
-        const unsub = onSnapshot(doc(db, "users", user.uid), async (doc) => {
+        onSnapshot(doc(db, "users", user.uid), async (doc) => {
           const data = { ...doc.data() };
           const enriched = await enrichUserData(data);
           setEnriched(enriched);

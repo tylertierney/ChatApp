@@ -17,8 +17,8 @@ import UserMenuItem from "./UserMenuItem";
 import { useToast } from "../../context/Toast/Toast";
 import { RefObject, useEffect, useState } from "react";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
-import { usePanelShowing } from "../../App";
 import InfoModal from "../Modal/InfoModal";
+import { updateUserProfileOnlyInDB } from "../../utilities/database";
 
 interface UserMenuProps {
   homeRef: RefObject<HTMLDivElement>;
@@ -30,24 +30,29 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
   const { onCopy } = useClipboard(uid);
 
   useEffect(() => {
-    if (enrichedUserData && enrichedUserData["uid"]) {
+    if (
+      enrichedUserData &&
+      enrichedUserData["uid"] &&
+      enrichedUserData["isActive"] !== null
+    ) {
       setUid(enrichedUserData["uid"]);
+      setActiveStatus(enrichedUserData["isActive"]);
+      console.log(enrichedUserData["isActive"]);
     }
   }, [enrichedUserData]);
+
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
   const [activeStatus, setActiveStatus] = useState(true);
 
   const { addToast } = useToast();
 
-  if (!enrichedUserData) return null;
-
+  if (!enrichedUserData || enrichedUserData["isActive"] == null) return null;
   if (!currentUser) return null;
 
   const clickHandlerForToast = () => {
     if (uid) {
       onCopy();
     }
-
     addToast({ type: "info", text: "User ID Copied!" });
   };
 
@@ -63,6 +68,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
 
   const openModal = () => {
     onOpen();
+  };
+
+  const changeUserStatus = (uid: string, oldActiveStatus: boolean) => {
+    updateUserProfileOnlyInDB(uid, { isActive: !oldActiveStatus });
+    setActiveStatus(!oldActiveStatus);
   };
 
   return (
@@ -106,8 +116,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
         <Divider />
         <UserMenuItem
           textColor={textColor}
-          // clickHandler={() => setActiveStatus(!activeStatus)}
-          clickHandler={() => console.log(enrichedUserData)}
+          clickHandler={() => changeUserStatus(uid, activeStatus)}
+          // clickHandler={() => console.log(enrichedUserData)}
         >
           <>
             <Text as="span" fontSize="1.25rem">

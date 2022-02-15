@@ -1,7 +1,5 @@
 import { Button, Divider, useColorModeValue } from "@chakra-ui/react";
-import { MouseEventHandler, ReactChild, TouchEventHandler } from "react";
-import { useToast } from "../../context/Toast/Toast";
-import { useAuth } from "../../context/authContext";
+import { ReactChild } from "react";
 import styles from "./UserMenu.module.css";
 interface UserMenuItemProps {
   textColor: string;

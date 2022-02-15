@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
@@ -11,7 +11,6 @@ import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import Home from "./components/Home/Home";
 import CurrentConversation from "./components/CurrentConversation/CurrentConversation";
-import ToastProvider from "./context/Toast/Toast";
 
 ReactDOM.render(
   <React.StrictMode>

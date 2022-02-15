@@ -3,17 +3,14 @@ import {
   Text,
   ModalBody,
   FormControl,
-  useColorModeValue,
   ModalFooter,
   Button,
-  IconButton,
   Icon,
 } from "@chakra-ui/react";
 import UserAvatar from "../UserAvatar/UserAvatar";
-import { BsGearFill } from "react-icons/bs";
 import { useAuth } from "../../context/authContext";
 import ModalHeader from "./ModalHeader";
-import { createNewRoom, updateUserProfile } from "../../utilities/database";
+import { updateUserProfile } from "../../utilities/database";
 import React, { useState } from "react";
 import StyledInput from "../StyledInput/StyledInput";
 import SubmitBtn from "../Login/SubmitBtn";

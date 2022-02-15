@@ -1,5 +1,5 @@
-import { Flex, Icon, useColorModeValue } from "@chakra-ui/react";
-import { ReactChild, ReactChildren } from "react";
+import { Flex, useColorModeValue } from "@chakra-ui/react";
+import { ReactChild } from "react";
 
 import styles from "./Sidebar.module.css";
 import ViewBtn from "./ViewBtn";
