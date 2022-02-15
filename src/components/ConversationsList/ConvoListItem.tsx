@@ -56,7 +56,6 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
   const handleClick = (room: any) => {
     setPanelShowing("default");
     setActiveRoom(room);
-    console.log(room);
   };
 
   return (

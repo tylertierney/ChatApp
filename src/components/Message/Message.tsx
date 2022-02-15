@@ -68,7 +68,6 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       pl={incoming ? "0" : "1rem"}
       pr={incoming ? "1rem" : "0"}
       pt={isThreaded ? "0" : ""}
-      onClick={() => console.log(message)}
     >
       {incoming ? (
         <>

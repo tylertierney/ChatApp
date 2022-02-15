@@ -116,7 +116,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
         <UserMenuItem
           textColor={textColor}
           clickHandler={() => changeUserStatus(uid, activeStatus)}
-          // clickHandler={() => console.log(enrichedUserData)}
         >
           <>
             <Text as="span" fontSize="1.25rem">

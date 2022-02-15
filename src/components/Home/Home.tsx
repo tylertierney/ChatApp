@@ -74,10 +74,7 @@ const Home: React.FC<HomeProps> = () => {
   useEffect((): any => {
     // SocketSubscribed is used to prevent memory leaks
     let socketSubscribed = true;
-    // const roomId = activeRoom["id"];
-    // socket.emit("joinRoom", roomId);
     socket.on("message", (msg: message, roomId: string) => {
-      console.log(msg);
       addNewMessageToDb(msg, roomId);
       let newMsg: any = { ...msg };
       newMsg.roomId = roomId;

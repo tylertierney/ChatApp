@@ -63,8 +63,6 @@ const ConversationsList: React.FC<ConvoListProps> = ({
     if (timeOfA < timeOfB) {
       return 1;
     }
-
-    // names must be equal
     return 0;
   });
 

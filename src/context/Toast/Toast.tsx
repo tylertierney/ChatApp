@@ -41,7 +41,6 @@ const ToastProvider: React.FC<ToastContextProps> = ({ children }) => {
     useEffect(() => {
       const timer = setTimeout(() => {
         setToasts((toasts) => toasts.filter((t) => t.id !== id));
-        console.log(toasts.filter((t) => t.id !== id));
       }, 4000);
 
       return () => {
