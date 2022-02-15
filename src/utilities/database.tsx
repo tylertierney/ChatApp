@@ -27,12 +27,12 @@ export const generateWelcomeRoom = (
       {
         uid: "chatmosbot",
         date: new Date(),
-        text: "Welcome to Chatmosphere!",
+        text: "I'm not a real person. And I'm not one of those fancy bots that will respond to you.",
       },
       {
         uid: "chatmosbot",
         date: new Date(),
-        text: "I'm not a real person. Speaking to me will do nothing for you. This is your first conversation. ",
+        text: "Welcome to Chatmosphere!",
       },
     ],
   };

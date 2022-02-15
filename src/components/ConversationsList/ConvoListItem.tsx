@@ -58,6 +58,9 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     setActiveRoom(room);
   };
 
+  console.log(targetUser);
+  console.log(room.members);
+
   return (
     <>
       <NavLink
