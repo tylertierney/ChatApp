@@ -24,9 +24,9 @@ const app = initializeApp(firebaseConfig);
 export const storage = getStorage();
 // export const storageRef = ref(storage);
 export const auth = getAuth(app);
-connectAuthEmulator(auth, "http://localhost:9099");
+// connectAuthEmulator(auth, "http://localhost:9099");
 export const db = getFirestore();
-connectFirestoreEmulator(db, "localhost", 8080);
+// connectFirestoreEmulator(db, "localhost", 8080);
 // const analytics = getAnalytics(app);
 
 export default app;
