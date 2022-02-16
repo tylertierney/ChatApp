@@ -62,8 +62,6 @@ const CustomizeProfileTemplate: React.FC<CustomizeProfileTemplateProps> = ({
 
     const uid = enrichedUserData["uid"];
 
-    console.log(enrichedUserData);
-
     if (username !== enrichedUserData["displayName"]) {
       updateUserProfile(uid, { displayName: username });
       addToast({ type: "info", text: "Username updated!" });
