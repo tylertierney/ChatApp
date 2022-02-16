@@ -52,7 +52,7 @@ const ConversationsList: React.FC<ConvoListProps> = ({
       typeof mostRecentMsgA.date !== "string" ||
       typeof mostRecentMsgB.date !== "string"
     ) {
-      return 0;
+      return 1;
     }
     const timeOfA = mostRecentMsgA.date;
     const timeOfB = mostRecentMsgB.date;
@@ -66,7 +66,7 @@ const ConversationsList: React.FC<ConvoListProps> = ({
     return 0;
   });
 
-  const roomsArr = sortedRoomsArr.map((rm: any, idx: any) => {
+  const roomsArr = sortedRoomsArr.map((rm: any, idx: number) => {
     const filteredNewMessages = newMessages.filter(
       (msg: any) => msg.roomId === rm.id
     );

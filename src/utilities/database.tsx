@@ -221,6 +221,8 @@ export const updateUserProfile = async (uid: string, newData: any) => {
   // First, update the user in the users database in Firestore
   await updateDoc(doc(db, "users", uid), newData);
 
+  // await updateDoc(doc(db, "rooms", ""))
+
   // Then, update the user profile in Firebase Auth
   await updateProfile(auth.currentUser, newData);
 

@@ -44,18 +44,9 @@ const Navbar: React.FC<NavProps> = ({ panelShowing, setPanelShowing }) => {
         align="center"
         justify="center"
       >
-        <Link
-          to="/"
-          style={{
-            height: "100%",
-            width: "100%",
-            position: "relative",
-            top: "0",
-            left: "0",
-          }}
-        >
+        <Flex height="100%" w="100%" position="relative">
           <Logo />
-        </Link>
+        </Flex>
       </Flex>
       <Flex align="center">
         <ThemeSwitch />

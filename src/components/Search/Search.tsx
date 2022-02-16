@@ -12,6 +12,8 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ChangeEvent, RefObject, useState } from "react";
 import { searchForUser } from "../../utilities/database";
 import SearchResult from "./SearchResult";
+import { useAuth } from "../../context/authContext";
+import LoadingDots from "../LoadingDots/LoadingDots";
 
 interface SearchProps {
   isSearching: boolean;
@@ -31,8 +33,13 @@ const Search: React.FC<SearchProps> = ({
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const searchInputColor = useColorModeValue("brand.gray", "brand.darkgray");
+  const { enrichedUserData } = useAuth();
 
   const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === enrichedUserData["uid"]) {
+      setResults([]);
+      return;
+    }
     setSearchText(e.target.value);
     if (!e.target.value) {
       setResults([]);
@@ -78,13 +85,18 @@ const Search: React.FC<SearchProps> = ({
           color="white"
         />
       </Flex>
-      <Flex className={styles.groupControls}>
+      {/* <Flex className={styles.groupControls}>
         <Text
           className={styles.groupTitle}
         >{`Results (${results.length})`}</Text>
-      </Flex>
-      {results.length > 0 && (
+      </Flex> */}
+      {results.length > 0 ? (
         <>
+          <Flex className={styles.groupControls}>
+            <Text
+              className={styles.groupTitle}
+            >{`Results (${results.length})`}</Text>
+          </Flex>
           <Divider />
           {results.map((res: any, idx: any) => (
             <>
@@ -98,6 +110,22 @@ const Search: React.FC<SearchProps> = ({
             </>
           ))}
         </>
+      ) : (
+        <Flex
+          w="100%"
+          h="100%"
+          justify="flex-start"
+          align="center"
+          paddingX="1rem"
+          direction="column"
+        >
+          <Flex mt="4rem">
+            <LoadingDots size="20px" />
+          </Flex>
+          <Text w="100%" textAlign="center" mt="1rem">
+            Paste a User ID into the search bar to find someone.
+          </Text>
+        </Flex>
       )}
     </Flex>
   );

@@ -52,6 +52,7 @@ const ConvoListItem: React.FC<ConvoListItemProps> = ({
     (member: any) => member.uid !== enrichedUserData["uid"]
   );
   targetUser = targetUser[0];
+  if (!targetUser) return null;
 
   const handleClick = (room: any) => {
     setPanelShowing("default");

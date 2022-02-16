@@ -30,6 +30,8 @@ const Message: React.FC<MessageProps> = ({ message }) => {
         iconLabel={uid + " avatar"}
         bgColor={photoURL ? "white" : ""}
         boxShadow="0px 0px 10px 1px rgb(0, 0, 0, 0.2)"
+        height="40px"
+        width="40px"
       />
     </Flex>
   );
