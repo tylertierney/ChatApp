@@ -15,7 +15,10 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   src,
   status,
 }) => {
-  const borderColor = useColorModeValue("brand.hovergraydark", "white");
+  const borderColor = useColorModeValue(
+    "brand.hovergraydark",
+    "rgb(0, 0, 0, 0.2)"
+  );
 
   let userName, userPhoto;
 
@@ -24,6 +27,8 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   } else {
     if (enrichedUserData["email"]) {
       userName = enrichedUserData["email"];
+    } else if (enrichedUserData["nameInGroup"]) {
+      userName = enrichedUserData["nameInGroup"];
     }
   }
 
@@ -46,6 +51,12 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     mt = "2.2rem";
   }
 
+  let height, width;
+  if (size === "sm") {
+    height = "38px";
+    width = "38px";
+  }
+
   return (
     <Flex align="center" justify="center" position="relative">
       <Avatar
@@ -53,12 +64,14 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         cursor="poiner"
         src={src || userPhoto}
         icon={<Icon as={FaUserAlt} fontSize={fontSize} mt={mt} />}
-        borderWidth="2px"
+        borderWidth={size === "sm" ? "1px" : "2px"}
         borderStyle="solid"
         overflow="hidden"
-        borderColor={borderColor}
+        borderColor="rgb(0, 0, 0, 0.2)"
         bgColor={src ? "white" : ""}
         name={userName}
+        height={height}
+        width={width}
       />
       {showStatus && (
         <Flex
@@ -69,7 +82,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
           backgroundColor={status ? "lightgreen" : "orange"}
           bottom="-1px"
           right="0"
-          border="2px solid"
+          border="1.5px solid"
           borderColor={borderColor}
         ></Flex>
       )}

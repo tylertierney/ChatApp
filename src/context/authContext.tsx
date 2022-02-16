@@ -38,6 +38,7 @@ const initial = {
     rooms: [],
     isActive: true,
   },
+  // setEnriched: (prev: any) => "hi",
 };
 
 export const AuthContext = createContext(initial);
@@ -94,6 +95,7 @@ const AuthProvider = ({ children }: any) => {
         // and keeps the UI in-sync with any changes to any field
 
         onSnapshot(doc(db, "users", user.uid), async (doc) => {
+          // THESE NEXT 3 LINES WORK - DONT CHANGE
           const data = { ...doc.data() };
           const enriched = await enrichUserData(data);
           setEnriched(enriched);
@@ -114,6 +116,7 @@ const AuthProvider = ({ children }: any) => {
     isNewUser,
     setIsNewUser,
     enrichedUserData,
+    // setEnriched,
   };
 
   return <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>;

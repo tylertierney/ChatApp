@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import { Outlet, useOutletContext } from "react-router-dom";
 import { addNewMessageToDb } from "../../utilities/database";
 import InfoModal from "../Modal/InfoModal";
+import RoomToolbar from "../RoomToolbar/RoomToolbar";
 
 interface HomeRefType {
   homeRef: any;
@@ -28,8 +29,13 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const homeRef = useRef(null);
-  const { enrichedUserData, isNewUser } = useAuth();
+  const homeRef = useRef<any>(null);
+  const {
+    enrichedUserData,
+    isNewUser,
+    // setEnriched,
+    currentUser,
+  } = useAuth();
   const { panelShowing, setPanelShowing } = usePanelShowing();
   const params = useParams();
 
@@ -61,6 +67,8 @@ const Home: React.FC<HomeProps> = () => {
     if (panelShowing !== "default") {
       setPanelShowing("default");
     }
+
+    homeRef.current.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
@@ -85,12 +93,31 @@ const Home: React.FC<HomeProps> = () => {
     });
     if (currentConvoRef.current) {
       handleSmoothScroll(currentConvoRef);
+      setConvoRefScrollTop(currentConvoRef.current.scrollTop);
     }
 
     return () => {
       socketSubscribed = false;
     };
   }, [activeRoom.id]);
+
+  const [showRoomToolbar, setShowRoomToolbar] = useState(false);
+  const [convoRefScrollTop, setConvoRefScrollTop] = useState(0);
+
+  const handleConvoScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollTop = currentConvoRef.current.scrollTop;
+    if (scrollTop < convoRefScrollTop - 10) {
+      setShowRoomToolbar(true);
+    }
+    if (scrollTop > convoRefScrollTop) {
+      setShowRoomToolbar(false);
+    }
+    setConvoRefScrollTop(scrollTop);
+  };
+
+  useEffect(() => {
+    handleSmoothScroll(currentConvoRef);
+  }, [newMessages.length]);
 
   return (
     <Flex
@@ -124,7 +151,13 @@ const Home: React.FC<HomeProps> = () => {
           className={styles.messagesWindow}
           direction="column"
           ref={currentConvoRef}
+          onScroll={(e) => handleConvoScroll(e)}
         >
+          <RoomToolbar
+            showRoomToolbar={showRoomToolbar}
+            homeRef={homeRef}
+            activeRoom={activeRoom}
+          />
           <Outlet context={{ newMessages, activeRoom, setActiveRoom }} />
         </Flex>
         <InputGroup

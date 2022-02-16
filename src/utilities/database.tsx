@@ -77,7 +77,7 @@ export const getRoomFromID = async (roomId: string) => {
 
 export const enrichUserData = async (userFromDatabase: any) => {
   // At this point each "room" is an ID reference to a room.
-  // Below, we go through each room and get the enriched version,
+  // Below, we go through each room and get the enriched version
 
   const enrichedRooms = await Promise.all(
     userFromDatabase.rooms.map(async (rm: any) => {
@@ -232,4 +232,20 @@ export const updateUserProfileOnlyInDB = async (uid: string, newData: any) => {
   if (!auth.currentUser) return null;
 
   await updateDoc(doc(db, "users", uid), newData);
+};
+
+export const updateNameInRoom = async (
+  uid: string,
+  newUsername: string,
+  roomId: string
+) => {
+  const roomData = await getRoomFromID(roomId);
+  const newRoomMembers = roomData.members.map((member: any) => {
+    if (member.uid === uid) {
+      member.nameInGroup = newUsername;
+    }
+    return member;
+  });
+
+  await updateDoc(doc(db, "rooms", roomId), { members: newRoomMembers });
 };

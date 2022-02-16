@@ -34,7 +34,7 @@ const CurrentConversation: React.FC<CurrentConvoProps> = () => {
 
   return (
     <>
-      {activeRoom.messages.length === 0 && filteredNewMessages.length === 0
+      {enriched.length === 0
         ? noMessagesPlaceholder
         : enriched.map((msg: any, idx: any) => {
             return <Message key={idx} message={msg} />;
