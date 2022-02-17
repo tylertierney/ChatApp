@@ -85,11 +85,6 @@ const Search: React.FC<SearchProps> = ({
           color="white"
         />
       </Flex>
-      {/* <Flex className={styles.groupControls}>
-        <Text
-          className={styles.groupTitle}
-        >{`Results (${results.length})`}</Text>
-      </Flex> */}
       {results.length > 0 ? (
         <>
           <Flex className={styles.groupControls}>
@@ -99,15 +94,12 @@ const Search: React.FC<SearchProps> = ({
           </Flex>
           <Divider />
           {results.map((res: any, idx: any) => (
-            <>
-              <SearchResult
-                key={idx}
-                result={res}
-                homeRef={homeRef}
-                setIsSearching={setIsSearching}
-              />
-              <Divider />
-            </>
+            <SearchResult
+              key={idx}
+              result={res}
+              homeRef={homeRef}
+              setIsSearching={setIsSearching}
+            />
           ))}
         </>
       ) : (
