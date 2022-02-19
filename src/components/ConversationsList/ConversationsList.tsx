@@ -70,7 +70,6 @@ const ConversationsList: React.FC<ConvoListProps> = ({
     const filteredNewMessages = newMessages.filter(
       (msg: any) => msg.roomId === rm.id
     );
-    console.log(rm);
     return (
       <ConvoListItem
         key={idx}

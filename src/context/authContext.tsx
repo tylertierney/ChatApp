@@ -54,7 +54,6 @@ const AuthProvider = ({ children }: any) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [pending, setPending] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
-  // const [enrichedUserData, setEnriched] = useState<any>(null);
 
   const navigate = useNavigate();
 
@@ -92,7 +91,6 @@ const AuthProvider = ({ children }: any) => {
         else {
           const userFromDatabase = { ...docSnap.data() };
           const enriched = await enrichUserData(userFromDatabase);
-          console.log(enriched);
           enrichInitiallyFromDatabase(enriched);
           navigate(`/${user.uid}/${userFromDatabase.rooms[0].id}`, {
             replace: true,
