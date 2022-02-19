@@ -10,7 +10,7 @@ import UserAvatar from "../UserAvatar/UserAvatar";
 import { useAuth } from "../../context/authContext";
 import ModalHeader from "./ModalHeader";
 import { createNewRoom } from "../../utilities/database";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StyledInput from "../StyledInput/StyledInput";
 import SubmitBtn from "../Login/SubmitBtn";
 
@@ -30,6 +30,13 @@ const NewRoomTemplate: React.FC<NewRoomTemplateProps> = ({
   const { enrichedUserData } = useAuth();
   const [username, setUsername] = useState("");
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (targetUser.uid === enrichedUserData.uid) {
+      setError("You can't start a chat with yourself");
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,6 +75,14 @@ const NewRoomTemplate: React.FC<NewRoomTemplateProps> = ({
             {targetUser["displayName"] || targetUser["email"] || "Anonymous"}
           </Text>
         </Flex>
+        <Text
+          mb="0.4rem"
+          fontSize="0.9rem"
+          textAlign="center"
+          color="var(--errorTextColor)"
+        >
+          {error}
+        </Text>
         <Text mb="1rem">
           Choose your username. It will only be visible to other members of this
           chat.
@@ -90,7 +105,7 @@ const NewRoomTemplate: React.FC<NewRoomTemplateProps> = ({
           Cancel
         </Button>
         <Flex w="100px" h="100%" align="center">
-          <SubmitBtn text="Confirm" pending={pending} />
+          <SubmitBtn text="Confirm" pending={pending} error={error} />
         </Flex>
       </ModalFooter>
     </form>

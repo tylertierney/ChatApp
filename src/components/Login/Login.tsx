@@ -49,10 +49,6 @@ const Login: React.FC = () => {
       });
   };
 
-  if (error) {
-    console.log(error["message"]);
-  }
-
   const dividerColor = useColorModeValue("brand.text.dark", "brand.text.light");
 
   return (

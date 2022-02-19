@@ -163,7 +163,12 @@ const CustomizeProfileTemplate: React.FC<CustomizeProfileTemplateProps> = ({
         <Text mb="1rem" fontSize="0.9rem">
           You can change your username and profile picture any time.
         </Text>
-        <Text mb="1rem" fontSize="0.9rem" textAlign="center" color="orange">
+        <Text
+          mb="1rem"
+          fontSize="0.9rem"
+          textAlign="center"
+          color="var(--errorTextColor)"
+        >
           {error}
         </Text>
       </ModalBody>

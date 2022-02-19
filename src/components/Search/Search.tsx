@@ -36,15 +36,15 @@ const Search: React.FC<SearchProps> = ({
   const { enrichedUserData } = useAuth();
 
   const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === enrichedUserData["uid"]) {
-      setResults([]);
-      return;
-    }
     setSearchText(e.target.value);
     if (!e.target.value) {
       setResults([]);
       return;
     }
+    // if (e.target.value === enrichedUserData["uid"]) {
+    //   setResults([]);
+    //   return;
+    // }
     const res = await searchForUser(e.target.value);
     if (!res.uid) {
       setResults([]);
