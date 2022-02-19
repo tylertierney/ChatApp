@@ -38,7 +38,6 @@ const initial = {
     rooms: [],
     isActive: true,
   },
-  // setEnriched: (prev: any) => "hi",
 };
 
 export const AuthContext = createContext(initial);
