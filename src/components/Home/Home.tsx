@@ -30,12 +30,7 @@ interface HomeProps {}
 const Home: React.FC<HomeProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const homeRef = useRef<any>(null);
-  const {
-    enrichedUserData,
-    isNewUser,
-    // setEnriched,
-    currentUser,
-  } = useAuth();
+  const { enrichedUserData, isNewUser } = useAuth();
   const { panelShowing, setPanelShowing } = usePanelShowing();
   const params = useParams();
 
@@ -67,7 +62,6 @@ const Home: React.FC<HomeProps> = () => {
     if (panelShowing !== "default") {
       setPanelShowing("default");
     }
-
     homeRef.current.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
@@ -99,7 +93,7 @@ const Home: React.FC<HomeProps> = () => {
     return () => {
       socketSubscribed = false;
     };
-  }, [activeRoom.id]);
+  }, [activeRoom]);
 
   const [showRoomToolbar, setShowRoomToolbar] = useState(false);
   const [convoRefScrollTop, setConvoRefScrollTop] = useState(0);
@@ -118,6 +112,8 @@ const Home: React.FC<HomeProps> = () => {
   useEffect(() => {
     handleSmoothScroll(currentConvoRef);
   }, [newMessages.length]);
+
+  if (!enrichedUserData) return null;
 
   return (
     <Flex

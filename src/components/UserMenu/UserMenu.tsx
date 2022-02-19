@@ -24,7 +24,7 @@ interface UserMenuProps {
   homeRef: RefObject<HTMLDivElement>;
 }
 const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
-  const { currentUser, logout, enrichedUserData } = useAuth();
+  const { currentUser, logout, enrichedUserData, toggleUserStatus } = useAuth();
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [uid, setUid] = useState("");
   const { onCopy } = useClipboard(uid);
@@ -36,12 +36,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
       enrichedUserData["isActive"] !== null
     ) {
       setUid(enrichedUserData["uid"]);
-      setActiveStatus(enrichedUserData["isActive"]);
+      // setActiveStatus(enrichedUserData["isActive"]);
     }
   }, [enrichedUserData]);
 
   const textColor = useColorModeValue("brand.text.dark", "brand.text.light");
-  const [activeStatus, setActiveStatus] = useState(true);
+  // const [activeStatus, setActiveStatus] = useState(true);
 
   const { addToast } = useToast();
 
@@ -54,6 +54,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
     }
     addToast({ type: "info", text: "User ID Copied!" });
   };
+
+  const activeStatus = enrichedUserData["isActive"];
 
   let status = "Active";
   if (!activeStatus) {
@@ -70,8 +72,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ homeRef }) => {
   };
 
   const changeUserStatus = (uid: string, oldActiveStatus: boolean) => {
-    updateUserProfileOnlyInDB(uid, { isActive: !oldActiveStatus });
-    setActiveStatus(!oldActiveStatus);
+    toggleUserStatus(uid, oldActiveStatus);
   };
 
   return (

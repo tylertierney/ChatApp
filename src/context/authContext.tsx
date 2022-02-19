@@ -1,4 +1,10 @@
-import { useContext, createContext, useEffect, useState } from "react";
+import {
+  useContext,
+  createContext,
+  useEffect,
+  useState,
+  useReducer,
+} from "react";
 import { auth, db, provider } from "../firebaseConfig";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { signOut, signInWithRedirect } from "firebase/auth";
@@ -9,6 +15,7 @@ import {
   enrichUserData,
   generateUserDBobject,
   generateWelcomeRoom,
+  updateUserProfileOnlyInDB,
 } from "../utilities/database";
 
 const signInViaGithub = () => {
@@ -38,7 +45,7 @@ const initial = {
     rooms: [],
     isActive: true,
   },
-  // setEnriched: (prev: any) => "hi",
+  toggleUserStatus: (uid: string, oldActiveStatus: boolean) => "hi",
 };
 
 export const AuthContext = createContext(initial);
@@ -47,7 +54,6 @@ const AuthProvider = ({ children }: any) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [pending, setPending] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
-  const [enrichedUserData, setEnriched] = useState<any>(null);
 
   const navigate = useNavigate();
 
@@ -78,14 +84,14 @@ const AuthProvider = ({ children }: any) => {
           }
 
           const enriched = await enrichUserData(userObj);
-          setEnriched(enriched);
+          enrichInitiallyFromDatabase(enriched);
           navigate(`/${user.uid}/${welcomeRoomId}`, { replace: true });
         }
         // This is a returning user
         else {
           const userFromDatabase = { ...docSnap.data() };
           const enriched = await enrichUserData(userFromDatabase);
-          setEnriched(enriched);
+          enrichInitiallyFromDatabase(enriched);
           navigate(`/${user.uid}/${userFromDatabase.rooms[0].id}`, {
             replace: true,
           });
@@ -98,7 +104,7 @@ const AuthProvider = ({ children }: any) => {
           // THESE NEXT 3 LINES WORK - DONT CHANGE
           const data = { ...doc.data() };
           const enriched = await enrichUserData(data);
-          setEnriched(enriched);
+          enrichInitiallyFromDatabase(enriched);
         });
       } else {
         setCurrentUser(null);
@@ -108,6 +114,33 @@ const AuthProvider = ({ children }: any) => {
     });
   }, []);
 
+  const reducer = (state: any, action: any) => {
+    switch (action.type) {
+      case "enrichInitiallyFromDatabase":
+        return action.payload;
+      case "toggleUserStatus":
+        return action.payload;
+    }
+  };
+
+  const [enrichedUserData, dispatch] = useReducer(
+    reducer,
+    initial.enrichedUserData
+  );
+
+  const enrichInitiallyFromDatabase = (enriched: any) => {
+    dispatch({ type: "enrichInitiallyFromDatabase", payload: enriched });
+  };
+
+  const toggleUserStatus = (uid: string, oldActiveStatus: boolean) => {
+    const copyOfEnriched = { ...enrichedUserData };
+
+    updateUserProfileOnlyInDB(uid, { isActive: !oldActiveStatus });
+    copyOfEnriched.isActive = !oldActiveStatus;
+
+    dispatch({ type: "toggleUserStatus", payload: copyOfEnriched });
+  };
+
   const ctx: any = {
     currentUser,
     pending,
@@ -116,7 +149,7 @@ const AuthProvider = ({ children }: any) => {
     isNewUser,
     setIsNewUser,
     enrichedUserData,
-    // setEnriched,
+    toggleUserStatus,
   };
 
   return <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>;

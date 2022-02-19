@@ -8,6 +8,7 @@ interface CurrentConvoProps {}
 const CurrentConversation: React.FC<CurrentConvoProps> = () => {
   const { newMessages, activeRoom } = useNewMessages();
 
+  if (!activeRoom) return null;
   if (!activeRoom.messages) return null;
 
   const dictionary: any = {};
